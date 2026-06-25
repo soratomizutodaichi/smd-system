@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>チラシ | 空と水と大地合同会社</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&display=swap');
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Noto Sans JP','Hiragino Sans',sans-serif;background:#d4d4d4;display:flex;flex-direction:column;align-items:center;padding:28px 16px;gap:24px;}
+.print-btn{background:#2E86C1;color:#fff;border:none;padding:11px 30px;border-radius:999px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;}
+.print-btn:hover{background:#1A5276;}
+
+/* ===== A4 ===== */
+.flyer{width:210mm;min-height:297mm;background:#fff;position:relative;overflow:hidden;box-shadow:0 8px 40px rgba(0,0,0,0.18);}
+
+/* 上部 */
+.top{background:linear-gradient(135deg,#1A5276 0%,#2E86C1 55%,#1ABC9C 100%);padding:30px 40px 48px;position:relative;}
+.top::after{content:'';position:absolute;bottom:-1px;left:0;right:0;height:44px;background:#fff;clip-path:ellipse(55% 100% at 50% 100%);}
+.deco{position:absolute;border-radius:50%;background:rgba(255,255,255,0.09);}
+.tag-badge{display:inline-block;background:rgba(255,255,255,0.18);border:1.5px solid rgba(255,255,255,0.4);color:#fff;font-size:11px;font-weight:700;padding:3px 14px;border-radius:999px;margin-bottom:14px;letter-spacing:0.05em;}
+.catch{color:#fff;font-size:11px;font-weight:500;opacity:0.85;margin-bottom:6px;}
+.main-title{color:#fff;font-size:30px;font-weight:900;line-height:1.35;margin-bottom:12px;}
+.main-title em{font-style:normal;color:#F9E79F;}
+.sub-copy{color:rgba(255,255,255,0.85);font-size:12px;line-height:1.75;margin-bottom:18px;}
+.price-row{display:flex;gap:10px;flex-wrap:wrap;}
+.pill{background:rgba(255,255,255,0.16);border:1.5px solid rgba(255,255,255,0.4);color:#fff;border-radius:999px;padding:5px 14px;font-size:11px;font-weight:700;}
+.pill span{color:#F9E79F;font-size:13px;}
+
+/* 本文 */
+.body{padding:40px 40px 28px;}
+.sec-lbl{font-size:10px;font-weight:700;letter-spacing:0.12em;color:#2E86C1;text-transform:uppercase;margin-bottom:5px;}
+.sec-ttl{font-size:17px;font-weight:900;color:#1A5276;margin-bottom:14px;line-height:1.4;}
+
+/* プロフィール */
+.profile-box{background:#EBF5FB;border-radius:10px;padding:16px 18px;margin-bottom:20px;display:flex;gap:16px;align-items:flex-start;}
+.avatar{width:62px;height:62px;border-radius:50%;background:linear-gradient(135deg,#1A5276,#2E86C1);display:flex;align-items:center;justify-content:center;font-size:26px;flex-shrink:0;}
+.profile-right{flex:1;}
+.profile-name{font-size:15px;font-weight:900;color:#1A5276;margin-bottom:2px;}
+.profile-role{font-size:10px;color:#6C757D;margin-bottom:8px;}
+.career-mini{font-size:10px;color:#343A40;line-height:1.9;}
+.career-mini strong{color:#1A5276;}
+
+/* プラン */
+.plan-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:18px;}
+.pbox{border:2px solid #AED6F1;border-radius:9px;padding:12px 14px;position:relative;}
+.pbox.hot{border-color:#2E86C1;background:#EBF5FB;}
+.pbadge{position:absolute;top:-10px;left:12px;background:#2E86C1;color:#fff;font-size:9px;font-weight:700;padding:2px 9px;border-radius:999px;}
+.pbadge.g{background:#1ABC9C;}
+.pname{font-size:11px;font-weight:700;color:#1A5276;line-height:1.4;margin-bottom:4px;}
+.pprice{font-size:11px;color:#6C757D;}
+.pprice strong{font-size:17px;color:#2E86C1;}
+.pmo{font-size:10px;color:#1ABC9C;font-weight:700;margin-top:2px;}
+.pai{font-size:9.5px;color:#e67e22;font-weight:700;margin-top:3px;}
+
+/* AI比較 */
+.ai-compare{background:#1A5276;border-radius:9px;padding:12px 16px;margin-bottom:18px;color:#fff;}
+.ai-row{display:flex;gap:12px;align-items:center;}
+.ai-box{flex:1;text-align:center;}
+.ai-num{font-size:22px;font-weight:900;}
+.ai-lbl{font-size:9px;opacity:0.65;margin-top:2px;}
+.ai-vs{font-size:13px;font-weight:700;opacity:0.3;}
+
+/* ステップ */
+.steps-row{display:flex;gap:0;margin-bottom:18px;align-items:flex-start;}
+.step-it{flex:1;text-align:center;position:relative;}
+.step-it:not(:last-child)::after{content:'→';position:absolute;right:-8px;top:12px;font-size:13px;color:#AED6F1;}
+.sdot{width:32px;height:32px;background:#2E86C1;color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;margin:0 auto 6px;}
+.slbl{font-size:9.5px;font-weight:700;color:#1A5276;line-height:1.4;}
+
+/* 特徴 */
+.feat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:16px;}
+.feat{background:#F8F9FA;border-radius:7px;padding:10px 8px;text-align:center;}
+.feat .ico{font-size:18px;margin-bottom:4px;}
+.feat .tx{font-size:9.5px;color:#343A40;font-weight:600;line-height:1.4;}
+
+/* オプション帯 */
+.opt-strip{background:#F0F9F6;border-left:4px solid #1ABC9C;border-radius:0 7px 7px 0;padding:10px 14px;margin-bottom:16px;font-size:10px;color:#1A5276;line-height:1.7;}
+
+/* 出張費 */
+.visit-strip{background:#EBF5FB;border-radius:7px;padding:10px 14px;display:flex;gap:18px;align-items:center;margin-bottom:18px;font-size:10px;color:#1A5276;flex-wrap:wrap;}
+.visit-strip span{font-weight:700;}
+
+/* フッター */
+.ftr{background:#1A5276;padding:16px 40px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;}
+.ftr-co{color:#fff;font-size:12px;font-weight:700;}
+.ftr-co .sub{color:rgba(255,255,255,0.6);font-size:9.5px;margin-top:2px;}
+.ftr-name{color:rgba(255,255,255,0.8);font-size:10px;margin-top:2px;}
+.cta-box{background:#1ABC9C;border-radius:7px;padding:8px 16px;text-align:center;color:#fff;}
+.cta-lbl{font-size:9px;opacity:0.8;}
+.cta-main{font-size:13px;font-weight:900;}
+
+@media print{body{background:none;padding:0;}.print-btn{display:none;}.flyer{box-shadow:none;}}
+</style>
+</head>
+<body>
+
+<button class="print-btn" onclick="window.print()">🖨️ このチラシを印刷する</button>
+
+<div class="flyer">
+
+  <!-- 上部カラー帯 -->
+  <div class="top">
+    <div class="deco" style="width:160px;height:160px;top:-50px;right:-35px;"></div>
+    <div class="deco" style="width:90px;height:90px;bottom:25px;right:110px;"></div>
+    <div class="tag-badge">🌏 高知発 · 会社経営者視点の伴走支援 · AI専属プログラマー活用支援</div>
+    <div class="catch">プログラミング不要。日本語で話しかけるだけ。</div>
+    <div class="main-title">
+      <em>AIエージェントという</em><br>
+      <em>専属プログラマーを</em><br>
+      雇いませんか？
+    </div>
+    <div class="sub-copy">
+      「背景を青にして」「営業時間を追加して」——日本語で指示するだけで、<br>
+      AI専属プログラマーが即座にHPを作り・直し・育てます。<br>
+      IT経営30年・全国2,000社を束ねた会社経営者が、伴走支援します。
+    </div>
+    <div class="price-row">
+      <div class="pill">初期費用 <span>2万円〜</span></div>
+      <div class="pill">月額サポート <span>2,000円〜</span></div>
+      <div class="pill">AIエージェント料 <span>1,600円〜/月</span></div>
+    </div>
+  </div>
+
+  <!-- 本文 -->
+  <div class="body">
+
+    <!-- 代表プロフィール -->
+    <div class="sec-lbl" style="margin-bottom:8px;">Representative</div>
+    <div class="profile-box">
+      <div class="avatar">👤</div>
+      <div class="profile-right">
+        <div class="profile-name">山本 康博（代表）</div>
+        <div class="profile-role">空と水と大地合同会社 · システムサービス部門統括</div>
+        <div class="career-mini">
+          <strong>1993年</strong> 自動車整備業向けパッケージシステム会社設立　<strong>2006年</strong> 東京進出<br>
+          <strong>2022年</strong> 売上<strong>2.5億円・営業利益7千万円</strong>達成。サブスクで業界トップ。<strong>全国2,000社以上</strong>の顧客網構築。<br>
+          <strong>2023年</strong> 市議選当選　<strong>2024年</strong> 会社を後継者に引き継ぎ、農業参入・当社創業<br>
+          <strong>2026年</strong> AIエージェント伴走型サービス開始　／　一般社団法人車両情報活用研究所 副代表
+        </div>
+      </div>
+    </div>
+
+    <!-- AI費用比較 -->
+    <div class="ai-compare">
+      <div style="font-size:11px;font-weight:700;color:#F9E79F;margin-bottom:8px;">🤖 AI専属プログラマーの「給料」はたったこれだけ</div>
+      <div class="ai-row">
+        <div class="ai-box"><div class="ai-num" style="color:#ff8080;">30〜60万円</div><div class="ai-lbl">人間のプログラマー（月給）</div></div>
+        <div class="ai-vs">VS</div>
+        <div class="ai-box"><div class="ai-num" style="color:#F9E79F;">1,600円〜</div><div class="ai-lbl">AIエージェント（月額）</div></div>
+        <div style="flex:1.2;font-size:10px;color:rgba(255,255,255,0.75);line-height:1.6;padding-left:8px;">約<strong style="color:#F9E79F;">200〜400倍</strong>のコスト差。24時間稼働・即座対応・修正し放題。</div>
+      </div>
+    </div>
+
+    <!-- プラン -->
+    <div class="sec-lbl">Pricing Plans</div>
+    <div class="sec-ttl">料金プラン一覧</div>
+    <div class="plan-row">
+      <div class="pbox hot"><div class="pbadge">🔥 一番人気</div><div class="pname">静的HP + LINE連携セット</div><div class="pprice">初期 <strong>30,000</strong>円</div><div class="pmo">月額サポート 3,000円/月</div><div class="pai">+ AIエージェント料 1,600円〜/月</div></div>
+      <div class="pbox hot"><div class="pbadge g">⚡ 高機能</div><div class="pname">駆動型HP + LINE連携セット</div><div class="pprice">初期 <strong>60,000</strong>円</div><div class="pmo">月額サポート 6,000円/月</div><div class="pai">+ AIエージェント料 1,600円〜/月</div></div>
+      <div class="pbox"><div class="pname">静的HP 単体プラン</div><div class="pprice">初期 <strong>20,000</strong>円</div><div class="pmo">月額サポート 2,000円/月</div><div class="pai">+ AIエージェント料 1,600円〜/月</div></div>
+      <div class="pbox"><div class="pname">駆動型HP 単体プラン</div><div class="pprice">初期 <strong>50,000</strong>円</div><div class="pmo">月額サポート 5,000円/月</div><div class="pai">+ AIエージェント料 1,600円〜/月</div></div>
+    </div>
+
+    <!-- ステップ -->
+    <div class="sec-lbl" style="margin-bottom:10px;">ご契約までの流れ</div>
+    <div class="steps-row">
+      <div class="step-it"><div class="sdot">1</div><div class="slbl">面談予約</div></div>
+      <div class="step-it"><div class="sdot">2</div><div class="slbl">30分面談<br>（無料）</div></div>
+      <div class="step-it"><div class="sdot">3</div><div class="slbl">契約書<br>締結</div></div>
+      <div class="step-it"><div class="sdot">4</div><div class="slbl">環境構築<br>・指導</div></div>
+      <div class="step-it"><div class="sdot">5</div><div class="slbl">HP完成！<br>運用開始</div></div>
+    </div>
+
+    <!-- 特徴 -->
+    <div class="feat-row">
+      <div class="feat"><div class="ico">💬</div><div class="tx">日本語で<br>話しかけるだけ</div></div>
+      <div class="feat"><div class="ico">♾️</div><div class="tx">修正何度でも<br>無料</div></div>
+      <div class="feat"><div class="ico">🏆</div><div class="tx">IT経営30年<br>の実績</div></div>
+      <div class="feat"><div class="ico">📱</div><div class="tx">LINE連携で<br>集客力アップ</div></div>
+      <div class="feat"><div class="ico">🌿</div><div class="tx">高知密着<br>訪問対応</div></div>
+      <div class="feat"><div class="ico">🌐</div><div class="tx">リモートで<br>全国対応</div></div>
+    </div>
+
+    <!-- オプション -->
+    <div class="opt-strip">
+      <strong>オプション充実</strong>　📊 SEO対策 15,000円/回　🤝 政策伴走 10,000円/時間<br>
+      📱 SNS連携（Instagram・X・Facebook）10,000円/件・月1,000円　　🛠 受託開発 200,000円〜
+    </div>
+
+    <!-- 出張費 -->
+    <div class="visit-strip">
+      🚗 <span>出張費：</span>片道30分以内<strong style="color:#2E86C1;">無料</strong>　／　30分超は30分ごと<strong style="color:#2E86C1;">+3,000円</strong>　／　リモートは<strong style="color:#1ABC9C;">交通費無料</strong>
+    </div>
+
+  </div>
+
+  <!-- フッター -->
+  <div class="ftr">
+    <div>
+      <div class="ftr-co">空と水と大地合同会社</div>
+      <div class="ftr-name">代表 山本 康博</div>
+      <div class="ftr-co sub">高知市を拠点・リモートで全国対応</div>
+    </div>
+    <div class="cta-box">
+      <div class="cta-lbl">まずは無料面談から（約30分）</div>
+      <div class="cta-main">お気軽にご連絡ください</div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

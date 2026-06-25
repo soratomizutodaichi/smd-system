@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>プレゼン資料 | 空と水と大地合同会社</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&display=swap');
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --sky:#2E86C1; --skyd:#1A5276; --skyl:#AED6F1;
+  --water:#1ABC9C; --waterl:#A9DFBF;
+  --gold:#F9E79F; --goldd:#D4AC0D;
+  --earth:#7D6608;
+  --gray-50:#F8F9FA; --gray-100:#E9ECEF;
+  --gray-400:#ADB5BD; --gray-600:#6C757D; --gray-800:#343A40;
+  --text:#1a1a2e;
+}
+body{font-family:'Noto Sans JP','Hiragino Sans',sans-serif;background:#e0e0e0;overflow:hidden;height:100vh;}
+.deck{width:100%;height:100vh;position:relative;}
+.slide{
+  position:absolute;inset:0;
+  display:flex;flex-direction:column;
+  justify-content:center;align-items:center;
+  padding:52px 72px;
+  background:#fff;
+  opacity:0;pointer-events:none;
+  transition:opacity .3s;
+}
+.slide.active{opacity:1;pointer-events:all;}
+
+/* ナビ */
+.nav{
+  position:fixed;bottom:20px;left:50%;transform:translateX(-50%);
+  display:flex;gap:10px;align-items:center;z-index:100;
+  background:rgba(26,82,118,0.9);padding:8px 18px;border-radius:999px;
+}
+.nav button{background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.3);color:#fff;padding:5px 16px;border-radius:999px;font-family:inherit;font-size:13px;cursor:pointer;}
+.nav button:hover{background:rgba(255,255,255,0.3);}
+.nav .ctr{font-size:12px;color:rgba(255,255,255,0.65);min-width:44px;text-align:center;}
+.dots{display:flex;gap:5px;}
+.dot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,0.3);cursor:pointer;transition:.2s;}
+.dot.on{background:#fff;}
+
+/* 共通タイポグラフィ */
+.lbl{font-size:11px;font-weight:700;letter-spacing:.14em;color:var(--sky);text-transform:uppercase;margin-bottom:8px;}
+.h1{font-size:clamp(30px,4.5vw,56px);font-weight:900;line-height:1.25;color:var(--text);}
+.h2{font-size:clamp(22px,3vw,38px);font-weight:900;line-height:1.3;color:var(--text);}
+.em{color:var(--sky);font-style:normal;}
+.em2{color:var(--water);font-style:normal;}
+.emg{color:var(--goldd);font-style:normal;}
+.sub{font-size:clamp(13px,1.5vw,17px);color:var(--gray-600);line-height:1.85;margin-top:14px;}
+
+/* カード */
+.card{background:var(--gray-50);border:1px solid var(--gray-100);border-radius:12px;padding:22px 24px;}
+.card.sky{background:#EBF5FB;border-color:#AED6F1;}
+.card.water{background:#E8F8F5;border-color:var(--waterl);}
+.card.gold{background:#FFFDE7;border-color:#FFE082;}
+.card.dark{background:var(--skyd);border-color:var(--skyd);color:#fff;}
+.card.red{background:#FFF5F5;border-color:#FFCCCC;}
+
+/* アクセントライン */
+.accent-left{border-left:4px solid var(--sky);border-radius:0 12px 12px 0;padding-left:20px;}
+.accent-left.water{border-left-color:var(--water);}
+.accent-left.earth{border-left-color:var(--earth);}
+
+/* グリッド */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:16px;width:100%;max-width:880px;margin-top:24px;}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;width:100%;max-width:900px;margin-top:24px;}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;width:100%;max-width:960px;margin-top:22px;}
+
+/* スライド上部カラーバー */
+.top-bar{position:absolute;top:0;left:0;right:0;height:5px;background:linear-gradient(90deg,var(--sky),var(--water));}
+
+/* タグ */
+.tag{display:inline-block;background:#EBF5FB;border:1px solid #AED6F1;color:var(--sky);border-radius:999px;padding:4px 14px;font-size:12px;font-weight:600;margin-bottom:16px;}
+
+/* 区切り線 */
+.sep{width:48px;height:3px;background:var(--sky);border-radius:2px;margin:14px 0;}
+
+/* キャリアタイムライン */
+.ct{display:flex;gap:14px;align-items:flex-start;margin-bottom:10px;}
+.ct-yr{min-width:38px;font-size:11px;font-weight:700;color:var(--sky);padding-top:1px;}
+.ct-bd{font-size:13px;color:var(--gray-800);border-left:2px solid var(--skyl);padding-left:12px;line-height:1.65;}
+.ct-bd strong{color:var(--skyd);}
+</style>
+</head>
+<body>
+<div class="deck">
+
+<!-- ===== 1 表紙 ===== -->
+<div class="slide active">
+  <div class="top-bar"></div>
+  <div style="width:100%;max-width:800px;">
+    <div class="tag">空と水と大地合同会社 · システムサービス部門</div>
+    <div class="h1">
+      <em>AIエージェントという</em><br>
+      <em>専属プログラマーを</em><br>
+      雇いませんか？
+    </div>
+    <div class="sep"></div>
+    <div class="sub">
+      日本語で話しかけるだけで、HPをつくり・直し・育てる。<br>
+      月額 <strong style="color:var(--goldd);">1,600円〜</strong> から雇える、あなたのお店専属のAIプログラマー。<br>
+      全国2,000社を束ねた会社経営者が、伴走してサポートします。
+    </div>
+    <div style="margin-top:24px;font-size:13px;color:var(--gray-400);">代表 山本 康博 ／ 空と水と大地合同会社</div>
+  </div>
+</div>
+
+<!-- ===== 2 会社・代表紹介 ===== -->
+<div class="slide">
+  <div class="top-bar"></div>
+  <div style="width:100%;max-width:900px;">
+    <div class="lbl">Who we are</div>
+    <div class="h2">教える側が、<em>本物の会社経営者</em>です。</div>
+    <div style="display:grid;grid-template-columns:160px 1fr;gap:32px;margin-top:22px;align-items:start;">
+      <div style="text-align:center;">
+        <div style="width:100px;height:100px;border-radius:50%;background:linear-gradient(135deg,var(--skyd),var(--sky));display:flex;align-items:center;justify-content:center;font-size:40px;margin:0 auto 12px;">👤</div>
+        <div style="font-size:17px;font-weight:900;color:var(--skyd);">山本 康博</div>
+        <div style="font-size:11px;color:var(--gray-600);margin-top:3px;">代表 / システムサービス統括</div>
+        <div style="margin-top:10px;display:flex;flex-direction:column;gap:5px;">
+          <span style="background:#EBF5FB;color:var(--sky);border-radius:999px;padding:3px 10px;font-size:10px;font-weight:600;">IT経営 30年</span>
+          <span style="background:#EBF5FB;color:var(--sky);border-radius:999px;padding:3px 10px;font-size:10px;font-weight:600;">元市議会議員</span>
+          <span style="background:#E8F8F5;color:var(--water);border-radius:999px;padding:3px 10px;font-size:10px;font-weight:600;">経営者視点の伴走支援</span>
+        </div>
+      </div>
+      <div>
+        <div class="ct"><div class="ct-yr">1993</div><div class="ct-bd"><strong>自動車整備業向けパッケージシステム会社を設立。</strong> ITの世界でゼロから事業を立ち上げる。</div></div>
+        <div class="ct"><div class="ct-yr">2006</div><div class="ct-bd"><strong>東京進出。</strong> 全国展開に向けた拠点を構築。</div></div>
+        <div class="ct"><div class="ct-yr">2022</div><div class="ct-bd"><strong>売上2.5億円・営業利益7千万円達成。</strong> サブスクで業界トップ。<strong>全国2,000社以上</strong>の顧客・販売店ネットワーク構築。</div></div>
+        <div class="ct"><div class="ct-yr">2023</div><div class="ct-bd"><strong>市議会議員当選。</strong> 地域社会への貢献活動を開始。</div></div>
+        <div class="ct"><div class="ct-yr">2024</div><div class="ct-bd"><strong>会社を後継者に引き継ぎ、農業参入。</strong> 空と水と大地合同会社を創業。</div></div>
+        <div class="ct"><div class="ct-yr" style="color:var(--goldd);">2026</div><div class="ct-bd" style="border-left-color:#FFE082;"><strong style="color:var(--goldd);">AIエージェント伴走型サービスを開始。</strong> 会社経営者の視点で、お客様のビジネスを本質から支援。</div></div>
+        <div style="display:flex;gap:7px;flex-wrap:wrap;margin-top:12px;">
+          <span style="background:var(--gray-50);border:1px solid var(--gray-100);border-radius:999px;padding:3px 11px;font-size:10px;color:var(--gray-600);">一般社団法人車両情報活用研究所 副代表</span>
+          <span style="background:var(--gray-50);border:1px solid var(--gray-100);border-radius:999px;padding:3px 11px;font-size:10px;color:var(--gray-600);">南国市商工会 会員</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 3 会社紹介・八升豆 ===== -->
+<div class="slide">
+  <div class="top-bar"></div>
+  <div style="width:100%;max-width:860px;">
+    <div class="lbl">Our Company</div>
+    <div class="h2">農業×IT——<em>2つの本物</em>を届ける会社</div>
+    <div class="g2" style="margin-top:22px;">
+      <div class="card accent-left earth" style="background:#FFFDE7;">
+        <div style="font-size:28px;margin-bottom:10px;">🌱</div>
+        <div style="font-size:15px;font-weight:700;color:var(--earth);margin-bottom:8px;">メイン事業｜八升豆焙煎粉</div>
+        <div style="font-size:13px;color:var(--gray-600);line-height:1.8;margin-bottom:12px;">高知の豊かな自然が育んだ「八升豆（はちじょうまめ）」を丁寧に焙煎した粉末製品。大豆に近い栄養価を持ち、健康志向の方に注目されている農業発の本格商品です。</div>
+        <div style="background:rgba(125,102,8,0.08);border-radius:8px;padding:10px 12px;font-size:12px;color:var(--earth);line-height:1.7;">
+          <strong>特徴：</strong>高知県産・無添加・豊富な栄養素<br>
+          <strong>形態：</strong>粉末タイプ（料理・飲料に活用可能）<br>
+          <strong>販売：</strong>オンライン・対面販売
+        </div>
+      </div>
+      <div class="card accent-left sky" style="background:#EBF5FB;">
+        <div style="font-size:28px;margin-bottom:10px;">🤖</div>
+        <div style="font-size:15px;font-weight:700;color:var(--skyd);margin-bottom:8px;">新部門｜AIシステムサービス</div>
+        <div style="font-size:13px;color:var(--gray-600);line-height:1.8;margin-bottom:12px;">30年のIT経営経験を持つ山本が、AIという新技術を地方の事業者に届けるため2026年に新設。「農業も、ITも、本物を届ける」という理念のもと運営しています。</div>
+        <div style="background:rgba(46,134,193,0.08);border-radius:8px;padding:10px 12px;font-size:12px;color:var(--skyd);line-height:1.7;">
+          <strong>特徴：</strong>日本語指示でHP作成・更新<br>
+          <strong>強み：</strong>会社経営者視点の伴走支援<br>
+          <strong>対応：</strong>高知市訪問 / 全国リモート
+        </div>
+      </div>
+    </div>
+    <div class="card dark" style="margin-top:16px;padding:16px 22px;">
+      <div style="font-size:13px;line-height:1.85;color:rgba(255,255,255,0.88);">
+        💡 <strong style="color:var(--gold);">経営者だからこそ伝えられること。</strong><br>
+        「HPを作る技術」だけでなく、「どうすれば集客につながるか」「どんな機能があるとビジネスが変わるか」——会社経営者として2,000社以上を見てきた山本が、経営の視点でお客様に伴走します。
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 4 課題 ===== -->
+<div class="slide">
+  <div class="top-bar"></div>
+  <div style="width:100%;max-width:900px;">
+    <div class="lbl">Problem</div>
+    <div class="h2">お店のHP、こんな<em>お悩み</em>ありませんか？</div>
+    <div class="g3">
+      <div class="card"><div style="font-size:28px;margin-bottom:8px;">😰</div><div style="font-size:14px;font-weight:700;color:var(--gray-800);margin-bottom:4px;">制作費が高すぎる</div><div style="font-size:12px;color:var(--gray-600);line-height:1.6;">HP制作会社に頼むと<strong>数十万〜百万円</strong>かかる</div></div>
+      <div class="card"><div style="font-size:28px;margin-bottom:8px;">⏳</div><div style="font-size:14px;font-weight:700;color:var(--gray-800);margin-bottom:4px;">修正に時間がかかる</div><div style="font-size:12px;color:var(--gray-600);line-height:1.6;">「少し直して」だけで<strong>数週間待ち</strong>になる</div></div>
+      <div class="card"><div style="font-size:28px;margin-bottom:8px;">💸</div><div style="font-size:14px;font-weight:700;color:var(--gray-800);margin-bottom:4px;">修正のたびに追加費用</div><div style="font-size:12px;color:var(--gray-600);line-height:1.6;">更新のたびに<strong>お金がかかり続ける</strong></div></div>
+      <div class="card"><div style="font-size:28px;margin-bottom:8px;">🤔</div><div style="font-size:14px;font-weight:700;color:var(--gray-800);margin-bottom:4px;">ITが苦手</div><div style="font-size:12px;color:var(--gray-600);line-height:1.6;">自分では操作できず<strong>業者任せ</strong>になっている</div></div>
+      <div class="card"><div style="font-size:28px;margin-bottom:8px;">📉</div><div style="font-size:14px;font-weight:700;color:var(--gray-800);margin-bottom:4px;">更新が止まっている</div><div style="font-size:12px;color:var(--gray-600);line-height:1.6;">HPはあるが<strong>情報が古いまま</strong>放置</div></div>
+      <div class="card"><div style="font-size:28px;margin-bottom:8px;">😔</div><div style="font-size:14px;font-weight:700;color:var(--gray-800);margin-bottom:4px;">そもそもHPがない</div><div style="font-size:12px;color:var(--gray-600);line-height:1.6;">費用が怖くて<strong>踏み出せない</strong></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 5 解決策 ===== -->
+<div class="slide">
+  <div class="top-bar"></div>
+  <div style="width:100%;max-width:780px;">
+    <div class="lbl">Solution</div>
+    <div class="h2"><em>「日本語で話しかける」</em>だけで<br>AIがすべて解決します。</div>
+    <div class="sub" style="margin-bottom:22px;">プログラミング不要。コードの知識ゼロ。むずかしい操作は一切なし。</div>
+    <div style="background:var(--gray-50);border:1px solid var(--gray-100);border-radius:14px;padding:24px 28px;">
+      <div style="font-size:12px;font-weight:600;color:var(--gray-400);margin-bottom:14px;text-align:center;">実際の会話イメージ</div>
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        <div style="display:flex;gap:10px;align-items:flex-start;">
+          <div style="background:var(--sky);color:#fff;border-radius:999px;padding:3px 10px;font-size:11px;font-weight:700;white-space:nowrap;margin-top:2px;">あなた</div>
+          <div style="background:#fff;border:1px solid var(--gray-100);border-radius:4px 12px 12px 12px;padding:10px 14px;font-size:14px;color:var(--gray-800);">「トップページの背景を青にして、お店の名前を大きく表示して」</div>
+        </div>
+        <div style="display:flex;gap:10px;align-items:flex-start;flex-direction:row-reverse;">
+          <div style="background:var(--water);color:#fff;border-radius:999px;padding:3px 10px;font-size:11px;font-weight:700;white-space:nowrap;margin-top:2px;">AI</div>
+          <div style="background:#E8F8F5;border:1px solid var(--waterl);border-radius:12px 4px 12px 12px;padding:10px 14px;font-size:14px;color:var(--gray-800);">「背景を青に変更し、店名を画面上部に大きく配置しました ✅」</div>
+        </div>
+        <div style="display:flex;gap:10px;align-items:flex-start;">
+          <div style="background:var(--sky);color:#fff;border-radius:999px;padding:3px 10px;font-size:11px;font-weight:700;white-space:nowrap;margin-top:2px;">あなた</div>
+          <div style="background:#fff;border:1px solid var(--gray-100);border-radius:4px 12px 12px 12px;padding:10px 14px;font-size:14px;color:var(--gray-800);">「営業時間ページも追加して。月曜定休で」</div>
+        </div>
+        <div style="display:flex;gap:10px;align-items:flex-start;flex-direction:row-reverse;">
+          <div style="background:var(--water);color:#fff;border-radius:999px;padding:3px 10px;font-size:11px;font-weight:700;white-space:nowrap;margin-top:2px;">AI</div>
+          <div style="background:#E8F8F5;border:1px solid var(--waterl);border-radius:12px 4px 12px 12px;padding:10px 14px;font-size:14px;color:var(--gray-800);">「営業時間ページ（月曜定休）を追加しました ✅」</div>
+        </div>
+      </div>
+    </div>
+    <div style="display:flex;gap:12px;margin-top:16px;flex-wrap:wrap;justify-content:center;">
+      <span style="background:#EBF5FB;color:var(--sky);border-radius:999px;padding:5px 16px;font-size:13px;font-weight:600;">✓ プログラミング不要</span>
+      <span style="background:#EBF5FB;color:var(--sky);border-radius:999px;padding:5px 16px;font-size:13px;font-weight:600;">✓ 何度修正しても無料</span>
+      <span style="background:#E8F8F5;color:var(--water);border-radius:999px;padding:5px 16px;font-size:13px;font-weight:600;">✓ 即座に反映</span>
+      <span style="background:#E8F8F5;color:var(--water);border-radius:999px;padding:5px 16px;font-size:13px;font-weight:600;">✓ 24時間稼働</span>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 6 比較 ===== -->
+<div class="slide">
+  <div class="top-bar"></div>
+  <div style="width:100%;max-width:860px;">
+    <div class="lbl">Comparison</div>
+    <div class="h2">従来との<em>決定的な違い</em></div>
+    <div class="g2">
+      <div class="card red">
+        <div style="font-size:14px;font-weight:700;color:#C0392B;margin-bottom:14px;">❌ 従来のHP制作会社</div>
+        <table style="width:100%;font-size:13px;border-collapse:collapse;">
+          <tr><td style="padding:6px 0;color:var(--gray-600);border-bottom:1px solid var(--gray-100);">制作費</td><td style="padding:6px 0;text-align:right;font-weight:700;color:var(--gray-800);border-bottom:1px solid var(--gray-100);">数十万〜百万円</td></tr>
+          <tr><td style="padding:6px 0;color:var(--gray-600);border-bottom:1px solid var(--gray-100);">修正</td><td style="padding:6px 0;text-align:right;font-weight:700;color:var(--gray-800);border-bottom:1px solid var(--gray-100);">追加費用 + 数週間待ち</td></tr>
+          <tr><td style="padding:6px 0;color:var(--gray-600);border-bottom:1px solid var(--gray-100);">更新方法</td><td style="padding:6px 0;text-align:right;font-weight:700;color:var(--gray-800);border-bottom:1px solid var(--gray-100);">業者に依頼が必要</td></tr>
+          <tr><td style="padding:6px 0;color:var(--gray-600);">担当者</td><td style="padding:6px 0;text-align:right;font-weight:700;color:var(--gray-800);">外部の他人</td></tr>
+        </table>
+      </div>
+      <div class="card sky" style="border:2px solid var(--sky);">
+        <div style="font-size:14px;font-weight:700;color:var(--skyd);margin-bottom:14px;">✅ AIエージェント（当社サービス）</div>
+        <table style="width:100%;font-size:13px;border-collapse:collapse;">
+          <tr><td style="padding:6px 0;color:var(--gray-600);border-bottom:1px solid #D6EAF8;">環境構築費</td><td style="padding:6px 0;text-align:right;font-weight:700;color:var(--sky);border-bottom:1px solid #D6EAF8;">2〜6万円</td></tr>
+          <tr><td style="padding:6px 0;color:var(--gray-600);border-bottom:1px solid #D6EAF8;">修正</td><td style="padding:6px 0;text-align:right;font-weight:700;color:var(--water);border-bottom:1px solid #D6EAF8;">何度でも無料・即座に</td></tr>
+          <tr><td style="padding:6px 0;color:var(--gray-600);border-bottom:1px solid #D6EAF8;">更新方法</td><td style="padding:6px 0;text-align:right;font-weight:700;color:var(--sky);border-bottom:1px solid #D6EAF8;">日本語で話しかけるだけ</td></tr>
+          <tr><td style="padding:6px 0;color:var(--gray-600);">担当者</td><td style="padding:6px 0;text-align:right;font-weight:700;color:var(--water);">専属AI・24時間対応</td></tr>
+        </table>
+      </div>
+    </div>
+    <div style="background:var(--gray-50);border-radius:10px;padding:14px 20px;margin-top:16px;text-align:center;font-size:14px;color:var(--gray-600);">
+      さらに <strong style="color:var(--skyd);">会社経営者の視点</strong> を持つ山本が、<strong style="color:var(--skyd);">ビジネスの成果につながるHP</strong>になるよう伴走支援します。
+    </div>
+  </div>
+</div>
+
+<!-- ===== 7 AI費用の価値 ===== -->
+<div class="slide">
+  <div class="top-bar"></div>
+  <div style="width:100%;max-width:860px;">
+    <div class="lbl">AI Agent Fee</div>
+    <div class="h2">専属プログラマーの「給料」は<br>月額 <em>1,600円〜</em></div>
+    <div style="display:flex;gap:16px;margin-top:24px;align-items:stretch;">
+      <div class="card red" style="flex:1;text-align:center;">
+        <div style="font-size:13px;font-weight:700;color:#C0392B;margin-bottom:10px;">👤 人間のプログラマー</div>
+        <div style="font-size:40px;font-weight:900;color:#E74C3C;">30〜60万円</div>
+        <div style="font-size:11px;color:var(--gray-400);margin-top:4px;">月給（正社員・フリーランス相場）</div>
+        <div style="margin-top:14px;font-size:12px;color:var(--gray-600);line-height:1.8;text-align:left;">
+          · 勤務時間・休日あり<br>
+          · 修正に時間がかかる<br>
+          · コミュニケーションコスト大<br>
+          · 採用・管理コスト発生
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;font-size:18px;font-weight:700;color:var(--gray-400);padding:0 4px;">VS</div>
+      <div class="card sky" style="flex:1;text-align:center;border:2px solid var(--sky);">
+        <div style="font-size:13px;font-weight:700;color:var(--sky);margin-bottom:10px;">🤖 AIエージェント（専属プログラマー）</div>
+        <div style="font-size:40px;font-weight:900;color:var(--goldd);">1,600円〜</div>
+        <div style="font-size:11px;color:var(--gray-400);margin-top:4px;">月額（使用量により変動）</div>
+        <div style="margin-top:14px;font-size:12px;color:var(--gray-600);line-height:1.8;text-align:left;">
+          · 24時間365日稼働<br>
+          · 日本語で即座に対応<br>
+          · 修正し放題・追加料金なし<br>
+          · 採用・管理コストゼロ
+        </div>
+      </div>
+    </div>
+    <div style="background:var(--skyd);border-radius:10px;padding:14px 20px;margin-top:16px;text-align:center;color:#fff;font-size:15px;font-weight:700;">
+      約200〜400倍のコスト差。これが「専属プログラマーを雇う」ということです。
+    </div>
+  </div>
+</div>
+
+<!-- ===== 8 料金プラン ===== -->
+<div class="slide">
+  <div class="top-bar"></div>
+  <div style="width:100%;max-width:960px;">
+    <div class="lbl">Pricing Plans</div>
+    <div class="h2">料金プラン一覧</div>
+    <div class="g4">
+      <div class="card">
+        <div style="font-size:12px;font-weight:700;color:var(--gray-800);margin-bottom:8px;line-height:1.4;">静的HP<br>単体プラン</div>
+        <div style="font-size:10px;color:var(--gray-400);margin-bottom:4px;">初期費用</div>
+        <div style="font-size:24px;font-weight:900;color:var(--sky);">20,000円</div>
+        <div style="font-size:11px;color:var(--gray-600);margin-top:5px;">月額サポート 2,000円/月</div>
+        <div style="font-size:10px;color:#E67E22;font-weight:700;margin-top:5px;">+AI料 1,600円〜/月</div>
+      </div>
+      <div class="card" style="border:2px solid var(--goldd);background:#FFFDE7;">
+        <div style="font-size:10px;color:var(--goldd);font-weight:700;margin-bottom:4px;">🔥 一番人気</div>
+        <div style="font-size:12px;font-weight:700;color:var(--gray-800);margin-bottom:8px;line-height:1.4;">静的HP<br>+LINE連携セット</div>
+        <div style="font-size:10px;color:var(--gray-400);margin-bottom:4px;">初期費用</div>
+        <div style="font-size:24px;font-weight:900;color:var(--goldd);">30,000円</div>
+        <div style="font-size:11px;color:var(--gray-600);margin-top:5px;">月額サポート 3,000円/月</div>
+        <div style="font-size:10px;color:#E67E22;font-weight:700;margin-top:5px;">+AI料 1,600円〜/月</div>
+      </div>
+      <div class="card">
+        <div style="font-size:12px;font-weight:700;color:var(--gray-800);margin-bottom:8px;line-height:1.4;">駆動型HP<br>単体プラン</div>
+        <div style="font-size:10px;color:var(--gray-400);margin-bottom:4px;">初期費用</div>
+        <div style="font-size:24px;font-weight:900;color:var(--sky);">50,000円</div>
+        <div style="font-size:11px;color:var(--gray-600);margin-top:5px;">月額サポート 5,000円/月</div>
+        <div style="font-size:10px;color:#E67E22;font-weight:700;margin-top:5px;">+AI料 1,600円〜/月</div>
+      </div>
+      <div class="card" style="border:2px solid var(--goldd);background:#FFFDE7;">
+        <div style="font-size:10px;color:var(--goldd);font-weight:700;margin-bottom:4px;">⚡ 高機能</div>
+        <div style="font-size:12px;font-weight:700;color:var(--gray-800);margin-bottom:8px;line-height:1.4;">駆動型HP<br>+LINE連携セット</div>
+        <div style="font-size:10px;color:var(--gray-400);margin-bottom:4px;">初期費用</div>
+        <div style="font-size:24px;font-weight:900;color:var(--goldd);">60,000円</div>
+        <div style="font-size:11px;color:var(--gray-600);margin-top:5px;">月額サポート 6,000円/月</div>
+        <div style="font-size:10px;color:#E67E22;font-weight:700;margin-top:5px;">+AI料 1,600円〜/月</div>
+      </div>
+    </div>
+    <div style="background:var(--gray-50);border-radius:10px;padding:12px 18px;margin-top:14px;font-size:12px;color:var(--gray-600);line-height:1.7;">
+      <strong style="color:var(--gray-800);">オプション：</strong>
+      📱 SNS連携 10,000円/件+月1,000円　／　📊 SEO対策 15,000円/回　／　🤝 政策伴走 10,000円/時間　／　🛠 受託開発 200,000円〜
+    </div>
+    <div style="background:#FFF8E1;border:1px solid #FFE082;border-radius:8px;padding:10px 16px;margin-top:10px;font-size:12px;color:var(--earth);">
+      ⚠ AIエージェント料（1,600円〜/月）はお客様がAIサービス提供会社へ直接お支払いいただきます。当社の月額サポート料とは別です。設定・契約手続きは当社がサポートします。
+    </div>
+  </div>
+</div>
+
+<!-- ===== 9 ご契約の流れ ===== -->
+<div class="slide">
+  <div class="top-bar"></div>
+  <div style="width:100%;max-width:860px;">
+    <div class="lbl">Our Process</div>
+    <div class="h2">ご契約までの<em>5ステップ</em></div>
+    <div style="display:flex;align-items:flex-start;gap:0;width:100%;margin-top:28px;">
+      <div style="flex:1;text-align:center;position:relative;">
+        <div style="width:48px;height:48px;border-radius:50%;background:var(--sky);display:flex;align-items:center;justify-content:center;margin:0 auto 10px;font-size:20px;color:#fff;font-weight:700;">1</div>
+        <div style="font-size:11px;color:var(--sky);font-weight:700;margin-bottom:4px;">STEP 1</div>
+        <div style="font-size:13px;font-weight:700;color:var(--gray-800);margin-bottom:4px;">面談を予約</div>
+        <div style="font-size:11px;color:var(--gray-600);">フォームまたは<br>お電話で</div>
+        <div style="position:absolute;right:-8px;top:22px;color:var(--skyl);font-size:20px;font-weight:300;">›</div>
+      </div>
+      <div style="flex:1;text-align:center;position:relative;">
+        <div style="width:48px;height:48px;border-radius:50%;background:var(--sky);display:flex;align-items:center;justify-content:center;margin:0 auto 10px;font-size:20px;color:#fff;font-weight:700;">2</div>
+        <div style="font-size:11px;color:var(--sky);font-weight:700;margin-bottom:4px;">STEP 2</div>
+        <div style="font-size:13px;font-weight:700;color:var(--gray-800);margin-bottom:4px;">30分面談（無料）</div>
+        <div style="font-size:11px;color:var(--gray-600);">電話・オンライン<br>ニーズを確認</div>
+        <div style="position:absolute;right:-8px;top:22px;color:var(--skyl);font-size:20px;font-weight:300;">›</div>
+      </div>
+      <div style="flex:1;text-align:center;position:relative;">
+        <div style="width:48px;height:48px;border-radius:50%;background:var(--sky);display:flex;align-items:center;justify-content:center;margin:0 auto 10px;font-size:20px;color:#fff;font-weight:700;">3</div>
+        <div style="font-size:11px;color:var(--sky);font-weight:700;margin-bottom:4px;">STEP 3</div>
+        <div style="font-size:13px;font-weight:700;color:var(--gray-800);margin-bottom:4px;">契約書の締結</div>
+        <div style="font-size:11px;color:var(--gray-600);">納得のうえで<br>正式に契約</div>
+        <div style="position:absolute;right:-8px;top:22px;color:var(--skyl);font-size:20px;font-weight:300;">›</div>
+      </div>
+      <div style="flex:1;text-align:center;position:relative;">
+        <div style="width:48px;height:48px;border-radius:50%;background:var(--water);display:flex;align-items:center;justify-content:center;margin:0 auto 10px;font-size:20px;color:#fff;font-weight:700;">4</div>
+        <div style="font-size:11px;color:var(--water);font-weight:700;margin-bottom:4px;">STEP 4</div>
+        <div style="font-size:13px;font-weight:700;color:var(--gray-800);margin-bottom:4px;">環境構築・指導</div>
+        <div style="font-size:11px;color:var(--gray-600);">訪問またはリモート<br>2〜3時間</div>
+        <div style="position:absolute;right:-8px;top:22px;color:var(--waterl);font-size:20px;font-weight:300;">›</div>
+      </div>
+      <div style="flex:1;text-align:center;">
+        <div style="width:48px;height:48px;border-radius:50%;background:var(--water);display:flex;align-items:center;justify-content:center;margin:0 auto 10px;font-size:20px;color:#fff;">✓</div>
+        <div style="font-size:11px;color:var(--water);font-weight:700;margin-bottom:4px;">COMPLETE</div>
+        <div style="font-size:13px;font-weight:700;color:var(--gray-800);margin-bottom:4px;">HP完成！</div>
+        <div style="font-size:11px;color:var(--gray-600);">自分で更新・管理<br>月額サポートで安心</div>
+      </div>
+    </div>
+    <div class="g3" style="margin-top:22px;">
+      <div class="card" style="padding:14px;text-align:center;"><div style="font-size:20px;margin-bottom:6px;">🚗</div><div style="font-size:12px;font-weight:600;color:var(--gray-800);">片道30分以内<br>訪問費無料</div></div>
+      <div class="card" style="padding:14px;text-align:center;"><div style="font-size:20px;margin-bottom:6px;">💻</div><div style="font-size:12px;font-weight:600;color:var(--gray-800);">リモートで<br>全国対応</div></div>
+      <div class="card" style="padding:14px;text-align:center;"><div style="font-size:20px;margin-bottom:6px;">🤝</div><div style="font-size:12px;font-weight:600;color:var(--gray-800);">断っても<br>一切問題なし</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 10 CTA ===== -->
+<div class="slide">
+  <div class="top-bar"></div>
+  <div style="width:100%;max-width:800px;text-align:center;">
+    <div class="tag">📞 まずは30分、お話しください</div>
+    <div class="h1">
+      <em>専属プログラマーを</em><br>
+      あなたのお店に<br>
+      <em>雇ってみませんか？</em>
+    </div>
+    <div class="sep" style="margin:16px auto;"></div>
+    <div class="sub" style="text-align:center;">
+      無料面談（約30分）でニーズを確認 → 契約書締結 → 環境構築<br>
+      「合わない」と思ったら断っても一切問題ありません。
+    </div>
+    <div style="display:flex;gap:16px;justify-content:center;margin-top:28px;flex-wrap:wrap;">
+      <div class="card sky" style="padding:18px 28px;text-align:center;min-width:200px;">
+        <div style="font-size:22px;margin-bottom:8px;">🏢</div>
+        <div style="font-size:13px;font-weight:700;color:var(--skyd);margin-bottom:3px;">空と水と大地合同会社</div>
+        <div style="font-size:12px;color:var(--gray-600);">代表 山本 康博</div>
+        <div style="font-size:11px;color:var(--gray-400);margin-top:3px;">高知市を拠点・全国リモート対応</div>
+      </div>
+      <div class="card gold" style="padding:18px 28px;text-align:center;min-width:200px;">
+        <div style="font-size:22px;margin-bottom:8px;">💰</div>
+        <div style="font-size:13px;font-weight:700;color:var(--goldd);margin-bottom:3px;">専属AI料 1,600円〜/月</div>
+        <div style="font-size:12px;color:var(--gray-600);">月額サポート 2,000円〜別途</div>
+        <div style="font-size:11px;color:var(--gray-400);margin-top:3px;">IT経営30年の経営者が伴走</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div><!-- /deck -->
+
+<div class="nav">
+  <button onclick="go(-1)">← 前へ</button>
+  <div class="dots" id="dots"></div>
+  <span class="ctr" id="ctr">1 / 10</span>
+  <button onclick="go(1)">次へ →</button>
+</div>
+
+<script>
+const slides=document.querySelectorAll('.slide'),total=slides.length;
+let cur=0;
+const dotsEl=document.getElementById('dots');
+slides.forEach((_,i)=>{const d=document.createElement('div');d.className='dot'+(i===0?' on':'');d.onclick=()=>goTo(i);dotsEl.appendChild(d);});
+function goTo(n){slides[cur].classList.remove('active');dotsEl.children[cur].classList.remove('on');cur=(n+total)%total;slides[cur].classList.add('active');dotsEl.children[cur].classList.add('on');document.getElementById('ctr').textContent=(cur+1)+' / '+total;}
+function go(d){goTo(cur+d);}
+document.addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key==='ArrowDown')go(1);if(e.key==='ArrowLeft'||e.key==='ArrowUp')go(-1);});
+</script>
+</body>
+</html>
