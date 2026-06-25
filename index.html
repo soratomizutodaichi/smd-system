@@ -499,7 +499,7 @@
 <section class="contact-section" id="order">
   <div class="container">
     <div class="section-header" style="text-align:center;">
-      <div class="section-label">Step 1 — 面談予約</div>
+      
       <h2 class="section-title">まず30分の無料面談から</h2>
       <p class="section-desc" style="margin:0 auto;">いきなりお申し込みは不要です。まず面談でお話を聞かせてください。<br>ニーズとプランが合っていることを確認してから、契約書を交わします。</p>
     </div>
@@ -522,15 +522,15 @@
             <div class="form-group"><label>店舗・会社名</label><input type="text" placeholder="○○店"></div>
             <div class="form-group"><label>電話番号<span>*</span></label><input type="tel" required placeholder="088-000-0000"></div>
             <div class="form-group"><label>メールアドレス<span>*</span></label><input type="email" required placeholder="example@mail.com"></div>
-            <div class="form-group full"><label>面談方法<span>*</span></label><select required><option value="">選択してください</option><option>電話（こちらからおかけします）</option><option>オンライン（Zoom / Google Meet）</option><option>どちらでも可</option></select></div>
-            <div class="form-group full"><label>ご希望日時（第1希望）</label><input type="text" placeholder="例：6月20日（金）午前10時ごろ"></div>
-            <div class="form-group full"><label>ご希望日時（第2希望）</label><input type="text" placeholder="例：6月21日（土）午後2時ごろ"></div>
-            <div class="form-group full"><label>関心のあるプラン</label><select><option>まだ決まっていない</option><option>静的HP + LINE連携セット</option><option>駆動型HP + LINE連携セット</option><option>静的HPプラン（単体）</option><option>駆動型HPプラン（単体）</option><option>オプション・その他</option></select></div>
+            <div class="form-group full"><label>面談方法<span>*</span></label><select required><option value="">選択してください</option><option>電話（当社から貴社におかけします）</option><option>オンライン（Google Meet）</option><option>どちらでも可</option></select></div>
+            <div class="form-group full"><label>ご希望日時（第1希望）</label><div style="display:flex;gap:8px;"><input type="date" style="flex:1;padding:10px 14px;border:1.5px solid #E9ECEF;border-radius:8px;font-size:15px;font-family:inherit;" name="date1"><select name="time1" style="width:130px;padding:10px 14px;border:1.5px solid #E9ECEF;border-radius:8px;font-size:15px;font-family:inherit;"><option value="">時間を選択</option><option>08:00</option><option>08:30</option><option>09:00</option><option>09:30</option><option>10:00</option><option>10:30</option><option>11:00</option><option>11:30</option><option>12:00</option><option>12:30</option><option>13:00</option><option>13:30</option><option>14:00</option><option>14:30</option><option>15:00</option><option>15:30</option><option>16:00</option><option>16:30</option><option>17:00</option><option>17:30</option><option>18:00</option><option>18:30</option><option>19:00</option><option>19:30</option><option>20:00</option></select></div></div>
+            <div class="form-group full"><label>ご希望日時（第2希望）</label><div style="display:flex;gap:8px;"><input type="date" style="flex:1;padding:10px 14px;border:1.5px solid #E9ECEF;border-radius:8px;font-size:15px;font-family:inherit;" name="date2"><select name="time2" style="width:130px;padding:10px 14px;border:1.5px solid #E9ECEF;border-radius:8px;font-size:15px;font-family:inherit;"><option value="">時間を選択</option><option>08:00</option><option>08:30</option><option>09:00</option><option>09:30</option><option>10:00</option><option>10:30</option><option>11:00</option><option>11:30</option><option>12:00</option><option>12:30</option><option>13:00</option><option>13:30</option><option>14:00</option><option>14:30</option><option>15:00</option><option>15:30</option><option>16:00</option><option>16:30</option><option>17:00</option><option>17:30</option><option>18:00</option><option>18:30</option><option>19:00</option><option>19:30</option><option>20:00</option></select></div></div>
+            <div class="form-group full"><label>関心のあるサービス</label><select><option>サービス全般</option><option>静的ホームページ</option><option>駆動型ホームページ</option><option>業務システム</option><option>開発依頼</option><option>その他</option></select></div>
             <div class="form-group full"><label>お店・事業の概要・ご質問など</label><textarea placeholder="業種、現在のHP状況、やりたいことなどをご自由にご記入ください。"></textarea></div>
           </div>
           <div class="form-submit">
             <button type="submit" class="btn btn-water btn-lg">面談を予約する（無料）→</button>
-            <div class="form-note">通常1〜2営業日以内にご連絡し、日程を確定します。</div>
+            <div class="form-note">通常1〜3営業日以内に電話でご連絡します。ご希望の日程でできない場合、電話で日程を調整させていただきます。</div>
           </div>
         </form>
       </div>
@@ -626,8 +626,8 @@ async function handleSubmit(e){
     phone: form.querySelector('input[type="tel"]').value,
     email: form.querySelector('input[type="email"]').value,
     meeting_type: form.querySelectorAll('select')[0].value,
-    preferred_date_1: form.querySelectorAll('input[type="text"]')[2].value,
-    preferred_date_2: form.querySelectorAll('input[type="text"]')[3].value,
+    preferred_date_1: (form.querySelector('[name=date1]').value + ' ' + form.querySelector('[name=time1]').value).trim(),
+    preferred_date_2: (form.querySelector('[name=date2]').value + ' ' + form.querySelector('[name=time2]').value).trim(),
     plan: form.querySelectorAll('select')[1].value,
     message: form.querySelector('textarea').value
   };
