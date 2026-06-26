@@ -329,11 +329,14 @@ function parseConfirmedDate(val) {
 
 function renderContractStatus(r) {
   var sdParts = parseConfirmedDate(r.service_date);
+  var saveBtn = r.confirmed_date && !r.contract_sent_at
+    ? '<br><button class="contract-send-btn" onclick="saveAndSendContract(\'' + r.id + '\')" style="margin-top:4px;width:100%;">📄 保存し契約書送付</button>'
+    : '<br><button class="save-btn" onclick="saveServiceDate(\'' + r.id + '\')" style="margin-top:4px;">保存</button>';
   var serviceDateHtml =
     '<div style="font-size:11px;font-weight:700;color:#1A5276;margin-bottom:4px;">実施予定日</div>' +
     '<input type="date" class="date-input" value="' + sdParts.date + '" id="sd_date_' + r.id + '" style="width:130px;">' +
     '<br><select class="time-select" id="sd_time_' + r.id + '">' + buildTimeOptions(sdParts.time) + '</select>' +
-    '<br><button class="save-btn" onclick="saveServiceDate(\'' + r.id + '\')" style="margin-top:4px;">保存</button>' +
+    saveBtn +
     '<hr style="margin:10px 0;border:none;border-top:1px solid #E9ECEF;">';
 
   if (r.company_confirmed_paid_at && r.applicant_paid_at) {
@@ -360,7 +363,7 @@ function renderContractStatus(r) {
   if (!r.confirmed_date) {
     return serviceDateHtml + '<div style="font-size:11px;color:#999;">面談確定日を先に設定してください</div>';
   }
-  return serviceDateHtml + '<button class="contract-send-btn" onclick="sendContract(\'' + r.id + '\')">📄 契約書を送付する</button>';
+  return serviceDateHtml;
 }
 
 async function saveServiceDate(id) {
@@ -372,6 +375,17 @@ async function saveServiceDate(id) {
   var item = allData.find(function(r){ return r.id == id; });
   if (item) item.service_date = val;
   alert('実施予定日を保存しました');
+}
+
+async function saveAndSendContract(id) {
+  var dateVal = document.getElementById('sd_date_' + id).value;
+  var timeVal = document.getElementById('sd_time_' + id).value;
+  var val = (dateVal && timeVal) ? dateVal + ' ' + timeVal : (dateVal || timeVal || '');
+  var { error } = await sbClient.from('aisys_form_submissions').update({ service_date: val }).eq('id', id);
+  if (error) { alert('エラー: ' + error.message); return; }
+  var item = allData.find(function(r){ return r.id == id; });
+  if (item) item.service_date = val;
+  await sendContract(id);
 }
 
 async function sendContract(id) {
