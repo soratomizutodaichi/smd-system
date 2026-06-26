@@ -259,7 +259,7 @@ function renderTable() {
       html += '<td>';
       html += '<input type="date" class="date-input" value="' + cdParts.date + '" id="cd_date_' + r.id + '">';
       html += '<br><select class="time-select" id="cd_time_' + r.id + '">' + buildTimeOptions(cdParts.time) + '</select>';
-      html += '<br><button class="save-btn" onclick="saveDate(\'' + r.id + '\')">保存</button>';
+      html += '<br><button class="save-btn" onclick="saveDate(\'' + r.id + '\')">保存とメール送信</button>';
       html += '</td>';
       html += '<td>' + renderContractStatus(r) + '</td>';
       html += '<td><button class="soft-del-btn" onclick="softDelete(\'' + r.id + '\')">🗑 削除</button></td>';
