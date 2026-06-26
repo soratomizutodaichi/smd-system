@@ -100,7 +100,16 @@ async function loadData() {
         '</div>';
     }
   }
-  var dateHtml = isMeeting ? '<div class="info-row"><div class="info-label">ご希望日時（第1希望）</div><div class="info-value">' + (r.preferred_date_1||'未入力') + '</div></div><div class="info-row"><div class="info-label">ご希望日時（第2希望）</div><div class="info-value">' + (r.preferred_date_2||'未入力') + '</div></div>' : '';
+  var dateHtml = '';
+  if (isMeeting) {
+    if (r.confirmed_date) {
+      dateHtml = '';
+    } else {
+      dateHtml = '<div class="info-row"><div class="info-label">ご希望日時（第1希望）</div><div class="info-value">' + (r.preferred_date_1||'未入力') + '</div></div>' +
+                 '<div class="info-row"><div class="info-label">ご希望日時（第2希望）</div><div class="info-value">' + (r.preferred_date_2||'未入力') + '</div></div>';
+    }
+  }
+  var meetingSectionTitle = r.confirmed_date ? '面談確定' : 'ご希望日時';
 
   document.getElementById('content').innerHTML =
     '<div class="card">' +
@@ -115,7 +124,7 @@ async function loadData() {
         '<div class="info-row"><div class="info-label">店舗・会社名</div><div class="info-value">' + (r.company||'―') + '</div></div>' +
         '<div class="info-row"><div class="info-label">電話番号</div><div class="info-value">' + (r.phone||'') + '</div></div>' +
         '<div class="info-row"><div class="info-label">メールアドレス</div><div class="info-value">' + (r.email||'') + '</div></div>' +
-        (isMeeting ? '<div class="section-title" style="margin-top:24px;">ご希望日時</div>' + dateHtml + '<div class="info-row"><div class="info-label">関心のあるサービス</div><div class="info-value">' + (r.plan||'') + '</div></div>' : '') +
+        (isMeeting ? '<div class="section-title" style="margin-top:24px;">' + meetingSectionTitle + '</div>' + dateHtml + '<div class="info-row"><div class="info-label">関心のあるサービス</div><div class="info-value">' + (r.plan||'') + '</div></div>' : '') +
         '<div class="info-row" style="margin-top:8px;"><div class="info-label">内容・ご質問</div><div class="info-value">' + (r.message||'―') + '</div></div>' +
         '<div class="status-box">' +
           '<div class="status-title">📞 対応状況</div>' +
