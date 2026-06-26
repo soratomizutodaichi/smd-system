@@ -51,6 +51,10 @@ tr.deleted-row:hover { background: #FDEDEC; }
 .login-error { color: #E74C3C; font-size: 13px; margin-top: 8px; display: none; }
 .called-yes { color: #1E8449; font-weight: 700; }
 .called-no { color: #E74C3C; }
+.contract-send-btn { padding: 7px 12px; background: #1E8449; color: #fff; border: none; border-radius: 6px; cursor: pointer; font-size: 12px; white-space: nowrap; }
+.contract-send-btn:hover { background: #196F3D; }
+.contract-confirm-btn { padding: 7px 12px; background: #2E86C1; color: #fff; border: none; border-radius: 6px; cursor: pointer; font-size: 12px; white-space: nowrap; margin-top: 4px; }
+.contract-confirm-btn:hover { background: #1A5276; }
 </style>
 </head>
 <body>
@@ -110,6 +114,7 @@ tr.deleted-row:hover { background: #FDEDEC; }
           <th>サービス／内容</th>
           <th>電話済み</th>
           <th>確定日程</th>
+          <th>契約状況</th>
           <th>操作</th>
         </tr>
       </thead>
@@ -119,7 +124,9 @@ tr.deleted-row:hover { background: #FDEDEC; }
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <script>
+emailjs.init({publicKey: 'sydEkxfsmryplEbcO'});
 const SUPABASE_URL = 'https://gcmtnzvcoovjqxanbmqc.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdjbXRuenZjb292anF4YW5ibXFjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc0NDczNTksImV4cCI6MjA5MzAyMzM1OX0.30xm_Vd7UdfkombPOfSjg-nYxmuwYlnHHEgqRzWE4fQ';
 var sbClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
@@ -238,7 +245,7 @@ function renderTable() {
 
     if (showTrash) {
       var delDt = r.deleted_at ? new Date(r.deleted_at).toLocaleString('ja-JP') : '';
-      html += '<td colspan="2" style="font-size:12px;color:#999;">削除日時：' + delDt + '</td>';
+      html += '<td colspan="3" style="font-size:12px;color:#999;">削除日時：' + delDt + '</td>';
       html += '<td><button class="restore-btn" onclick="restoreRow(\'' + r.id + '\')">↩ 復元</button><br><button class="hard-del-btn" onclick="hardDelete(\'' + r.id + '\')">🗑 完全削除</button></td>';
     } else {
       var calledClass = r.called ? 'called-yes' : 'called-no';
@@ -250,12 +257,13 @@ function renderTable() {
       html += '<br><select class="time-select" id="cd_time_' + r.id + '">' + buildTimeOptions(cdParts.time) + '</select>';
       html += '<br><button class="save-btn" onclick="saveDate(\'' + r.id + '\')">保存</button>';
       html += '</td>';
+      html += '<td>' + renderContractStatus(r) + '</td>';
       html += '<td><button class="soft-del-btn" onclick="softDelete(\'' + r.id + '\')">🗑 削除</button></td>';
     }
     html += '</tr>';
   });
 
-  document.getElementById('tableBody').innerHTML = html || '<tr><td colspan="8" style="text-align:center;padding:32px;color:#999;">データがありません</td></tr>';
+  document.getElementById('tableBody').innerHTML = html || '<tr><td colspan="9" style="text-align:center;padding:32px;color:#999;">データがありません</td></tr>';
 }
 
 async function softDelete(id) {
@@ -312,6 +320,66 @@ function parseConfirmedDate(val) {
   if (!val) return { date: '', time: '' };
   var parts = val.split(' ');
   return { date: parts[0] || '', time: parts[1] || '' };
+}
+
+function renderContractStatus(r) {
+  if (r.company_confirmed_paid_at && r.applicant_paid_at) {
+    return '<div style="color:#1E8449;font-weight:700;font-size:13px;">✅ 契約完了</div>' +
+      '<div style="font-size:11px;color:#666;">申込者確認：' + new Date(r.applicant_paid_at).toLocaleDateString('ja-JP') + '</div>' +
+      '<div style="font-size:11px;color:#666;">会社確認：' + new Date(r.company_confirmed_paid_at).toLocaleDateString('ja-JP') + '</div>';
+  }
+  if (r.contract_sent_at) {
+    var html = '<div style="font-size:11px;color:#666;margin-bottom:4px;">📄 契約書送付済み</div>';
+    html += '<div style="font-size:11px;margin-bottom:2px;">' + (r.applicant_paid_at ? '✅ 申込者：入金確認済み' : '⏳ 申込者：未確認') + '</div>';
+    if (r.applicant_paid_at && !r.company_confirmed_paid_at) {
+      html += '<button class="contract-confirm-btn" onclick="confirmPayment(\'' + r.id + '\')">✅ 入金確認済みにする</button>';
+    } else if (r.company_confirmed_paid_at) {
+      html += '<div style="font-size:11px;">✅ 会社側：確認済み</div>';
+    } else {
+      html += '<div style="font-size:11px;color:#999;">会社側：未確認</div>';
+    }
+    return html;
+  }
+  if (!r.confirmed_date) {
+    return '<div style="font-size:11px;color:#999;">確定日程を先に設定してください</div>';
+  }
+  return '<button class="contract-send-btn" onclick="sendContract(\'' + r.id + '\')">📄 契約書を送付する</button>';
+}
+
+async function sendContract(id) {
+  var item = allData.find(function(r){ return r.id == id; });
+  if (!item) return;
+  if (!item.confirmed_date) { alert('確定日程を先に入力・保存してください。'); return; }
+  if (!confirm(item.name + ' 様に契約書を送付しますか？')) return;
+  var contractUrl = 'https://aisys.soratomizutodaichi.com/contract.html?id=' + id;
+  var now = new Date().toISOString();
+  var { error } = await sbClient.from('aisys_form_submissions').update({ contract_url: contractUrl, contract_sent_at: now }).eq('id', id);
+  if (error) { alert('エラー: ' + error.message); return; }
+  try {
+    await emailjs.send('service_7m0hycl', 'template_contract', {
+      to_name: item.name,
+      to_email: item.email,
+      contract_url: contractUrl,
+      plan: item.plan || '',
+      confirmed_date: item.confirmed_date || ''
+    });
+  } catch(e) {
+    alert('DBへの保存は完了しましたが、メール送信に失敗しました。\n契約書URL: ' + contractUrl);
+  }
+  item.contract_url = contractUrl;
+  item.contract_sent_at = now;
+  renderTable();
+  alert('契約書を送付しました。');
+}
+
+async function confirmPayment(id) {
+  if (!confirm('入金を確認しました。契約を完了としますか？')) return;
+  var now = new Date().toISOString();
+  var { error } = await sbClient.from('aisys_form_submissions').update({ company_confirmed_paid_at: now }).eq('id', id);
+  if (error) { alert('エラー: ' + error.message); return; }
+  var item = allData.find(function(r){ return r.id == id; });
+  if (item) item.company_confirmed_paid_at = now;
+  renderTable();
 }
 
 async function saveDate(id) {

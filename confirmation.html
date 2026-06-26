@@ -74,6 +74,25 @@ async function loadData() {
   var confirmedHtml = r.confirmed_date
     ? '<div class="confirmed-date">📅 確定日程：' + r.confirmed_date + '</div>'
     : '';
+  var contractHtml = '';
+  if (r.contract_sent_at) {
+    var contractUrl = r.contract_url || ('https://aisys.soratomizutodaichi.com/contract.html?id=' + r.id);
+    if (r.company_confirmed_paid_at && r.applicant_paid_at) {
+      contractHtml = '<div class="status-box" style="background:#D5F5E3;margin-top:16px;">' +
+        '<div class="status-title" style="color:#1E8449;">✅ 契約完了</div>' +
+        '<div style="font-size:14px;color:#1E8449;font-weight:600;">入金が確認され、契約が正式に完了しました。</div>' +
+        '</div>';
+    } else {
+      contractHtml = '<div class="status-box" style="background:#EBF5FB;margin-top:16px;">' +
+        '<div class="status-title">📄 契約書</div>' +
+        '<div style="margin-bottom:12px;font-size:14px;">契約書が届いています。内容をご確認ください。</div>' +
+        '<a href="' + contractUrl + '" style="display:inline-block;padding:10px 24px;background:#1A5276;color:#fff;border-radius:8px;font-weight:700;font-size:14px;text-decoration:none;margin-bottom:8px;">📄 契約書を確認・印刷する</a>' +
+        (r.applicant_paid_at
+          ? '<div style="margin-top:8px;font-size:13px;color:#1E8449;font-weight:700;">✅ 入金確認を送信済みです。会社側の確認をお待ちください。</div>'
+          : '') +
+        '</div>';
+    }
+  }
   var dateHtml = isMeeting ? '<div class="info-row"><div class="info-label">ご希望日時（第1希望）</div><div class="info-value">' + (r.preferred_date_1||'未入力') + '</div></div><div class="info-row"><div class="info-label">ご希望日時（第2希望）</div><div class="info-value">' + (r.preferred_date_2||'未入力') + '</div></div>' : '';
 
   document.getElementById('content').innerHTML =
@@ -96,6 +115,7 @@ async function loadData() {
           calledHtml +
           confirmedHtml +
         '</div>' +
+        contractHtml +
         '<div class="note">※ このページのURLはお客様専用です。第三者に共有しないようお願いします。<br>※ 対応状況は随時更新されます。ページを再読み込みすると最新の状況が確認できます。</div>' +
       '</div>' +
     '</div>';

@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>契約書 | 空と水と大地合同会社</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Hiragino Sans', 'Yu Gothic', sans-serif; background: #F8F9FA; color: #333; }
+header { background: #1A5276; color: #fff; padding: 16px 24px; text-align: center; }
+header h1 { font-size: 18px; }
+header p { font-size: 13px; opacity: 0.8; margin-top: 4px; }
+.container { max-width: 720px; margin: 40px auto; padding: 0 16px 60px; }
+.print-btn { display: block; margin: 0 auto 24px; padding: 12px 32px; background: #2E86C1; color: #fff; border: none; border-radius: 8px; font-size: 15px; font-weight: 700; cursor: pointer; }
+.print-btn:hover { background: #1A5276; }
+.card { background: #fff; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); padding: 48px; }
+.contract-title { text-align: center; font-size: 22px; font-weight: 900; letter-spacing: 0.1em; margin-bottom: 8px; }
+.contract-subtitle { text-align: center; font-size: 13px; color: #666; margin-bottom: 40px; }
+.parties { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 32px; }
+.party-box { border: 1.5px solid #E9ECEF; border-radius: 10px; padding: 20px; }
+.party-label { font-size: 12px; font-weight: 700; color: #2E86C1; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+.party-name { font-size: 16px; font-weight: 700; }
+.party-sub { font-size: 13px; color: #666; margin-top: 4px; }
+.section { margin-bottom: 28px; }
+.section-title { font-size: 13px; font-weight: 700; color: #1A5276; border-bottom: 2px solid #EBF5FB; padding-bottom: 6px; margin-bottom: 14px; }
+.info-row { display: flex; gap: 16px; margin-bottom: 10px; }
+.info-label { min-width: 160px; font-size: 13px; color: #666; }
+.info-value { font-size: 14px; font-weight: 600; color: #333; flex: 1; }
+.terms { background: #F8F9FA; border-radius: 10px; padding: 20px 24px; }
+.terms ol { padding-left: 20px; }
+.terms li { font-size: 13px; line-height: 1.9; color: #444; margin-bottom: 4px; }
+.important { background: #FDEDEC; border: 1.5px solid #E74C3C; border-radius: 8px; padding: 14px 18px; margin-top: 20px; font-size: 13px; color: #7B241C; font-weight: 600; line-height: 1.7; }
+.payment-section { background: #EBF5FB; border-radius: 10px; padding: 20px 24px; margin-bottom: 28px; }
+.payment-deadline { font-size: 15px; font-weight: 700; color: #1A5276; margin-bottom: 8px; }
+.payment-info { font-size: 13px; color: #444; line-height: 1.8; }
+.sign-area { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 40px; }
+.sign-box { border: 1.5px solid #E9ECEF; border-radius: 10px; padding: 20px; text-align: center; }
+.sign-label { font-size: 12px; color: #666; margin-bottom: 32px; }
+.sign-line { border-bottom: 1.5px solid #333; margin: 0 20px; }
+.sign-name { font-size: 12px; color: #666; margin-top: 6px; }
+.paid-badge { display: inline-block; background: #D5F5E3; color: #1E8449; font-weight: 700; font-size: 13px; padding: 6px 16px; border-radius: 999px; margin-top: 8px; }
+.loading { text-align: center; padding: 60px; color: #999; font-size: 16px; }
+.error { text-align: center; padding: 60px; color: #E74C3C; }
+@media print {
+  header, .print-btn { display: none; }
+  body { background: #fff; }
+  .card { box-shadow: none; border-radius: 0; padding: 0; }
+  .container { margin: 0; padding: 0; max-width: 100%; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>空と水と大地合同会社 システムサービス部門</h1>
+  <p>サービス提供契約書</p>
+</header>
+
+<div class="container">
+  <button class="print-btn" onclick="window.print()">🖨 印刷する</button>
+  <div id="content" class="loading">読み込み中...</div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script>
+const SUPABASE_URL = 'https://gcmtnzvcoovjqxanbmqc.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdjbXRuenZjb292anF4YW5ibXFjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc0NDczNTksImV4cCI6MjA5MzAyMzM1OX0.30xm_Vd7UdfkombPOfSjg-nYxmuwYlnHHEgqRzWE4fQ';
+var sbClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+var params = new URLSearchParams(window.location.search);
+var id = params.get('id');
+var rowData = null;
+
+async function loadData() {
+  if (!id) { document.getElementById('content').innerHTML = '<div class="error">URLが正しくありません。</div>'; return; }
+  var { data, error } = await sbClient.from('aisys_form_submissions').select('*').eq('id', id).single();
+  if (error || !data) { document.getElementById('content').innerHTML = '<div class="error">データが見つかりません。</div>'; return; }
+  rowData = data;
+  render(data);
+}
+
+function calcPaymentDeadline(confirmedDate) {
+  if (!confirmedDate) return '（確定日程が未設定です）';
+  var d = new Date(confirmedDate);
+  d.setDate(d.getDate() - 7);
+  return d.toLocaleDateString('ja-JP', { year: 'numeric', month: 'long', day: 'numeric' }) + ' まで';
+}
+
+function render(r) {
+  var today = new Date().toLocaleDateString('ja-JP', { year: 'numeric', month: 'long', day: 'numeric' });
+  var deadline = calcPaymentDeadline(r.confirmed_date);
+  var paidBadge = r.applicant_paid_at ? '<div class="paid-badge">✅ 入金確認済み</div>' : '';
+
+  document.getElementById('content').innerHTML =
+    '<div class="card">' +
+      '<div class="contract-title">サービス提供契約書</div>' +
+      '<div class="contract-subtitle">作成日：' + today + '</div>' +
+
+      '<div class="parties">' +
+        '<div class="party-box">' +
+          '<div class="party-label">甲（サービス提供者）</div>' +
+          '<div class="party-name">空と水と大地合同会社</div>' +
+          '<div class="party-sub">システムサービス部門</div>' +
+          '<div class="party-sub">代表：山本 康博</div>' +
+        '</div>' +
+        '<div class="party-box">' +
+          '<div class="party-label">乙（契約者）</div>' +
+          '<div class="party-name">' + (r.name||'') + ' 様</div>' +
+          '<div class="party-sub">' + (r.company||'') + '</div>' +
+          '<div class="party-sub">' + (r.email||'') + '</div>' +
+          paidBadge +
+        '</div>' +
+      '</div>' +
+
+      '<div class="section">' +
+        '<div class="section-title">契約内容</div>' +
+        '<div class="info-row"><div class="info-label">ご契約サービス</div><div class="info-value">' + (r.plan||'') + '</div></div>' +
+        '<div class="info-row"><div class="info-label">サービス提供日時</div><div class="info-value">' + (r.confirmed_date||'未定') + '</div></div>' +
+        '<div class="info-row"><div class="info-label">お申込み内容</div><div class="info-value">' + (r.message||'―') + '</div></div>' +
+      '</div>' +
+
+      '<div class="payment-section">' +
+        '<div class="payment-deadline">💳 お支払い期限：' + deadline + '</div>' +
+        '<div class="payment-info">' +
+          'サービス提供日の１週間前までにお支払いをお願いいたします。<br>' +
+          'お支払い完了後、こちらのページにある「入金しました」ボタンをクリックしてください。<br>' +
+          '会社側での入金確認をもって、契約が正式に完了となります。' +
+        '</div>' +
+      '</div>' +
+
+      '<div class="section">' +
+        '<div class="section-title">契約条項</div>' +
+        '<div class="terms">' +
+          '<ol>' +
+            '<li>本契約は、甲が乙に対して上記サービスを提供することを目的とします。</li>' +
+            '<li>乙は、サービス提供日の１週間前までに所定の料金をお支払いいただきます。</li>' +
+            '<li>入金確認をもって契約が正式に成立し、サービスの提供を開始します。</li>' +
+            '<li>契約成立後のキャンセル・返金はいかなる理由においても対応できません。</li>' +
+            '<li>乙の都合によるサービス日程の変更は、サービス提供日の２週間前までにご連絡ください。</li>' +
+            '<li>甲は、乙から提供された情報を本サービス目的以外には使用しません。</li>' +
+            '<li>本契約に定めのない事項については、甲乙協議のうえ解決するものとします。</li>' +
+          '</ol>' +
+        '</div>' +
+        '<div class="important">⚠️ 重要：入金後の返金は一切お受けできません。ご不明な点は、サービス開始前に必ずご確認ください。</div>' +
+      '</div>' +
+
+      '<div class="sign-area">' +
+        '<div class="sign-box"><div class="sign-label">甲（サービス提供者）署名</div><div class="sign-line"></div><div class="sign-name">空と水と大地合同会社　山本 康博</div></div>' +
+        '<div class="sign-box"><div class="sign-label">乙（契約者）署名</div><div class="sign-line"></div><div class="sign-name">' + (r.name||'') + ' 様</div></div>' +
+      '</div>' +
+    '</div>' +
+
+    '<div style="text-align:center;margin-top:32px;">' +
+      (r.applicant_paid_at
+        ? '<div style="font-size:15px;color:#1E8449;font-weight:700;">✅ 入金確認済みです。ありがとうございます。</div>'
+        : '<button onclick="applicantPay()" style="padding:14px 40px;background:#1E8449;color:#fff;border:none;border-radius:10px;font-size:16px;font-weight:700;cursor:pointer;">💳 入金しました</button>') +
+    '</div>';
+}
+
+async function applicantPay() {
+  if (!confirm('入金の確認を送信します。\n※ 返金はできません。よろしいですか？')) return;
+  var now = new Date().toISOString();
+  var { error } = await sbClient.from('aisys_form_submissions').update({ applicant_paid_at: now }).eq('id', id);
+  if (error) { alert('エラー: ' + error.message); return; }
+  rowData.applicant_paid_at = now;
+  render(rowData);
+  alert('入金確認を送信しました。会社側の確認をお待ちください。');
+}
+
+loadData();
+</script>
+</body>
+</html>
