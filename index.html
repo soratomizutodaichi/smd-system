@@ -464,7 +464,7 @@
             <div class="form-group full"><label>お店・事業の概要・ご質問など</label><textarea placeholder="業種、現在のHP状況、やりたいことなどをご自由にご記入ください。"></textarea></div>
           </div>
           <div class="form-submit">
-            <button type="submit" class="btn btn-water btn-lg">面談を予約する（無料）→</button>
+            <button type="submit" class="btn btn-water btn-lg" data-original="面談を予約する（無料）→">面談を予約する（無料）→</button>
 
           </div>
         </form>
@@ -478,7 +478,7 @@
             <div class="form-group"><label>メールアドレス<span>*</span></label><input type="email" required placeholder="example@mail.com"></div>
             <div class="form-group full"><label>お問い合わせ内容<span>*</span></label><textarea required placeholder="ご質問・ご要望などをご記入ください。"></textarea></div>
           </div>
-          <div class="form-submit"><button type="submit" class="btn btn-primary btn-lg">送信する →</button><div class="form-note">通常2営業日以内にご連絡いたします。</div></div>
+          <div class="form-submit"><button type="submit" class="btn btn-primary btn-lg" data-original="送信する →">送信する →</button><div class="form-note">通常2営業日以内にご連絡いたします。</div></div>
         </form>
       </div>
     </div>
@@ -486,7 +486,7 @@
       <div style="font-size:48px;margin-bottom:16px;">✅</div>
       <h3 style="font-size:20px;margin-bottom:12px;">送信完了しました</h3>
       <p style="color:#6C757D;line-height:1.8;">ありがとうございます。通常1〜3営業日以内に電話でご連絡いたします。<br>ご希望の日程でできない場合も多々ありますことをご了承ください。<br>その場合は、電話をおかけした時に、日程を調整させていただきます。</p>
-      <button onclick="document.getElementById('success-msg').style.display='none';document.querySelector('.form-box').style.display='block';" style="margin-top:24px;padding:12px 32px;background:#2E86C1;color:#fff;border:none;border-radius:50px;font-size:15px;font-weight:700;cursor:pointer;">閉じる</button>
+      <button onclick="document.getElementById('success-msg').style.display='none';document.querySelector('.form-box').style.display='block';document.querySelectorAll('button[type=submit]').forEach(function(b){b.textContent=b.getAttribute('data-original')||b.textContent;b.disabled=false;});" style="margin-top:24px;padding:12px 32px;background:#2E86C1;color:#fff;border:none;border-radius:50px;font-size:15px;font-weight:700;cursor:pointer;">閉じる</button>
     </div>
   </div>
 </section>
