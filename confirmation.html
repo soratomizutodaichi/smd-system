@@ -68,11 +68,11 @@ async function loadData() {
   var isMeeting = r.type === 'meeting';
   var dt = r.created_at ? new Date(r.created_at).toLocaleString('ja-JP') : '';
   var badgeText = isMeeting ? '面談予約' : 'お問い合わせ';
-  var calledHtml = r.called
-    ? '<div class="status-row"><span class="status-icon">✅</span><span class="status-text called-yes" style="color:#1E8449;font-weight:700;">電話済み</span></div>'
+  var calledHtml = r.confirmed_date
+    ? ''
     : '<div class="status-row"><span class="status-icon">⏳</span><span class="status-text" style="color:#E67E22;">対応準備中（通常1〜3営業日以内にご連絡します）</span></div>';
   var confirmedHtml = r.confirmed_date
-    ? '<div class="confirmed-date">📅 確定日程：' + r.confirmed_date + '</div>'
+    ? '<div class="confirmed-date">📅 面談確定日程：' + r.confirmed_date + '</div>'
     : '';
   var contractHtml = '';
   if (r.contract_sent_at) {
