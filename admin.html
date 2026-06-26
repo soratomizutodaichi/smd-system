@@ -414,10 +414,26 @@ async function saveDate(id) {
   var dateVal = document.getElementById('cd_date_' + id).value;
   var timeVal = document.getElementById('cd_time_' + id).value;
   var val = (dateVal && timeVal) ? dateVal + ' ' + timeVal : (dateVal || timeVal || '');
-  await sbClient.from('aisys_form_submissions').update({ confirmed_date: val }).eq('id', id);
+  var { error } = await sbClient.from('aisys_form_submissions').update({ confirmed_date: val }).eq('id', id);
+  if (error) { alert('エラー: ' + error.message); return; }
   var item = allData.find(function(r){ return r.id == id; });
   if (item) item.confirmed_date = val;
-  alert('確定日程を保存しました');
+  if (val && item && item.email) {
+    try {
+      var confirmUrl = 'https://aisys.soratomizutodaichi.com/confirmation.html?id=' + id;
+      await emailjs.send('service_7m0hycl', 'template_confirmed', {
+        to_name: item.name,
+        to_email: item.email,
+        confirmed_date: val,
+        confirmation_url: confirmUrl
+      });
+      alert('面談確定日を保存し、申込者にメールを送信しました。');
+    } catch(e) {
+      alert('保存しましたが、メール送信に失敗しました。\n' + (e.text || e));
+    }
+  } else {
+    alert('面談確定日を保存しました。');
+  }
 }
 </script>
 </body>
