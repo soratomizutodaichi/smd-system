@@ -578,7 +578,9 @@ async function handleSubmit(e){
       to_name: data.name,
       to_email: data.email,
       phone: data.phone || '',
-      form_type: data.type === 'inquiry' ? 'お問い合わせ' : '面談のご予約'
+      form_type: data.type === 'inquiry' ? 'お問い合わせ' : '面談のご予約',
+      preferred_date_1: data.preferred_date_1 || '',
+      preferred_date_2: data.preferred_date_2 || ''
     };
     try {
       await emailjs.send('service_7m0hycl', 'template_3p7ngs9', templateParams);
