@@ -113,8 +113,8 @@ tr.deleted-row:hover { background: #FDEDEC; }
           <th>第1希望／第2希望</th>
           <th>サービス／内容</th>
           <th>電話済み</th>
-          <th>確定日程</th>
-          <th>契約状況</th>
+          <th>面談確定日</th>
+          <th>契約状況（実施予定日含む）</th>
           <th>操作</th>
         </tr>
       </thead>
@@ -323,14 +323,26 @@ function parseConfirmedDate(val) {
 }
 
 function renderContractStatus(r) {
+  var sdParts = parseConfirmedDate(r.service_date);
+  var serviceDateHtml =
+    '<div style="font-size:11px;font-weight:700;color:#1A5276;margin-bottom:4px;">実施予定日</div>' +
+    '<input type="date" class="date-input" value="' + sdParts.date + '" id="sd_date_' + r.id + '" style="width:130px;">' +
+    '<br><select class="time-select" id="sd_time_' + r.id + '">' + buildTimeOptions(sdParts.time) + '</select>' +
+    '<br><button class="save-btn" onclick="saveServiceDate(\'' + r.id + '\')" style="margin-top:4px;">保存</button>' +
+    '<hr style="margin:10px 0;border:none;border-top:1px solid #E9ECEF;">';
+
   if (r.company_confirmed_paid_at && r.applicant_paid_at) {
-    return '<div style="color:#1E8449;font-weight:700;font-size:13px;">✅ 契約完了</div>' +
-      '<div style="font-size:11px;color:#666;">申込者確認：' + new Date(r.applicant_paid_at).toLocaleDateString('ja-JP') + '</div>' +
-      '<div style="font-size:11px;color:#666;">会社確認：' + new Date(r.company_confirmed_paid_at).toLocaleDateString('ja-JP') + '</div>';
+    return serviceDateHtml +
+      '<div style="color:#1E8449;font-weight:700;font-size:13px;">✅ 契約完了</div>' +
+      '<div style="font-size:11px;color:#666;">申込者：' + new Date(r.applicant_paid_at).toLocaleDateString('ja-JP') + '</div>' +
+      '<div style="font-size:11px;color:#666;">会社側：' + new Date(r.company_confirmed_paid_at).toLocaleDateString('ja-JP') + '</div>';
   }
   if (r.contract_sent_at) {
-    var html = '<div style="font-size:11px;color:#666;margin-bottom:4px;">📄 契約書送付済み</div>';
-    html += '<div style="font-size:11px;margin-bottom:2px;">' + (r.applicant_paid_at ? '✅ 申込者：入金確認済み' : '⏳ 申込者：未確認') + '</div>';
+    var sentDt = new Date(r.contract_sent_at).toLocaleString('ja-JP');
+    var html = serviceDateHtml;
+    html += '<div style="font-size:11px;color:#2E86C1;font-weight:700;margin-bottom:2px;">📄 送付済み</div>';
+    html += '<div style="font-size:11px;color:#666;margin-bottom:6px;">' + sentDt + '</div>';
+    html += '<div style="font-size:11px;margin-bottom:4px;">' + (r.applicant_paid_at ? '✅ 申込者：入金確認済み' : '⏳ 申込者：未確認') + '</div>';
     if (r.applicant_paid_at && !r.company_confirmed_paid_at) {
       html += '<button class="contract-confirm-btn" onclick="confirmPayment(\'' + r.id + '\')">✅ 入金確認済みにする</button>';
     } else if (r.company_confirmed_paid_at) {
@@ -341,9 +353,20 @@ function renderContractStatus(r) {
     return html;
   }
   if (!r.confirmed_date) {
-    return '<div style="font-size:11px;color:#999;">確定日程を先に設定してください</div>';
+    return serviceDateHtml + '<div style="font-size:11px;color:#999;">面談確定日を先に設定してください</div>';
   }
-  return '<button class="contract-send-btn" onclick="sendContract(\'' + r.id + '\')">📄 契約書を送付する</button>';
+  return serviceDateHtml + '<button class="contract-send-btn" onclick="sendContract(\'' + r.id + '\')">📄 契約書を送付する</button>';
+}
+
+async function saveServiceDate(id) {
+  var dateVal = document.getElementById('sd_date_' + id).value;
+  var timeVal = document.getElementById('sd_time_' + id).value;
+  var val = (dateVal && timeVal) ? dateVal + ' ' + timeVal : (dateVal || timeVal || '');
+  var { error } = await sbClient.from('aisys_form_submissions').update({ service_date: val }).eq('id', id);
+  if (error) { alert('エラー: ' + error.message); return; }
+  var item = allData.find(function(r){ return r.id == id; });
+  if (item) item.service_date = val;
+  alert('実施予定日を保存しました');
 }
 
 async function sendContract(id) {
@@ -361,7 +384,8 @@ async function sendContract(id) {
       to_email: item.email,
       contract_url: contractUrl,
       plan: item.plan || '',
-      confirmed_date: item.confirmed_date || ''
+      confirmed_date: item.confirmed_date || '',
+      service_date: item.service_date || '未定'
     });
   } catch(e) {
     alert('DBへの保存は完了しましたが、メール送信に失敗しました。\n契約書URL: ' + contractUrl);

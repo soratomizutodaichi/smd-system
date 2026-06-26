@@ -87,7 +87,7 @@ function calcPaymentDeadline(confirmedDate) {
 
 function render(r) {
   var today = new Date().toLocaleDateString('ja-JP', { year: 'numeric', month: 'long', day: 'numeric' });
-  var deadline = calcPaymentDeadline(r.confirmed_date);
+  var deadline = calcPaymentDeadline(r.service_date);
   var paidBadge = r.applicant_paid_at ? '<div class="paid-badge">✅ 入金確認済み</div>' : '';
 
   document.getElementById('content').innerHTML =
@@ -114,7 +114,8 @@ function render(r) {
       '<div class="section">' +
         '<div class="section-title">契約内容</div>' +
         '<div class="info-row"><div class="info-label">ご契約サービス</div><div class="info-value">' + (r.plan||'') + '</div></div>' +
-        '<div class="info-row"><div class="info-label">サービス提供日時</div><div class="info-value">' + (r.confirmed_date||'未定') + '</div></div>' +
+        '<div class="info-row"><div class="info-label">面談確定日</div><div class="info-value">' + (r.confirmed_date||'未定') + '</div></div>' +
+        '<div class="info-row"><div class="info-label">サービス実施予定日</div><div class="info-value" style="color:#1A5276;font-weight:700;">' + (r.service_date||'未定') + '</div></div>' +
         '<div class="info-row"><div class="info-label">お申込み内容</div><div class="info-value">' + (r.message||'―') + '</div></div>' +
       '</div>' +
 
