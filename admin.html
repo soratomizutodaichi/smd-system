@@ -235,8 +235,8 @@ function renderTable() {
     html += '<tr' + rowClass + '>';
     html += '<td style="font-size:12px;color:#000;white-space:nowrap;">' +
       dt + '<br>' + badge + '<br>' +
-      '<strong>' + (r.name||'') + '</strong><br>' +
-      '<span style="color:#555;">' + (r.company||'―') + '</span>';
+      '<strong style="font-size:14px;">' + (r.name||'') + '</strong><br>' +
+      '<span style="color:#555;font-size:14px;">' + (r.company||'―') + '</span>';
     if (!showTrash) html += '<br><a href="' + confirmUrl + '" target="_blank" style="font-size:11px;color:#2E86C1;">確認ページ</a>';
     html += '</td>';
     html += '<td style="font-size:12px;color:#000;">' +
