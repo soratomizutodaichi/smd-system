@@ -530,7 +530,8 @@
 <script>
 const SUPABASE_URL = 'https://gcmtnzvcoovjqxanbmqc.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdjbXRuenZjb292anF4YW5ibXFjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc0NDczNTksImV4cCI6MjA5MzAyMzM1OX0.30xm_Vd7UdfkombPOfSjg-nYxmuwYlnHHEgqRzWE4fQ';
-const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+let supabase;
+try { supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY); } catch(e) { console.error('Supabase init error', e); }
 
 function switchTab(tab, el){
   document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
@@ -561,10 +562,9 @@ async function handleSubmit(e){
     company: form.querySelectorAll('input[type="text"]')[1].value,
     phone: form.querySelector('input[type="tel"]').value,
     email: form.querySelector('input[type="email"]').value,
-    meeting_type: form.querySelectorAll('select')[0].value,
     preferred_date_1: (form.querySelector('[name=date1]').value + ' ' + form.querySelector('[name=time1]').value).trim(),
     preferred_date_2: (form.querySelector('[name=date2]').value + ' ' + form.querySelector('[name=time2]').value).trim(),
-    plan: form.querySelectorAll('select')[1].value,
+    plan: form.querySelectorAll('select')[0].value,
     message: form.querySelector('textarea').value
   };
 
