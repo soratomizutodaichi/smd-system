@@ -567,7 +567,8 @@ async function handleSubmit(e){
     message: form.querySelector('textarea').value
   };
 
-  const { data: insertedData, error } = await sbClient.from('aisys_form_submissions').insert([data]).select().single();
+  const { data: insertedRows, error } = await sbClient.from('aisys_form_submissions').insert([data]).select('id');
+  const insertedData = (insertedRows && insertedRows[0]) ? insertedRows[0] : null;
 
   if(error){
     alert('送信に失敗しました。時間をおいて再度お試しください。\n' + error.message);
@@ -575,7 +576,7 @@ async function handleSubmit(e){
     btn.disabled = false;
   } else {
     // 確認ページURL生成
-    const confirmUrl = 'https://aisys.soratomizutodaichi.com/confirmation.html?id=' + insertedData.id;
+    const confirmUrl = insertedData ? 'https://aisys.soratomizutodaichi.com/confirmation.html?id=' + insertedData.id : 'https://aisys.soratomizutodaichi.com';
     // メール送信
     const templateParams = {
       to_name: data.name,
