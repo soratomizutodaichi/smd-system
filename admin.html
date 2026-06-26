@@ -10,18 +10,23 @@ body { font-family: 'Hiragino Sans', 'Yu Gothic', sans-serif; background: #F8F9F
 header { background: #1A5276; color: #fff; padding: 16px 24px; display: flex; justify-content: space-between; align-items: center; }
 header h1 { font-size: 18px; }
 .logout-btn { background: rgba(255,255,255,0.2); border: none; color: #fff; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-size: 14px; }
-.container { max-width: 1200px; margin: 0 auto; padding: 24px 16px; }
+.container { max-width: 1300px; margin: 0 auto; padding: 24px 16px; }
 .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; margin-bottom: 24px; }
 .stat-card { background: #fff; border-radius: 10px; padding: 20px; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
 .stat-num { font-size: 32px; font-weight: 900; color: #2E86C1; }
 .stat-label { font-size: 13px; color: #666; margin-top: 4px; }
 .filter-bar { background: #fff; border-radius: 10px; padding: 16px 20px; margin-bottom: 16px; display: flex; gap: 12px; flex-wrap: wrap; align-items: center; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
 .filter-bar select, .filter-bar input { padding: 8px 12px; border: 1.5px solid #E9ECEF; border-radius: 6px; font-size: 14px; }
+.trash-toggle { padding: 8px 16px; border: 1.5px solid #E74C3C; border-radius: 6px; font-size: 14px; cursor: pointer; background: #fff; color: #E74C3C; font-weight: 600; transition: all 0.2s; }
+.trash-toggle.active { background: #E74C3C; color: #fff; }
 .table-wrap { background: #fff; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); overflow-x: auto; }
 table { width: 100%; border-collapse: collapse; font-size: 14px; }
 th { background: #1A5276; color: #fff; padding: 12px 14px; text-align: left; white-space: nowrap; }
+.trash-mode th { background: #7B241C; }
 td { padding: 12px 14px; border-bottom: 1px solid #F0F0F0; vertical-align: top; }
 tr:hover { background: #F8FBFF; }
+tr.deleted-row { background: #FEF9F9; }
+tr.deleted-row:hover { background: #FDEDEC; }
 .badge { display: inline-block; padding: 3px 10px; border-radius: 999px; font-size: 12px; font-weight: 700; }
 .badge-meeting { background: #D6EAF8; color: #1A5276; }
 .badge-inquiry { background: #D5F5E3; color: #1E8449; }
@@ -29,6 +34,13 @@ tr:hover { background: #F8FBFF; }
 .date-input { padding: 6px 10px; border: 1.5px solid #E9ECEF; border-radius: 6px; font-size: 13px; width: 160px; }
 .save-btn { padding: 6px 14px; background: #2E86C1; color: #fff; border: none; border-radius: 6px; cursor: pointer; font-size: 13px; margin-top: 4px; }
 .save-btn:hover { background: #1A5276; }
+.soft-del-btn { padding: 6px 12px; background: #fff; color: #E74C3C; border: 1.5px solid #E74C3C; border-radius: 6px; cursor: pointer; font-size: 12px; white-space: nowrap; }
+.soft-del-btn:hover { background: #FDEDEC; }
+.restore-btn { padding: 6px 12px; background: #fff; color: #2E86C1; border: 1.5px solid #2E86C1; border-radius: 6px; cursor: pointer; font-size: 12px; white-space: nowrap; margin-bottom: 6px; }
+.restore-btn:hover { background: #EBF5FB; }
+.hard-del-btn { padding: 6px 12px; background: #E74C3C; color: #fff; border: none; border-radius: 6px; cursor: pointer; font-size: 12px; white-space: nowrap; }
+.hard-del-btn:hover { background: #C0392B; }
+.trash-banner { background: #FDEDEC; border: 1.5px solid #E74C3C; border-radius: 8px; padding: 10px 16px; margin-bottom: 12px; font-size: 14px; color: #7B241C; font-weight: 600; }
 .login-overlay { position: fixed; inset: 0; background: #0d1b2a; display: flex; align-items: center; justify-content: center; z-index: 999; }
 .login-box { background: #fff; border-radius: 16px; padding: 48px 40px; width: 360px; text-align: center; }
 .login-box h2 { font-size: 22px; margin-bottom: 8px; color: #1A5276; }
@@ -65,6 +77,7 @@ tr:hover { background: #F8FBFF; }
     <div class="stat-card"><div class="stat-num" id="inquiryCount">0</div><div class="stat-label">お問い合わせ</div></div>
     <div class="stat-card"><div class="stat-num" id="calledCount">0</div><div class="stat-label">電話済み</div></div>
     <div class="stat-card"><div class="stat-num" id="pendingCount">0</div><div class="stat-label">未対応</div></div>
+    <div class="stat-card"><div class="stat-num" id="deletedCount" style="color:#E74C3C;">0</div><div class="stat-label">ゴミ箱</div></div>
   </div>
 
   <div class="filter-bar">
@@ -80,11 +93,14 @@ tr:hover { background: #F8FBFF; }
       <option value="true">電話済み</option>
     </select>
     <input type="text" id="filterName" placeholder="名前で検索..." oninput="renderTable()" style="width:180px;">
+    <button class="trash-toggle" id="trashToggle" onclick="toggleTrash()">🗑 ゴミ箱を表示</button>
   </div>
 
-  <div class="table-wrap">
-    <table>
-      <thead>
+  <div id="trashBanner" class="trash-banner" style="display:none;">🗑 ゴミ箱表示中 — 仮想削除されたデータです。復元または完全削除ができます。</div>
+
+  <div class="table-wrap" id="tableWrap">
+    <table id="mainTable">
+      <thead id="tableHead">
         <tr>
           <th>受付日時／種別</th>
           <th>お名前／会社名</th>
@@ -93,6 +109,7 @@ tr:hover { background: #F8FBFF; }
           <th>サービス／内容</th>
           <th>電話済み</th>
           <th>確定日程</th>
+          <th>操作</th>
         </tr>
       </thead>
       <tbody id="tableBody"></tbody>
@@ -106,6 +123,7 @@ const SUPABASE_URL = 'https://gcmtnzvcoovjqxanbmqc.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdjbXRuenZjb292anF4YW5ibXFjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc0NDczNTksImV4cCI6MjA5MzAyMzM1OX0.30xm_Vd7UdfkombPOfSjg-nYxmuwYlnHHEgqRzWE4fQ';
 var sbClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 var allData = [];
+var showTrash = false;
 
 async function checkLogin() {
   var email = document.getElementById('emailInput').value;
@@ -146,45 +164,121 @@ async function loadData() {
 }
 
 function updateStats() {
-  var meetings = allData.filter(function(r){ return r.type === 'meeting'; });
-  var inquiries = allData.filter(function(r){ return r.type === 'inquiry'; });
-  var called = allData.filter(function(r){ return r.called; });
-  var pending = allData.filter(function(r){ return !r.called; });
-  document.getElementById('totalCount').textContent = allData.length;
+  var active = allData.filter(function(r){ return !r.deleted_at; });
+  var deleted = allData.filter(function(r){ return r.deleted_at; });
+  var meetings = active.filter(function(r){ return r.type === 'meeting'; });
+  var inquiries = active.filter(function(r){ return r.type === 'inquiry'; });
+  var called = active.filter(function(r){ return r.called; });
+  var pending = active.filter(function(r){ return !r.called; });
+  document.getElementById('totalCount').textContent = active.length;
   document.getElementById('meetingCount').textContent = meetings.length;
   document.getElementById('inquiryCount').textContent = inquiries.length;
   document.getElementById('calledCount').textContent = called.length;
   document.getElementById('pendingCount').textContent = pending.length;
+  document.getElementById('deletedCount').textContent = deleted.length;
+}
+
+function toggleTrash() {
+  showTrash = !showTrash;
+  var btn = document.getElementById('trashToggle');
+  var banner = document.getElementById('trashBanner');
+  if (showTrash) {
+    btn.classList.add('active');
+    btn.textContent = '✅ ゴミ箱表示中';
+    banner.style.display = 'block';
+    document.getElementById('filterCalled').disabled = true;
+    document.getElementById('filterType').disabled = true;
+  } else {
+    btn.classList.remove('active');
+    btn.textContent = '🗑 ゴミ箱を表示';
+    banner.style.display = 'none';
+    document.getElementById('filterCalled').disabled = false;
+    document.getElementById('filterType').disabled = false;
+  }
+  renderTable();
 }
 
 function renderTable() {
   var filterType = document.getElementById('filterType').value;
   var filterCalled = document.getElementById('filterCalled').value;
   var filterName = document.getElementById('filterName').value.toLowerCase();
+
   var filtered = allData.filter(function(r) {
+    if (showTrash) return !!r.deleted_at;
+    if (r.deleted_at) return false;
     if (filterType && r.type !== filterType) return false;
     if (filterCalled !== '' && String(r.called) !== filterCalled) return false;
     if (filterName && !(r.name||'').toLowerCase().includes(filterName)) return false;
     return true;
   });
+
+  var table = document.getElementById('mainTable');
+  if (showTrash) {
+    table.classList.add('trash-mode');
+  } else {
+    table.classList.remove('trash-mode');
+  }
+
   var html = '';
   filtered.forEach(function(r) {
     var dt = r.created_at ? new Date(r.created_at).toLocaleString('ja-JP') : '';
     var badge = r.type === 'meeting' ? '<span class="badge badge-meeting">面談予約</span>' : '<span class="badge badge-inquiry">問い合わせ</span>';
-    var calledClass = r.called ? 'called-yes' : 'called-no';
-    var calledText = r.called ? '✅ 済' : '❌ 未';
     var confirmUrl = 'https://aisys.soratomizutodaichi.com/confirmation.html?id=' + r.id;
-    html += '<tr>';
+    var rowClass = showTrash ? ' class="deleted-row"' : '';
+
+    html += '<tr' + rowClass + '>';
     html += '<td style="font-size:12px;white-space:nowrap;color:#000;">' + dt + '<br>' + badge + '</td>';
-    html += '<td><strong style="color:#000;">' + (r.name||'') + '</strong><br><span style="font-size:12px;color:#000;">' + (r.company||'―') + '</span><br><a href="' + confirmUrl + '" target="_blank" style="font-size:11px;color:#2E86C1;">確認ページ</a></td>';
+    html += '<td><strong style="color:#000;">' + (r.name||'') + '</strong><br><span style="font-size:12px;color:#000;">' + (r.company||'―') + '</span>';
+    if (!showTrash) html += '<br><a href="' + confirmUrl + '" target="_blank" style="font-size:11px;color:#2E86C1;">確認ページ</a>';
+    html += '</td>';
     html += '<td style="font-size:12px;color:#000;">' + (r.phone||'') + '<br>' + (r.email||'') + '</td>';
     html += '<td style="font-size:12px;color:#000;">' + (r.preferred_date_1||'―') + '<br>' + (r.preferred_date_2||'―') + '</td>';
     html += '<td style="font-size:12px;max-width:160px;color:#000;"><strong>' + (r.plan||'') + '</strong><br>' + (r.message||'') + '</td>';
-    html += '<td style="text-align:center;"><span class="' + calledClass + '">' + calledText + '</span><br><input type="checkbox" class="check-btn" ' + (r.called ? 'checked' : '') + ' onchange="updateCalled(\'' + r.id + '\', this.checked)"></td>';
-    html += '<td><input type="text" class="date-input" value="' + (r.confirmed_date||'') + '" placeholder="例：7月10日 14:00" id="cd_' + r.id + '"><br><button class="save-btn" onclick="saveDate(\'' + r.id + '\')">保存</button></td>';
+
+    if (showTrash) {
+      var delDt = r.deleted_at ? new Date(r.deleted_at).toLocaleString('ja-JP') : '';
+      html += '<td colspan="2" style="font-size:12px;color:#999;">削除日時：' + delDt + '</td>';
+      html += '<td><button class="restore-btn" onclick="restoreRow(\'' + r.id + '\')">↩ 復元</button><br><button class="hard-del-btn" onclick="hardDelete(\'' + r.id + '\')">🗑 完全削除</button></td>';
+    } else {
+      var calledClass = r.called ? 'called-yes' : 'called-no';
+      var calledText = r.called ? '✅ 済' : '❌ 未';
+      html += '<td style="text-align:center;"><span class="' + calledClass + '">' + calledText + '</span><br><input type="checkbox" class="check-btn" ' + (r.called ? 'checked' : '') + ' onchange="updateCalled(\'' + r.id + '\', this.checked)"></td>';
+      html += '<td><input type="text" class="date-input" value="' + (r.confirmed_date||'') + '" placeholder="例：7月10日 14:00" id="cd_' + r.id + '"><br><button class="save-btn" onclick="saveDate(\'' + r.id + '\')">保存</button></td>';
+      html += '<td><button class="soft-del-btn" onclick="softDelete(\'' + r.id + '\')">🗑 削除</button></td>';
+    }
     html += '</tr>';
   });
-  document.getElementById('tableBody').innerHTML = html || '<tr><td colspan="12" style="text-align:center;padding:32px;color:#999;">データがありません</td></tr>';
+
+  document.getElementById('tableBody').innerHTML = html || '<tr><td colspan="8" style="text-align:center;padding:32px;color:#999;">データがありません</td></tr>';
+}
+
+async function softDelete(id) {
+  if (!confirm('このデータをゴミ箱に移しますか？\n（後から復元できます）')) return;
+  var now = new Date().toISOString();
+  var { error } = await sbClient.from('aisys_form_submissions').update({ deleted_at: now }).eq('id', id);
+  if (error) { alert('エラー: ' + error.message); return; }
+  var item = allData.find(function(r){ return r.id == id; });
+  if (item) item.deleted_at = now;
+  updateStats();
+  renderTable();
+}
+
+async function restoreRow(id) {
+  var { error } = await sbClient.from('aisys_form_submissions').update({ deleted_at: null }).eq('id', id);
+  if (error) { alert('エラー: ' + error.message); return; }
+  var item = allData.find(function(r){ return r.id == id; });
+  if (item) item.deleted_at = null;
+  updateStats();
+  renderTable();
+}
+
+async function hardDelete(id) {
+  if (!confirm('完全に削除します。この操作は取り消せません。\n本当に削除しますか？')) return;
+  var { error } = await sbClient.from('aisys_form_submissions').delete().eq('id', id);
+  if (error) { alert('エラー: ' + error.message); return; }
+  allData = allData.filter(function(r){ return r.id != id; });
+  updateStats();
+  renderTable();
 }
 
 async function updateCalled(id, checked) {
