@@ -447,8 +447,8 @@
     </div>
     <div class="form-box">
       <div class="order-tabs">
-        <button class="tab-btn active" onclick="switchTab('inquiry')">面談を予約する</button>
-        <button class="tab-btn" onclick="switchTab('contact')">お問い合わせ</button>
+        <button class="tab-btn active" onclick="switchTab('inquiry',this)">面談を予約する</button>
+        <button class="tab-btn" onclick="switchTab('contact',this)">お問い合わせ</button>
       </div>
       <div class="tab-panel active" id="tab-inquiry">
         <div class="form-title">面談予約フォーム（無料・約30分）</div>
@@ -532,11 +532,11 @@ const SUPABASE_URL = 'https://gcmtnzvcoovjqxanbmqc.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdjbXRuenZjb292anF4YW5ibXFjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc0NDczNTksImV4cCI6MjA5MzAyMzM1OX0.30xm_Vd7UdfkombPOfSjg-nYxmuwYlnHHEgqRzWE4fQ';
 const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-function switchTab(tab){
+function switchTab(tab, el){
   document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
   document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
   document.getElementById('tab-'+tab).classList.add('active');
-  event.target.classList.add('active');
+  el.classList.add('active');
 }
 
 async function handleSubmit(e){
