@@ -78,9 +78,16 @@ async function loadData() {
   if (r.contract_sent_at) {
     var contractUrl = r.contract_url || ('https://aisys.soratomizutodaichi.com/contract.html?id=' + r.id);
     if (r.company_confirmed_paid_at && r.applicant_paid_at) {
+      var serviceDateHtml = r.service_date
+        ? '<div style="margin-top:20px;background:#fff;border-radius:12px;padding:20px 24px;border:2px solid #1E8449;">' +
+            '<div style="font-size:13px;font-weight:700;color:#1E8449;margin-bottom:8px;">🗓 サービス実施予定日時</div>' +
+            '<div style="font-size:22px;font-weight:900;color:#1A5276;">' + r.service_date + '</div>' +
+          '</div>'
+        : '';
       contractHtml = '<div class="status-box" style="background:#D5F5E3;margin-top:16px;">' +
         '<div class="status-title" style="color:#1E8449;">✅ 契約完了</div>' +
         '<div style="font-size:14px;color:#1E8449;font-weight:600;">入金が確認され、契約が正式に完了しました。</div>' +
+        serviceDateHtml +
         '</div>';
     } else {
       contractHtml = '<div class="status-box" style="background:#EBF5FB;margin-top:16px;">' +
