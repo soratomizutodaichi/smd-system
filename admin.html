@@ -85,16 +85,11 @@ tr:hover { background: #F8FBFF; }
     <table>
       <thead>
         <tr>
-          <th>受付日時</th>
-          <th>種別</th>
-          <th>お名前</th>
-          <th>会社名</th>
-          <th>電話番号</th>
-          <th>メール</th>
-          <th>第1希望</th>
-          <th>第2希望</th>
-          <th>サービス</th>
-          <th>内容</th>
+          <th>受付日時／種別</th>
+          <th>お名前／会社名</th>
+          <th>電話番号／メール</th>
+          <th>第1希望／第2希望</th>
+          <th>サービス／内容</th>
           <th>電話済み</th>
           <th>確定日程</th>
         </tr>
@@ -173,16 +168,11 @@ function renderTable() {
     var calledText = r.called ? '✅ 済' : '❌ 未';
     var confirmUrl = 'https://aisys.soratomizutodaichi.com/confirmation.html?id=' + r.id;
     html += '<tr>';
-    html += '<td style="white-space:nowrap;font-size:12px;">' + dt + '</td>';
-    html += '<td>' + badge + '</td>';
-    html += '<td><strong>' + (r.name||'') + '</strong><br><a href="' + confirmUrl + '" target="_blank" style="font-size:11px;color:#2E86C1;">確認ページ</a></td>';
-    html += '<td>' + (r.company||'') + '</td>';
-    html += '<td>' + (r.phone||'') + '</td>';
-    html += '<td style="font-size:12px;">' + (r.email||'') + '</td>';
-    html += '<td style="font-size:12px;">' + (r.preferred_date_1||'') + '</td>';
-    html += '<td style="font-size:12px;">' + (r.preferred_date_2||'') + '</td>';
-    html += '<td style="font-size:12px;">' + (r.plan||'') + '</td>';
-    html += '<td style="font-size:12px;max-width:150px;">' + (r.message||'') + '</td>';
+    html += '<td style="font-size:12px;white-space:nowrap;">' + dt + '<br>' + badge + '</td>';
+    html += '<td><strong>' + (r.name||'') + '</strong><br><span style="font-size:12px;color:#666;">' + (r.company||'―') + '</span><br><a href="' + confirmUrl + '" target="_blank" style="font-size:11px;color:#2E86C1;">確認ページ</a></td>';
+    html += '<td style="font-size:12px;">' + (r.phone||'') + '<br>' + (r.email||'') + '</td>';
+    html += '<td style="font-size:12px;">' + (r.preferred_date_1||'―') + '<br>' + (r.preferred_date_2||'―') + '</td>';
+    html += '<td style="font-size:12px;max-width:160px;"><strong>' + (r.plan||'') + '</strong><br>' + (r.message||'') + '</td>';
     html += '<td style="text-align:center;"><span class="' + calledClass + '">' + calledText + '</span><br><input type="checkbox" class="check-btn" ' + (r.called ? 'checked' : '') + ' onchange="updateCalled(\'' + r.id + '\', this.checked)"></td>';
     html += '<td><input type="text" class="date-input" value="' + (r.confirmed_date||'') + '" placeholder="例：7月10日 14:00" id="cd_' + r.id + '"><br><button class="save-btn" onclick="saveDate(\'' + r.id + '\')">保存</button></td>';
     html += '</tr>';
