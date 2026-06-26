@@ -31,7 +31,8 @@ tr.deleted-row:hover { background: #FDEDEC; }
 .badge-meeting { background: #D6EAF8; color: #1A5276; }
 .badge-inquiry { background: #D5F5E3; color: #1E8449; }
 .check-btn { width: 22px; height: 22px; cursor: pointer; accent-color: #2E86C1; }
-.date-input { padding: 6px 10px; border: 1.5px solid #E9ECEF; border-radius: 6px; font-size: 13px; width: 160px; }
+.date-input { padding: 6px 10px; border: 1.5px solid #E9ECEF; border-radius: 6px; font-size: 13px; width: 140px; }
+.time-select { padding: 6px 8px; border: 1.5px solid #E9ECEF; border-radius: 6px; font-size: 13px; width: 100px; margin-top: 4px; }
 .save-btn { padding: 6px 14px; background: #2E86C1; color: #fff; border: none; border-radius: 6px; cursor: pointer; font-size: 13px; margin-top: 4px; }
 .save-btn:hover { background: #1A5276; }
 .soft-del-btn { padding: 6px 12px; background: #fff; color: #E74C3C; border: 1.5px solid #E74C3C; border-radius: 6px; cursor: pointer; font-size: 12px; white-space: nowrap; }
@@ -243,7 +244,12 @@ function renderTable() {
       var calledClass = r.called ? 'called-yes' : 'called-no';
       var calledText = r.called ? '✅ 済' : '❌ 未';
       html += '<td style="text-align:center;"><span class="' + calledClass + '">' + calledText + '</span><br><input type="checkbox" class="check-btn" ' + (r.called ? 'checked' : '') + ' onchange="updateCalled(\'' + r.id + '\', this.checked)"></td>';
-      html += '<td><input type="text" class="date-input" value="' + (r.confirmed_date||'') + '" placeholder="例：7月10日 14:00" id="cd_' + r.id + '"><br><button class="save-btn" onclick="saveDate(\'' + r.id + '\')">保存</button></td>';
+      var cdParts = parseConfirmedDate(r.confirmed_date);
+      html += '<td>';
+      html += '<input type="date" class="date-input" value="' + cdParts.date + '" id="cd_date_' + r.id + '">';
+      html += '<br><select class="time-select" id="cd_time_' + r.id + '">' + buildTimeOptions(cdParts.time) + '</select>';
+      html += '<br><button class="save-btn" onclick="saveDate(\'' + r.id + '\')">保存</button>';
+      html += '</td>';
       html += '<td><button class="soft-del-btn" onclick="softDelete(\'' + r.id + '\')">🗑 削除</button></td>';
     }
     html += '</tr>';
@@ -289,8 +295,29 @@ async function updateCalled(id, checked) {
   renderTable();
 }
 
+function buildTimeOptions(selected) {
+  var times = [];
+  for (var h = 10; h <= 16; h++) {
+    times.push(('0'+h).slice(-2) + ':00');
+    if (h < 16) times.push(('0'+h).slice(-2) + ':30');
+  }
+  var html = '<option value="">時間を選択</option>';
+  times.forEach(function(t) {
+    html += '<option value="' + t + '"' + (t === selected ? ' selected' : '') + '>' + t + '</option>';
+  });
+  return html;
+}
+
+function parseConfirmedDate(val) {
+  if (!val) return { date: '', time: '' };
+  var parts = val.split(' ');
+  return { date: parts[0] || '', time: parts[1] || '' };
+}
+
 async function saveDate(id) {
-  var val = document.getElementById('cd_' + id).value;
+  var dateVal = document.getElementById('cd_date_' + id).value;
+  var timeVal = document.getElementById('cd_time_' + id).value;
+  var val = (dateVal && timeVal) ? dateVal + ' ' + timeVal : (dateVal || timeVal || '');
   await sbClient.from('aisys_form_submissions').update({ confirmed_date: val }).eq('id', id);
   var item = allData.find(function(r){ return r.id == id; });
   if (item) item.confirmed_date = val;
