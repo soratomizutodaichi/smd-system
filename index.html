@@ -567,13 +567,15 @@ async function handleSubmit(e){
     message: form.querySelector('textarea').value
   };
 
-  const { error } = await sbClient.from('aisys_form_submissions').insert([data]);
+  const { data: insertedData, error } = await sbClient.from('aisys_form_submissions').insert([data]).select().single();
 
   if(error){
     alert('送信に失敗しました。時間をおいて再度お試しください。\n' + error.message);
     btn.textContent = originalText;
     btn.disabled = false;
   } else {
+    // 確認ページURL生成
+    const confirmUrl = 'https://aisys.soratomizutodaichi.com/confirmation.html?id=' + insertedData.id;
     // メール送信
     const templateParams = {
       to_name: data.name,
@@ -583,7 +585,8 @@ async function handleSubmit(e){
       preferred_date_1: data.preferred_date_1 || '',
       preferred_date_2: data.preferred_date_2 || '',
       plan: data.plan || '',
-      message: data.message || ''
+      message: data.message || '',
+      confirmation_url: confirmUrl
     };
     try {
       await emailjs.send('service_7m0hycl', 'template_3p7ngs9', templateParams);
