@@ -383,22 +383,25 @@ async function sendContract(id) {
   var now = new Date().toISOString();
   var { error } = await sbClient.from('aisys_form_submissions').update({ contract_url: contractUrl, contract_sent_at: now }).eq('id', id);
   if (error) { alert('エラー: ' + error.message); return; }
-  try {
-    await emailjs.send('service_7m0hycl', 'template_contract', {
-      to_name: item.name,
-      to_email: item.email,
-      contract_url: contractUrl,
-      plan: item.plan || '',
-      confirmed_date: item.confirmed_date || '',
-      service_date: item.service_date || '未定'
-    });
-  } catch(e) {
-    alert('DBへの保存は完了しましたが、メール送信に失敗しました。\n契約書URL: ' + contractUrl);
-  }
   item.contract_url = contractUrl;
   item.contract_sent_at = now;
   renderTable();
-  alert('契約書を送付しました。');
+  var subject = encodeURIComponent('【契約書のご案内】空と水と大地合同会社');
+  var body = encodeURIComponent(
+    item.name + ' 様\n\n' +
+    'この度はお申込みいただきありがとうございます。\n' +
+    '以下のURLより契約書をご確認ください。\n\n' +
+    '▼ 契約書・入金確認ページ\n' +
+    contractUrl + '\n\n' +
+    'ご契約サービス：' + (item.plan || '') + '\n' +
+    '面談確定日：' + (item.confirmed_date || '未定') + '\n' +
+    'サービス実施予定日：' + (item.service_date || '未定') + '\n\n' +
+    '入金はサービス実施日の1週間前までにお願いいたします。\n' +
+    '※ 入金後の返金はできません。\n\n' +
+    'ご不明な点はお気軽にお問い合わせください。\n\n' +
+    '空と水と大地合同会社 システムサービス部門'
+  );
+  window.location.href = 'mailto:' + item.email + '?subject=' + subject + '&body=' + body;
 }
 
 async function confirmPayment(id) {
