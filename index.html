@@ -531,8 +531,8 @@
 <script>
 const SUPABASE_URL = 'https://gcmtnzvcoovjqxanbmqc.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdjbXRuenZjb292anF4YW5ibXFjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc0NDczNTksImV4cCI6MjA5MzAyMzM1OX0.30xm_Vd7UdfkombPOfSjg-nYxmuwYlnHHEgqRzWE4fQ';
-let supabase;
-try { supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY); } catch(e) { console.error('Supabase init error', e); }
+let sbClient;
+try { sbClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY); } catch(e) { console.error('Supabase init error', e); }
 emailjs.init({publicKey: 'sydEkxfsmryplEbcO'});
 
 document.querySelectorAll('.tab-btn').forEach(function(btn){
@@ -573,7 +573,7 @@ async function handleSubmit(e){
     message: form.querySelector('textarea').value
   };
 
-  const { error } = await supabase.from('aisys_form_submissions').insert([data]);
+  const { error } = await sbClient.from('aisys_form_submissions').insert([data]);
 
   if(error){
     alert('送信に失敗しました。時間をおいて再度お試しください。\n' + error.message);
