@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>商品登録 | 空と水と大地合同会社</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Hiragino Sans', 'Yu Gothic', sans-serif; background: #F8F9FA; color: #333; }
+header { background: #1A5276; color: #fff; padding: 16px 24px; display: flex; justify-content: space-between; align-items: center; }
+header h1 { font-size: 18px; }
+.header-links { display: flex; gap: 12px; align-items: center; }
+.logout-btn { background: rgba(255,255,255,0.2); border: none; color: #fff; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-size: 14px; }
+.admin-link { color: rgba(255,255,255,0.8); font-size: 13px; text-decoration: none; }
+.container { max-width: 1100px; margin: 0 auto; padding: 24px 16px; }
+.add-btn { padding: 10px 24px; background: #1E8449; color: #fff; border: none; border-radius: 8px; font-size: 15px; font-weight: 700; cursor: pointer; margin-bottom: 20px; }
+.add-btn:hover { background: #196F3D; }
+.table-wrap { background: #fff; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; font-size: 14px; }
+th { background: #1A5276; color: #fff; padding: 12px 14px; text-align: left; white-space: nowrap; }
+td { padding: 12px 14px; border-bottom: 1px solid #F0F0F0; vertical-align: top; }
+tr:hover { background: #F8FBFF; }
+.edit-btn { padding: 5px 12px; background: #2E86C1; color: #fff; border: none; border-radius: 5px; cursor: pointer; font-size: 12px; margin-right: 6px; }
+.edit-btn:hover { background: #1A5276; }
+.del-btn { padding: 5px 12px; background: #fff; color: #E74C3C; border: 1.5px solid #E74C3C; border-radius: 5px; cursor: pointer; font-size: 12px; }
+.del-btn:hover { background: #FDEDEC; }
+.modal-bg { position: fixed; inset: 0; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; z-index: 100; }
+.modal { background: #fff; border-radius: 16px; padding: 32px; width: 560px; max-width: 95vw; max-height: 90vh; overflow-y: auto; }
+.modal h2 { font-size: 18px; color: #1A5276; margin-bottom: 24px; }
+.form-group { margin-bottom: 16px; }
+.form-group label { display: block; font-size: 13px; font-weight: 700; color: #555; margin-bottom: 6px; }
+.form-group input, .form-group textarea, .form-group select { width: 100%; padding: 10px 12px; border: 1.5px solid #E9ECEF; border-radius: 8px; font-size: 14px; }
+.form-group textarea { height: 80px; resize: vertical; }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.form-group input[type="checkbox"] { width: auto; margin-right: 8px; }
+.modal-btns { display: flex; gap: 12px; margin-top: 24px; }
+.save-btn { flex: 1; padding: 12px; background: #2E86C1; color: #fff; border: none; border-radius: 8px; font-size: 15px; font-weight: 700; cursor: pointer; }
+.save-btn:hover { background: #1A5276; }
+.cancel-btn { flex: 1; padding: 12px; background: #fff; color: #666; border: 1.5px solid #E9ECEF; border-radius: 8px; font-size: 15px; cursor: pointer; }
+.cancel-btn:hover { background: #F8F9FA; }
+.login-overlay { position: fixed; inset: 0; background: #0d1b2a; display: flex; align-items: center; justify-content: center; z-index: 999; }
+.login-box { background: #fff; border-radius: 16px; padding: 48px 40px; width: 360px; text-align: center; }
+.login-box h2 { font-size: 22px; margin-bottom: 8px; color: #1A5276; }
+.login-box p { font-size: 14px; color: #666; margin-bottom: 24px; }
+.login-box input { width: 100%; padding: 12px 16px; border: 1.5px solid #E9ECEF; border-radius: 8px; font-size: 15px; margin-bottom: 16px; }
+.login-box button { width: 100%; padding: 14px; background: #2E86C1; color: #fff; border: none; border-radius: 8px; font-size: 16px; font-weight: 700; cursor: pointer; }
+.login-error { color: #E74C3C; font-size: 13px; margin-top: 8px; display: none; }
+.empty { text-align: center; padding: 48px; color: #999; }
+</style>
+</head>
+<body>
+
+<div class="login-overlay" id="loginOverlay">
+  <div class="login-box">
+    <h2>管理画面ログイン</h2>
+    <p>空と水と大地合同会社<br>システムサービス部門</p>
+    <input type="email" id="emailInput" placeholder="メールアドレス" onkeydown="if(event.key==='Enter')checkLogin()">
+    <input type="password" id="passwordInput" placeholder="パスワード" onkeydown="if(event.key==='Enter')checkLogin()">
+    <button onclick="checkLogin()" id="loginBtn">ログイン</button>
+    <div class="login-error" id="loginError">メールアドレスまたはパスワードが違います</div>
+  </div>
+</div>
+
+<header>
+  <h1>📦 商品登録</h1>
+  <div class="header-links">
+    <a href="admin.html" class="admin-link">← 管理画面へ</a>
+    <button class="logout-btn" onclick="logout()">ログアウト</button>
+  </div>
+</header>
+
+<div class="container">
+  <button class="add-btn" onclick="openModal()">＋ 新規商品を登録</button>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>商品番号</th>
+          <th>商品名</th>
+          <th>商品内容</th>
+          <th>初期費用</th>
+          <th>月額費用</th>
+          <th>契約期間</th>
+          <th>自動更新</th>
+          <th>利用開始</th>
+          <th>利用終了</th>
+          <th>操作</th>
+        </tr>
+      </thead>
+      <tbody id="tableBody"></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- 登録・編集モーダル -->
+<div class="modal-bg" id="modalBg" style="display:none;">
+  <div class="modal">
+    <h2 id="modalTitle">商品登録</h2>
+    <input type="hidden" id="editId">
+    <div class="form-group">
+      <label>商品番号</label>
+      <input type="text" id="f_product_no" placeholder="例：001">
+    </div>
+    <div class="form-group">
+      <label>商品名 <span style="color:#E74C3C;">*</span></label>
+      <input type="text" id="f_product_name" placeholder="例：静的ホームページ作成プラン">
+    </div>
+    <div class="form-group">
+      <label>商品内容</label>
+      <textarea id="f_description" placeholder="サービスの詳細内容を入力"></textarea>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>初期費用（円）</label>
+        <input type="number" id="f_initial_fee" placeholder="0" min="0">
+      </div>
+      <div class="form-group">
+        <label>月額費用（円）</label>
+        <input type="number" id="f_monthly_fee" placeholder="0" min="0">
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>契約期間（ヶ月）</label>
+        <input type="number" id="f_contract_months" placeholder="0" min="0">
+      </div>
+      <div class="form-group">
+        <label>自動更新</label><br>
+        <label style="font-weight:normal;font-size:14px;">
+          <input type="checkbox" id="f_auto_renewal"> 自動更新あり
+        </label>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>利用開始日</label>
+        <input type="date" id="f_start_date">
+      </div>
+      <div class="form-group">
+        <label>利用終了日</label>
+        <input type="date" id="f_end_date">
+      </div>
+    </div>
+    <div class="modal-btns">
+      <button class="cancel-btn" onclick="closeModal()">キャンセル</button>
+      <button class="save-btn" onclick="saveProduct()">保存</button>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script>
+const SUPABASE_URL = 'https://gcmtnzvcoovjqxanbmqc.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdjbXRuenZjb292anF4YW5ibXFjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc0NDczNTksImV4cCI6MjA5MzAyMzM1OX0.30xm_Vd7UdfkombPOfSjg-nYxmuwYlnHHEgqRzWE4fQ';
+var sbClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+var allProducts = [];
+
+async function checkLogin() {
+  var email = document.getElementById('emailInput').value;
+  var pw = document.getElementById('passwordInput').value;
+  var btn = document.getElementById('loginBtn');
+  btn.textContent = 'ログイン中...';
+  btn.disabled = true;
+  var { data, error } = await sbClient.auth.signInWithPassword({ email: email, password: pw });
+  if (error) {
+    document.getElementById('loginError').style.display = 'block';
+    btn.textContent = 'ログイン';
+    btn.disabled = false;
+  } else {
+    document.getElementById('loginOverlay').style.display = 'none';
+    loadProducts();
+  }
+}
+
+async function logout() {
+  await sbClient.auth.signOut();
+  location.reload();
+}
+
+window.onload = async function() {
+  var { data } = await sbClient.auth.getSession();
+  if (data.session) {
+    document.getElementById('loginOverlay').style.display = 'none';
+    loadProducts();
+  }
+};
+
+async function loadProducts() {
+  var { data, error } = await sbClient.from('aisys_products').select('*').order('product_no');
+  if (error) { alert('取得エラー: ' + error.message); return; }
+  allProducts = data || [];
+  renderTable();
+}
+
+function renderTable() {
+  if (allProducts.length === 0) {
+    document.getElementById('tableBody').innerHTML = '<tr><td colspan="10" class="empty">商品が登録されていません</td></tr>';
+    return;
+  }
+  var html = '';
+  allProducts.forEach(function(p) {
+    html += '<tr>';
+    html += '<td>' + (p.product_no||'') + '</td>';
+    html += '<td><strong>' + (p.product_name||'') + '</strong></td>';
+    html += '<td style="font-size:12px;max-width:200px;">' + (p.description||'―') + '</td>';
+    html += '<td>' + (p.initial_fee ? p.initial_fee.toLocaleString() + '円' : '―') + '</td>';
+    html += '<td>' + (p.monthly_fee ? p.monthly_fee.toLocaleString() + '円/月' : '―') + '</td>';
+    html += '<td>' + (p.contract_months ? p.contract_months + 'ヶ月' : '―') + '</td>';
+    html += '<td style="text-align:center;">' + (p.auto_renewal ? '✅ あり' : '―') + '</td>';
+    html += '<td style="font-size:12px;">' + (p.start_date||'―') + '</td>';
+    html += '<td style="font-size:12px;">' + (p.end_date||'―') + '</td>';
+    html += '<td><button class="edit-btn" onclick="openModal(\'' + p.id + '\')">編集</button><button class="del-btn" onclick="deleteProduct(\'' + p.id + '\')">削除</button></td>';
+    html += '</tr>';
+  });
+  document.getElementById('tableBody').innerHTML = html;
+}
+
+function openModal(id) {
+  document.getElementById('editId').value = id || '';
+  document.getElementById('modalTitle').textContent = id ? '商品編集' : '商品登録';
+  if (id) {
+    var p = allProducts.find(function(x){ return x.id === id; });
+    if (p) {
+      document.getElementById('f_product_no').value = p.product_no || '';
+      document.getElementById('f_product_name').value = p.product_name || '';
+      document.getElementById('f_description').value = p.description || '';
+      document.getElementById('f_initial_fee').value = p.initial_fee || '';
+      document.getElementById('f_monthly_fee').value = p.monthly_fee || '';
+      document.getElementById('f_contract_months').value = p.contract_months || '';
+      document.getElementById('f_auto_renewal').checked = p.auto_renewal || false;
+      document.getElementById('f_start_date').value = p.start_date || '';
+      document.getElementById('f_end_date').value = p.end_date || '';
+    }
+  } else {
+    document.getElementById('f_product_no').value = '';
+    document.getElementById('f_product_name').value = '';
+    document.getElementById('f_description').value = '';
+    document.getElementById('f_initial_fee').value = '';
+    document.getElementById('f_monthly_fee').value = '';
+    document.getElementById('f_contract_months').value = '';
+    document.getElementById('f_auto_renewal').checked = false;
+    document.getElementById('f_start_date').value = '';
+    document.getElementById('f_end_date').value = '';
+  }
+  document.getElementById('modalBg').style.display = 'flex';
+}
+
+function closeModal() {
+  document.getElementById('modalBg').style.display = 'none';
+}
+
+async function saveProduct() {
+  var name = document.getElementById('f_product_name').value.trim();
+  if (!name) { alert('商品名を入力してください。'); return; }
+  var payload = {
+    product_no: document.getElementById('f_product_no').value.trim(),
+    product_name: name,
+    description: document.getElementById('f_description').value.trim(),
+    initial_fee: parseInt(document.getElementById('f_initial_fee').value) || 0,
+    monthly_fee: parseInt(document.getElementById('f_monthly_fee').value) || 0,
+    contract_months: parseInt(document.getElementById('f_contract_months').value) || 0,
+    auto_renewal: document.getElementById('f_auto_renewal').checked,
+    start_date: document.getElementById('f_start_date').value || null,
+    end_date: document.getElementById('f_end_date').value || null
+  };
+  var id = document.getElementById('editId').value;
+  var error;
+  if (id) {
+    var res = await sbClient.from('aisys_products').update(payload).eq('id', id);
+    error = res.error;
+  } else {
+    var res = await sbClient.from('aisys_products').insert([payload]);
+    error = res.error;
+  }
+  if (error) { alert('エラー: ' + error.message); return; }
+  closeModal();
+  await loadProducts();
+  alert(id ? '商品を更新しました。' : '商品を登録しました。');
+}
+
+async function deleteProduct(id) {
+  var p = allProducts.find(function(x){ return x.id === id; });
+  if (!confirm((p ? p.product_name : '商品') + ' を削除しますか？')) return;
+  var { error } = await sbClient.from('aisys_products').delete().eq('id', id);
+  if (error) { alert('エラー: ' + error.message); return; }
+  await loadProducts();
+}
+
+document.getElementById('modalBg').addEventListener('click', function(e) {
+  if (e.target === this) closeModal();
+});
+</script>
+</body>
+</html>
