@@ -10,6 +10,9 @@ body { font-family: 'Hiragino Sans', 'Yu Gothic', sans-serif; background: #F8F9F
 header { background: #1A5276; color: #fff; padding: 16px 24px; display: flex; justify-content: space-between; align-items: center; }
 header h1 { font-size: 18px; }
 .logout-btn { background: rgba(255,255,255,0.2); border: none; color: #fff; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-size: 14px; }
+.header-links { display: flex; gap: 12px; align-items: center; }
+.header-link { color: rgba(255,255,255,0.85); font-size: 13px; text-decoration: none; padding: 6px 12px; border: 1px solid rgba(255,255,255,0.3); border-radius: 6px; }
+.header-link:hover { background: rgba(255,255,255,0.15); }
 .container { max-width: 1300px; margin: 0 auto; padding: 24px 16px; }
 .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; margin-bottom: 24px; }
 .stat-card { background: #fff; border-radius: 10px; padding: 20px; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
@@ -72,7 +75,11 @@ tr.deleted-row:hover { background: #FDEDEC; }
 
 <header>
   <h1>📋 面談予約・お問い合わせ 管理画面</h1>
-  <button class="logout-btn" onclick="logout()">ログアウト</button>
+  <div class="header-links">
+    <a href="plan-admin.html" class="header-link">🗂️ プラン管理</a>
+    <a href="products.html" class="header-link">📦 商品登録</a>
+    <button class="logout-btn" onclick="logout()">ログアウト</button>
+  </div>
 </header>
 
 <div class="container">

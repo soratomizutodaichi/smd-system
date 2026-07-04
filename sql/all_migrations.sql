@@ -115,3 +115,50 @@ GRANT INSERT ON aisys_form_submissions TO anon;
 -- allow_update_anon           UPDATE  {anon}
 -- allow_insert                INSERT  {public}
 -- ============================================================
+
+
+-- ============================================================
+-- 8. プランマスタテーブル（plan-admin.html用）2026-07-04
+-- ============================================================
+CREATE TABLE aisys_plans (
+  id               uuid    DEFAULT gen_random_uuid() PRIMARY KEY,
+  sort_order       integer DEFAULT 0,
+  catch_copy       text    DEFAULT NULL,
+  catch_color      text    DEFAULT 'green',
+  title            text    NOT NULL,
+  description      text    DEFAULT NULL,
+  service_hours    text    DEFAULT NULL,
+  initial_fee      integer DEFAULT NULL,
+  monthly_fee      integer DEFAULT NULL,
+  monthly_note     text    DEFAULT NULL,
+  ai_fee           integer DEFAULT NULL,
+  ai_fee_note      text    DEFAULT NULL,
+  ai_description   text    DEFAULT NULL,
+  features         jsonb   DEFAULT '[]',
+  is_active        boolean DEFAULT true,
+  created_at       timestamptz DEFAULT now(),
+  updated_at       timestamptz DEFAULT now()
+);
+
+-- RLS有効化
+ALTER TABLE aisys_plans ENABLE ROW LEVEL SECURITY;
+
+-- 管理者（ログイン済み）: 全操作
+CREATE POLICY "plans_all_authenticated" ON aisys_plans
+  FOR ALL TO authenticated USING (true) WITH CHECK (true);
+GRANT ALL ON aisys_plans TO authenticated;
+
+-- 一般（未ログイン）: 公開プランのみ参照
+CREATE POLICY "plans_select_anon" ON aisys_plans
+  FOR SELECT TO anon USING (is_active = true);
+GRANT SELECT ON aisys_plans TO anon;
+
+-- updated_at 自動更新トリガー
+CREATE OR REPLACE FUNCTION update_updated_at()
+RETURNS TRIGGER AS $$
+BEGIN NEW.updated_at = now(); RETURN NEW; END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER aisys_plans_updated_at
+  BEFORE UPDATE ON aisys_plans
+  FOR EACH ROW EXECUTE FUNCTION update_updated_at();
