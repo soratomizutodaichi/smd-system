@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>プラン管理 | 空と水と大地合同会社</title>
+<title>商品・プラン管理 | 空と水と大地合同会社</title>
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body { font-family: 'Hiragino Sans', 'Yu Gothic', sans-serif; background: #F8F9FA; color: #333; }
@@ -13,11 +13,45 @@ header h1 { font-size: 18px; }
 .logout-btn { background: rgba(255,255,255,0.2); border: none; color: #fff; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-size: 14px; }
 .admin-link { color: rgba(255,255,255,0.8); font-size: 13px; text-decoration: none; }
 .container { max-width: 1200px; margin: 0 auto; padding: 24px 16px; }
+
+/* タブ */
+.tabs { display: flex; gap: 8px; margin-bottom: 24px; border-bottom: 2px solid #E9ECEF; }
+.tab-btn { padding: 12px 28px; background: none; border: none; border-bottom: 3px solid transparent; font-size: 15px; font-weight: 700; color: #888; cursor: pointer; margin-bottom: -2px; }
+.tab-btn.active { color: #1A5276; border-bottom-color: #2E86C1; }
+.tab-pane { display: none; }
+.tab-pane.active { display: block; }
+
 .top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 12px; }
 .top-bar h2 { font-size: 16px; color: #555; }
 .add-btn { padding: 10px 24px; background: #1E8449; color: #fff; border: none; border-radius: 8px; font-size: 15px; font-weight: 700; cursor: pointer; }
 .add-btn:hover { background: #196F3D; }
+
+/* ---- カテゴリータブ ---- */
+.cat-list { display: flex; flex-direction: column; gap: 16px; }
+.cat-group { background: #fff; border-radius: 12px; border: 2px solid #E9ECEF; padding: 18px 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+.cat-group.inactive { opacity: 0.55; }
+.cat-row { display: flex; align-items: center; gap: 10px; }
+.cat-icon { font-size: 22px; width: 30px; text-align: center; flex-shrink: 0; }
+.cat-name { font-size: 17px; font-weight: 800; color: #1A5276; }
+.cat-name.sub { font-size: 15px; font-weight: 700; color: #2E86C1; }
+.cat-badge-off { font-size: 11px; background: #FDEDEC; color: #E74C3C; font-weight: 700; padding: 2px 8px; border-radius: 999px; }
+.cat-spacer { flex: 1; }
+.cat-btn { padding: 6px 10px; background: #F8F9FA; border: 1.5px solid #E9ECEF; border-radius: 6px; cursor: pointer; font-size: 13px; }
+.cat-btn:hover { background: #E9ECEF; }
+.cat-btn.edit { color: #2E86C1; border-color: #AED6F1; }
+.cat-btn.del { color: #E74C3C; border-color: #F5B7B1; }
+.subs { margin: 12px 0 0 40px; display: flex; flex-direction: column; gap: 8px; }
+.cat-sub { display: flex; align-items: center; gap: 10px; background: #F8FBFF; border: 1.5px solid #EBF5FB; border-radius: 8px; padding: 10px 14px; }
+.cat-sub.inactive { opacity: 0.55; }
+.add-sub-btn { margin: 10px 0 0 40px; padding: 7px 16px; background: #fff; border: 1.5px dashed #2E86C1; border-radius: 6px; color: #2E86C1; cursor: pointer; font-size: 13px; font-weight: 700; }
+.add-sub-btn:hover { background: #EBF5FB; }
+
+/* ---- 商品タブ ---- */
+.group-header { font-size: 18px; font-weight: 900; color: #1A5276; margin: 26px 0 12px; padding-bottom: 8px; border-bottom: 3px solid #D6EAF8; display: flex; align-items: center; gap: 8px; }
+.group-header:first-child { margin-top: 0; }
+.sub-header { font-size: 14px; font-weight: 700; color: #2E86C1; margin: 16px 0 10px 4px; padding-left: 10px; border-left: 4px solid #AED6F1; }
 .plans-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 20px; }
+.group-empty { font-size: 13px; color: #aaa; padding: 8px 4px; }
 .plan-card { background: #fff; border-radius: 14px; border: 2px solid #E9ECEF; padding: 24px; position: relative; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
 .plan-card.has-catch { border-color: #AED6F1; }
 .catch-badge { position: absolute; top: -14px; left: 50%; transform: translateX(-50%); background: #1E8449; color: #fff; font-size: 12px; font-weight: 700; padding: 4px 16px; border-radius: 999px; white-space: nowrap; }
@@ -29,14 +63,16 @@ header h1 { font-size: 18px; }
 .plan-desc { font-size: 13px; color: #555; margin-bottom: 4px; }
 .plan-hours { font-size: 12px; color: #2E86C1; font-weight: 700; margin-bottom: 14px; }
 .plan-price-block { margin-bottom: 12px; }
+.plan-pricetext { font-size: 17px; font-weight: 800; color: #1A5276; margin-bottom: 6px; }
 .plan-initial { font-size: 15px; color: #333; margin-bottom: 4px; }
 .plan-initial span { font-size: 26px; font-weight: 900; color: #1A5276; }
 .plan-monthly { font-size: 14px; font-weight: 700; color: #2E86C1; margin-bottom: 2px; }
 .plan-ai { font-size: 12px; color: #E67E22; margin-bottom: 2px; }
 .plan-ai-desc { font-size: 11px; color: #888; margin-bottom: 10px; line-height: 1.5; }
+.plan-contract { font-size: 12px; color: #666; background: #F4F6F7; border-radius: 6px; padding: 6px 10px; margin-bottom: 12px; }
 .plan-features { list-style: none; margin-bottom: 16px; }
 .plan-features li { font-size: 13px; color: #333; padding: 2px 0; }
-.plan-features li::before { content: "✓ "; color: #1E8449; font-weight: 700; }
+.plan-features li::before { content: "\2713 "; color: #1E8449; font-weight: 700; }
 .card-actions { display: flex; gap: 8px; padding-top: 12px; border-top: 1px solid #F0F0F0; }
 .edit-btn { flex: 1; padding: 8px; background: #2E86C1; color: #fff; border: none; border-radius: 6px; cursor: pointer; font-size: 13px; font-weight: 700; }
 .edit-btn:hover { background: #1A5276; }
@@ -50,6 +86,7 @@ header h1 { font-size: 18px; }
 /* モーダル */
 .modal-bg { position: fixed; inset: 0; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; z-index: 100; padding: 16px; }
 .modal { background: #fff; border-radius: 16px; padding: 32px; width: 620px; max-width: 100%; max-height: 90vh; overflow-y: auto; }
+.modal.small { width: 460px; }
 .modal h2 { font-size: 18px; color: #1A5276; margin-bottom: 24px; border-bottom: 2px solid #EBF5FB; padding-bottom: 12px; }
 .form-section { margin-bottom: 20px; }
 .form-section-title { font-size: 12px; font-weight: 700; color: #2E86C1; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 12px; padding-bottom: 4px; border-bottom: 1px solid #EBF5FB; }
@@ -58,8 +95,11 @@ header h1 { font-size: 18px; }
 .form-group input, .form-group textarea, .form-group select { width: 100%; padding: 9px 12px; border: 1.5px solid #E9ECEF; border-radius: 7px; font-size: 14px; font-family: inherit; }
 .form-group input:focus, .form-group textarea:focus, .form-group select:focus { border-color: #2E86C1; outline: none; }
 .form-group textarea { height: 72px; resize: vertical; }
+.form-group .hint { font-size: 11px; color: #999; font-weight: normal; margin-top: 4px; }
 .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 .form-row-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+.check-inline { display: flex; align-items: center; gap: 8px; font-weight: normal; cursor: pointer; }
+.check-inline input { width: 18px; height: 18px; cursor: pointer; }
 /* 機能リスト */
 .features-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 8px; }
 .feature-row { display: flex; gap: 8px; align-items: center; }
@@ -68,10 +108,6 @@ header h1 { font-size: 18px; }
 .remove-feat-btn:hover { background: #FDEDEC; }
 .add-feat-btn { padding: 7px 14px; background: #fff; border: 1.5px solid #1E8449; border-radius: 6px; color: #1E8449; cursor: pointer; font-size: 13px; font-weight: 700; width: 100%; }
 .add-feat-btn:hover { background: #EAF9EE; }
-/* キャッチコピー色選択 */
-.catch-color-wrap { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 6px; }
-.catch-color-btn { padding: 5px 14px; border: 2px solid transparent; border-radius: 999px; font-size: 12px; font-weight: 700; cursor: pointer; color: #fff; }
-.catch-color-btn.selected { border-color: #333; }
 .modal-btns { display: flex; gap: 12px; margin-top: 24px; }
 .save-btn { flex: 1; padding: 12px; background: #2E86C1; color: #fff; border: none; border-radius: 8px; font-size: 15px; font-weight: 700; cursor: pointer; }
 .save-btn:hover { background: #1A5276; }
@@ -103,7 +139,7 @@ header h1 { font-size: 18px; }
 </div>
 
 <header>
-  <h1>🗂️ プラン管理</h1>
+  <h1>🗂️ 商品・プラン管理</h1>
   <div class="header-links">
     <a href="admin.html" class="admin-link">← 管理画面へ</a>
     <button class="logout-btn" onclick="logout()">ログアウト</button>
@@ -111,20 +147,81 @@ header h1 { font-size: 18px; }
 </header>
 
 <div class="container">
-  <div class="top-bar">
-    <h2 id="planCount">プラン 0 件</h2>
-    <button class="add-btn" onclick="openModal()">＋ プランを追加</button>
+  <div class="tabs">
+    <button class="tab-btn" id="tabBtnProducts" onclick="switchTab('products')">🗂️ 商品</button>
+    <button class="tab-btn" id="tabBtnCategories" onclick="switchTab('categories')">📁 カテゴリー</button>
   </div>
-  <div class="plans-grid" id="plansGrid">
-    <div class="empty" id="emptyMsg">プランが登録されていません</div>
+
+  <!-- 商品タブ -->
+  <div class="tab-pane" id="paneProducts">
+    <div class="top-bar">
+      <h2 id="planCount">商品 0 件</h2>
+      <button class="add-btn" onclick="openPlanModal()">＋ 商品を追加</button>
+    </div>
+    <div id="plansArea"></div>
+  </div>
+
+  <!-- カテゴリータブ -->
+  <div class="tab-pane" id="paneCategories">
+    <div class="top-bar">
+      <h2 id="catCount">カテゴリー 0 件</h2>
+      <button class="add-btn" onclick="openCatModal()">＋ 大グループを追加</button>
+    </div>
+    <div class="cat-list" id="catArea"></div>
   </div>
 </div>
 
-<!-- 登録・編集モーダル -->
+<!-- カテゴリー登録・編集モーダル -->
+<div class="modal-bg" id="catModalBg" style="display:none;">
+  <div class="modal small">
+    <h2 id="catModalTitle">大グループを登録</h2>
+    <input type="hidden" id="c_id">
+    <div class="form-group">
+      <label>親グループ</label>
+      <select id="c_parent"></select>
+      <div class="hint">「（なし）」＝大グループ。グループを選ぶとその中分類になります。</div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>名前 <span style="color:#E74C3C;">*</span></label>
+        <input type="text" id="c_name" placeholder="例：受託開発サービス">
+      </div>
+      <div class="form-group">
+        <label>アイコン（絵文字）</label>
+        <input type="text" id="c_icon" placeholder="例：🛠" maxlength="4">
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>表示順（小さいほど前）</label>
+        <input type="number" id="c_sort" placeholder="0" min="0">
+      </div>
+      <div class="form-group" style="display:flex;align-items:center;padding-top:22px;">
+        <label class="check-inline"><input type="checkbox" id="c_active" checked><span style="font-size:14px;font-weight:700;">公開する</span></label>
+      </div>
+    </div>
+    <div class="modal-btns">
+      <button class="cancel-btn" onclick="closeCatModal()">キャンセル</button>
+      <button class="save-btn" onclick="saveCategory()">保存</button>
+    </div>
+  </div>
+</div>
+
+<!-- 商品 登録・編集モーダル -->
 <div class="modal-bg" id="modalBg" style="display:none;">
   <div class="modal">
-    <h2 id="modalTitle">プランを登録</h2>
+    <h2 id="modalTitle">商品を登録</h2>
     <input type="hidden" id="editId">
+
+    <!-- 分類 -->
+    <div class="form-section">
+      <div class="form-section-title">分類</div>
+      <div class="form-group">
+        <label>カテゴリー</label>
+        <select id="f_category"></select>
+        <div class="hint">大グループ、またはその中分類を選びます。未選択は「未分類」になります。</div>
+      </div>
+    </div>
 
     <!-- キャッチコピー -->
     <div class="form-section">
@@ -149,9 +246,15 @@ header h1 { font-size: 18px; }
     <!-- 基本情報 -->
     <div class="form-section">
       <div class="form-section-title">基本情報</div>
-      <div class="form-group">
-        <label>タイトル <span style="color:#E74C3C;">*</span></label>
-        <input type="text" id="f_title" placeholder="例：標準ホームページプラン">
+      <div class="form-row">
+        <div class="form-group">
+          <label>タイトル <span style="color:#E74C3C;">*</span></label>
+          <input type="text" id="f_title" placeholder="例：標準ホームページプラン">
+        </div>
+        <div class="form-group">
+          <label>アイコン（絵文字）</label>
+          <input type="text" id="f_icon" placeholder="例：📄" maxlength="4">
+        </div>
       </div>
       <div class="form-group">
         <label>説明文</label>
@@ -166,6 +269,11 @@ header h1 { font-size: 18px; }
     <!-- 料金 -->
     <div class="form-section">
       <div class="form-section-title">料金設定</div>
+      <div class="form-group">
+        <label>価格の自由文（入力すると下の金額より優先して表示）</label>
+        <input type="text" id="f_price_text" placeholder="例：1回 15,000円 ／ 月額 無料">
+        <div class="hint">オプションなど、金額欄に収まらない表記に使います。空欄なら下の金額を表示します。</div>
+      </div>
       <div class="form-row">
         <div class="form-group">
           <label>初期費用（円）</label>
@@ -196,6 +304,20 @@ header h1 { font-size: 18px; }
       </div>
     </div>
 
+    <!-- 契約条件 -->
+    <div class="form-section">
+      <div class="form-section-title">契約条件</div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>契約期間（ヶ月）</label>
+          <input type="number" id="f_contract_months" placeholder="12" min="0">
+        </div>
+        <div class="form-group" style="display:flex;align-items:center;padding-top:22px;">
+          <label class="check-inline"><input type="checkbox" id="f_auto_renewal"><span style="font-size:14px;font-weight:700;">自動更新あり</span></label>
+        </div>
+      </div>
+    </div>
+
     <!-- 主な機能 -->
     <div class="form-section">
       <div class="form-section-title">主な機能</div>
@@ -212,10 +334,7 @@ header h1 { font-size: 18px; }
           <input type="number" id="f_sort_order" placeholder="0" min="0">
         </div>
         <div class="form-group" style="display:flex;align-items:center;padding-top:22px;">
-          <label style="display:flex;align-items:center;gap:8px;font-weight:normal;cursor:pointer;">
-            <input type="checkbox" id="f_is_active" checked style="width:18px;height:18px;cursor:pointer;">
-            <span style="font-size:14px;font-weight:700;">公開する</span>
-          </label>
+          <label class="check-inline"><input type="checkbox" id="f_is_active" checked><span style="font-size:14px;font-weight:700;">公開する</span></label>
         </div>
       </div>
     </div>
@@ -233,6 +352,8 @@ const SUPABASE_URL = 'https://gcmtnzvcoovjqxanbmqc.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdjbXRuenZjb292anF4YW5ibXFjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc0NDczNTksImV4cCI6MjA5MzAyMzM1OX0.30xm_Vd7UdfkombPOfSjg-nYxmuwYlnHHEgqRzWE4fQ';
 var sbClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 var allPlans = [];
+var allCats = [];
+var activeTab = 'products';
 
 // ---- 認証 ----
 async function checkLogin() {
@@ -240,99 +361,297 @@ async function checkLogin() {
   var pw = document.getElementById('passwordInput').value;
   var btn = document.getElementById('loginBtn');
   btn.textContent = 'ログイン中...'; btn.disabled = true;
-  var { data, error } = await sbClient.auth.signInWithPassword({ email, password: pw });
+  var { data, error } = await sbClient.auth.signInWithPassword({ email: email, password: pw });
   if (error) {
     document.getElementById('loginError').style.display = 'block';
     btn.textContent = 'ログイン'; btn.disabled = false;
   } else {
     document.getElementById('loginOverlay').style.display = 'none';
-    loadPlans();
+    loadAll();
   }
 }
 async function logout() { await sbClient.auth.signOut(); location.reload(); }
 window.onload = async function() {
+  switchTab('products');
   var { data } = await sbClient.auth.getSession();
-  if (data.session) { document.getElementById('loginOverlay').style.display = 'none'; loadPlans(); }
+  if (data.session) { document.getElementById('loginOverlay').style.display = 'none'; loadAll(); }
 };
 
-// ---- データ取得・表示 ----
+// ---- タブ切替 ----
+function switchTab(tab) {
+  activeTab = tab;
+  document.getElementById('paneProducts').classList.toggle('active', tab === 'products');
+  document.getElementById('paneCategories').classList.toggle('active', tab === 'categories');
+  document.getElementById('tabBtnProducts').classList.toggle('active', tab === 'products');
+  document.getElementById('tabBtnCategories').classList.toggle('active', tab === 'categories');
+}
+
+// ---- データ取得 ----
+async function loadAll() {
+  await loadCategories();
+  await loadPlans();
+}
+async function loadCategories() {
+  var { data, error } = await sbClient.from('aisys_categories').select('*').order('sort_order').order('created_at');
+  if (error) { alert('カテゴリー取得エラー: ' + error.message); return; }
+  allCats = data || [];
+  renderCategories();
+}
 async function loadPlans() {
   var { data, error } = await sbClient.from('aisys_plans').select('*').order('sort_order').order('created_at');
-  if (error) { alert('取得エラー: ' + error.message); return; }
+  if (error) { alert('商品取得エラー: ' + error.message); return; }
   allPlans = data || [];
   renderPlans();
 }
 
-function renderPlans() {
-  var grid = document.getElementById('plansGrid');
-  document.getElementById('planCount').textContent = 'プラン ' + allPlans.length + ' 件';
-  if (allPlans.length === 0) {
-    grid.innerHTML = '<div class="empty" id="emptyMsg">プランが登録されていません</div>';
+// ---- カテゴリー補助 ----
+function byOrder(a, b) {
+  var d = (a.sort_order || 0) - (b.sort_order || 0);
+  if (d !== 0) return d;
+  return new Date(a.created_at) - new Date(b.created_at);
+}
+function groups() { return allCats.filter(function(c){ return !c.parent_id; }).sort(byOrder); }
+function subsOf(pid) { return allCats.filter(function(c){ return c.parent_id === pid; }).sort(byOrder); }
+function findCat(id) { return allCats.find(function(c){ return c.id === id; }); }
+function plansIn(catId) { return allPlans.filter(function(p){ return p.category_id === catId; }).sort(byOrder); }
+function esc(str) {
+  return String(str == null ? '' : str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+// ============================================================
+//  カテゴリータブ 描画
+// ============================================================
+function renderCategories() {
+  var gs = groups();
+  document.getElementById('catCount').textContent = 'カテゴリー ' + allCats.length + ' 件';
+  var area = document.getElementById('catArea');
+  if (gs.length === 0) {
+    area.innerHTML = '<div class="empty">大グループが登録されていません。<br>右上の「＋ 大グループを追加」から作成してください。</div>';
     return;
   }
   var html = '';
-  allPlans.forEach(function(p, idx) {
-    var catchClass = p.catch_color === 'orange' ? 'orange' : p.catch_color === 'blue' ? 'blue' : p.catch_color === 'red' ? 'red' : '';
-    var hasCatch = p.catch_copy ? ' has-catch' : '';
-    html += '<div class="plan-card' + hasCatch + '">';
-    if (p.catch_copy) {
-      html += '<div class="catch-badge ' + catchClass + '">';
-      html += (catchClass === 'orange' ? '⚡ ' : catchClass === 'red' ? '🔥 ' : '🔥 ') + esc(p.catch_copy);
+  gs.forEach(function(g) {
+    html += '<div class="cat-group' + (g.is_active === false ? ' inactive' : '') + '">';
+    html += catRow(g, false);
+    var ss = subsOf(g.id);
+    if (ss.length) {
+      html += '<div class="subs">';
+      ss.forEach(function(s) {
+        html += '<div class="cat-sub' + (s.is_active === false ? ' inactive' : '') + '">' + catRowInner(s, true) + '</div>';
+      });
       html += '</div>';
     }
-    html += '<div class="plan-icon">📄</div>';
-    html += '<div class="plan-title">' + esc(p.title) + '</div>';
-    if (p.description) html += '<div class="plan-desc">' + esc(p.description) + '</div>';
-    if (p.service_hours) html += '<div class="plan-hours">サービス提供時間　' + esc(p.service_hours) + '</div>';
-    html += '<div class="plan-price-block">';
-    if (p.initial_fee) html += '<div class="plan-initial">初期費用 <span>' + p.initial_fee.toLocaleString() + '</span>円</div>';
-    if (p.monthly_fee) {
-      html += '<div class="plan-monthly">月額サポート ' + p.monthly_fee.toLocaleString() + '円/月';
-      if (p.monthly_note) html += '：' + esc(p.monthly_note);
-      html += '</div>';
-    }
-    if (p.ai_fee) {
-      html += '<div class="plan-ai">+ AIエージェント料 ' + p.ai_fee.toLocaleString() + '円〜/月';
-      if (p.ai_fee_note) html += '（' + esc(p.ai_fee_note) + '）';
-      html += '</div>';
-    }
-    if (p.ai_description) html += '<div class="plan-ai-desc">' + esc(p.ai_description) + '</div>';
-    html += '</div>';
-    var features = Array.isArray(p.features) ? p.features : [];
-    if (features.length > 0) {
-      html += '<ul class="plan-features">';
-      features.forEach(function(f) { if (f) html += '<li>' + esc(f) + '</li>'; });
-      html += '</ul>';
-    }
-    html += '<div class="card-actions">';
-    html += '<div class="sort-wrap">';
-    html += '<button class="sort-btn" onclick="movePlan(\'' + p.id + '\',-1)" title="上へ">↑</button>';
-    html += '<button class="sort-btn" onclick="movePlan(\'' + p.id + '\',1)" title="下へ">↓</button>';
-    html += '</div>';
-    html += '<button class="edit-btn" onclick="openModal(\'' + p.id + '\')">編集</button>';
-    html += '<button class="del-btn" onclick="deletePlan(\'' + p.id + '\')">削除</button>';
-    html += '</div>';
-    if (!p.is_active) html += '<div class="inactive-overlay">非公開</div>';
+    html += '<button class="add-sub-btn" onclick="openCatModal(null,\'' + g.id + '\')">＋ 中分類を追加</button>';
     html += '</div>';
   });
-  grid.innerHTML = html;
+  area.innerHTML = html;
+}
+function catRow(c, isSub) { return '<div class="cat-row">' + catRowInner(c, isSub) + '</div>'; }
+function catRowInner(c, isSub) {
+  var h = '';
+  h += '<div class="cat-icon">' + (c.icon ? esc(c.icon) : (isSub ? '└' : '◆')) + '</div>';
+  h += '<div class="cat-name' + (isSub ? ' sub' : '') + '">' + esc(c.name) + '</div>';
+  if (c.is_active === false) h += '<span class="cat-badge-off">非公開</span>';
+  h += '<div class="cat-spacer"></div>';
+  h += '<button class="cat-btn" onclick="moveCat(\'' + c.id + '\',-1)" title="上へ">↑</button>';
+  h += '<button class="cat-btn" onclick="moveCat(\'' + c.id + '\',1)" title="下へ">↓</button>';
+  h += '<button class="cat-btn edit" onclick="openCatModal(\'' + c.id + '\')">編集</button>';
+  h += '<button class="cat-btn del" onclick="deleteCat(\'' + c.id + '\')">削除</button>';
+  return h;
 }
 
-function esc(str) {
-  return String(str || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-}
-
-// ---- 並び替え ----
-async function movePlan(id, dir) {
-  var idx = allPlans.findIndex(function(p){ return p.id === id; });
+// ---- カテゴリー並び替え（同じ階層内で入れ替え） ----
+async function moveCat(id, dir) {
+  var c = findCat(id);
+  if (!c) return;
+  var siblings = c.parent_id ? subsOf(c.parent_id) : groups();
+  var idx = siblings.findIndex(function(x){ return x.id === id; });
   var target = idx + dir;
-  if (target < 0 || target >= allPlans.length) return;
-  var a = allPlans[idx], b = allPlans[target];
-  var ao = a.sort_order, bo = b.sort_order;
+  if (target < 0 || target >= siblings.length) return;
+  var a = siblings[idx], b = siblings[target];
+  var ao = a.sort_order || 0, bo = b.sort_order || 0;
+  if (ao === bo) { ao = idx; bo = target; }
+  await sbClient.from('aisys_categories').update({ sort_order: bo }).eq('id', a.id);
+  await sbClient.from('aisys_categories').update({ sort_order: ao }).eq('id', b.id);
+  await loadCategories();
+}
+
+// ---- カテゴリーモーダル ----
+function buildParentOptions(selectedParent, selfId) {
+  var html = '<option value="">（なし＝大グループ）</option>';
+  groups().forEach(function(g) {
+    if (g.id === selfId) return; // 自分自身は親にできない
+    var s = (g.id === selectedParent) ? ' selected' : '';
+    html += '<option value="' + g.id + '"' + s + '>' + esc(g.name) + '</option>';
+  });
+  return html;
+}
+function openCatModal(id, presetParent) {
+  document.getElementById('c_id').value = id || '';
+  var isEdit = !!id;
+  var c = isEdit ? findCat(id) : null;
+  var parentVal = isEdit ? (c ? c.parent_id : '') : (presetParent || '');
+  document.getElementById('c_parent').innerHTML = buildParentOptions(parentVal || '', id || '');
+  document.getElementById('c_name').value = c ? (c.name || '') : '';
+  document.getElementById('c_icon').value = c ? (c.icon || '') : '';
+  document.getElementById('c_sort').value = c ? (c.sort_order || 0) : (parentVal ? subsOf(parentVal).length : groups().length);
+  document.getElementById('c_active').checked = c ? (c.is_active !== false) : true;
+  var isSubContext = !!parentVal;
+  document.getElementById('catModalTitle').textContent = isEdit ? 'カテゴリーを編集' : (isSubContext ? '中分類を登録' : '大グループを登録');
+  document.getElementById('catModalBg').style.display = 'flex';
+}
+function closeCatModal() { document.getElementById('catModalBg').style.display = 'none'; }
+
+async function saveCategory() {
+  var name = document.getElementById('c_name').value.trim();
+  if (!name) { alert('名前を入力してください。'); return; }
+  var id = document.getElementById('c_id').value;
+  var parentId = document.getElementById('c_parent').value || null;
+  // 階層は最大2段：子を持つカテゴリーは中分類にできない
+  if (parentId && id && subsOf(id).length > 0) {
+    alert('この分類には中分類がぶら下がっているため、中分類にはできません。');
+    return;
+  }
+  var payload = {
+    parent_id: parentId,
+    name: name,
+    icon: document.getElementById('c_icon').value.trim() || null,
+    sort_order: parseInt(document.getElementById('c_sort').value) || 0,
+    is_active: document.getElementById('c_active').checked
+  };
+  var error;
+  if (id) {
+    var res = await sbClient.from('aisys_categories').update(payload).eq('id', id);
+    error = res.error;
+  } else {
+    var res = await sbClient.from('aisys_categories').insert([payload]);
+    error = res.error;
+  }
+  if (error) { alert('エラー: ' + error.message); return; }
+  closeCatModal();
+  await loadCategories();
+  await loadPlans();
+}
+
+async function deleteCat(id) {
+  var c = findCat(id);
+  if (!c) return;
+  var childCount = subsOf(id).length;
+  var planCount = allPlans.filter(function(p){ return p.category_id === id; }).length;
+  var childPlanCount = 0;
+  subsOf(id).forEach(function(s){ childPlanCount += allPlans.filter(function(p){ return p.category_id === s.id; }).length; });
+  var msg = '「' + c.name + '」を削除しますか？';
+  if (childCount > 0) msg += '\n\n⚠️ この大グループに含まれる中分類 ' + childCount + ' 件も一緒に削除されます。';
+  var totalPlans = planCount + childPlanCount;
+  if (totalPlans > 0) msg += '\n\n※ 該当する商品 ' + totalPlans + ' 件は削除されず「未分類」に移動します。';
+  if (!confirm(msg)) return;
+  var { error } = await sbClient.from('aisys_categories').delete().eq('id', id);
+  if (error) { alert('エラー: ' + error.message); return; }
+  await loadCategories();
+  await loadPlans();
+}
+
+// ============================================================
+//  商品タブ 描画
+// ============================================================
+function renderPlans() {
+  document.getElementById('planCount').textContent = '商品 ' + allPlans.length + ' 件';
+  var area = document.getElementById('plansArea');
+  if (allPlans.length === 0 && allCats.length === 0) {
+    area.innerHTML = '<div class="empty">商品が登録されていません。<br>先に「📁 カテゴリー」タブで分類を作ると整理しやすくなります。</div>';
+    return;
+  }
+  var html = '';
+  groups().forEach(function(g) {
+    var directPlans = plansIn(g.id);
+    var ss = subsOf(g.id);
+    html += '<div class="group-header">' + (g.icon ? esc(g.icon) + ' ' : '') + esc(g.name);
+    if (g.is_active === false) html += ' <span class="cat-badge-off">非公開</span>';
+    html += '</div>';
+    if (directPlans.length) html += '<div class="plans-grid">' + directPlans.map(planCard).join('') + '</div>';
+    ss.forEach(function(s) {
+      var sp = plansIn(s.id);
+      html += '<div class="sub-header">' + (s.icon ? esc(s.icon) + ' ' : '') + esc(s.name) + '</div>';
+      html += sp.length ? '<div class="plans-grid">' + sp.map(planCard).join('') + '</div>' : '<div class="group-empty">（商品なし）</div>';
+    });
+    if (!directPlans.length && !ss.length) html += '<div class="group-empty">（商品なし）</div>';
+  });
+  // 未分類
+  var unc = allPlans.filter(function(p){ return !p.category_id || !findCat(p.category_id); }).sort(byOrder);
+  if (unc.length) {
+    html += '<div class="group-header">📦 未分類</div>';
+    html += '<div class="plans-grid">' + unc.map(planCard).join('') + '</div>';
+  }
+  area.innerHTML = html;
+}
+
+function planCard(p) {
+  var catchClass = p.catch_color === 'orange' ? 'orange' : p.catch_color === 'blue' ? 'blue' : p.catch_color === 'red' ? 'red' : '';
+  var hasCatch = p.catch_copy ? ' has-catch' : '';
+  var html = '<div class="plan-card' + hasCatch + '">';
+  if (p.catch_copy) {
+    var mark = catchClass === 'orange' ? '⚡ ' : '🔥 ';
+    html += '<div class="catch-badge ' + catchClass + '">' + mark + esc(p.catch_copy) + '</div>';
+  }
+  html += '<div class="plan-icon">' + esc(p.icon || '📄') + '</div>';
+  html += '<div class="plan-title">' + esc(p.title) + '</div>';
+  if (p.description) html += '<div class="plan-desc">' + esc(p.description) + '</div>';
+  if (p.service_hours) html += '<div class="plan-hours">サービス提供時間　' + esc(p.service_hours) + '</div>';
+  html += '<div class="plan-price-block">';
+  if (p.price_text) html += '<div class="plan-pricetext">' + esc(p.price_text) + '</div>';
+  if (p.initial_fee) html += '<div class="plan-initial">初期費用 <span>' + p.initial_fee.toLocaleString() + '</span>円</div>';
+  if (p.monthly_fee) {
+    html += '<div class="plan-monthly">月額サポート ' + p.monthly_fee.toLocaleString() + '円/月';
+    if (p.monthly_note) html += '：' + esc(p.monthly_note);
+    html += '</div>';
+  }
+  if (p.ai_fee) {
+    html += '<div class="plan-ai">+ AIエージェント料 ' + p.ai_fee.toLocaleString() + '円〜/月';
+    if (p.ai_fee_note) html += '（' + esc(p.ai_fee_note) + '）';
+    html += '</div>';
+  }
+  if (p.ai_description) html += '<div class="plan-ai-desc">' + esc(p.ai_description) + '</div>';
+  html += '</div>';
+  if (p.contract_months || p.auto_renewal) {
+    var parts = [];
+    if (p.contract_months) parts.push('契約期間 ' + p.contract_months + 'ヶ月');
+    if (p.auto_renewal) parts.push('自動更新あり');
+    html += '<div class="plan-contract">📝 ' + parts.join(' ・ ') + '</div>';
+  }
+  var features = Array.isArray(p.features) ? p.features : [];
+  if (features.length > 0) {
+    html += '<ul class="plan-features">';
+    features.forEach(function(f) { if (f) html += '<li>' + esc(f) + '</li>'; });
+    html += '</ul>';
+  }
+  html += '<div class="card-actions">';
+  html += '<div class="sort-wrap">';
+  html += '<button class="sort-btn" onclick="movePlan(\'' + p.id + '\',-1)" title="上へ">↑</button>';
+  html += '<button class="sort-btn" onclick="movePlan(\'' + p.id + '\',1)" title="下へ">↓</button>';
+  html += '</div>';
+  html += '<button class="edit-btn" onclick="openPlanModal(\'' + p.id + '\')">編集</button>';
+  html += '<button class="del-btn" onclick="deletePlan(\'' + p.id + '\')">削除</button>';
+  html += '</div>';
+  if (p.is_active === false) html += '<div class="inactive-overlay">非公開</div>';
+  html += '</div>';
+  return html;
+}
+
+// ---- 商品並び替え（同じカテゴリー内で入れ替え） ----
+async function movePlan(id, dir) {
+  var p = allPlans.find(function(x){ return x.id === id; });
+  if (!p) return;
+  var siblings = plansIn(p.category_id || null);
+  if (!p.category_id) siblings = allPlans.filter(function(x){ return !x.category_id; }).sort(byOrder);
+  var idx = siblings.findIndex(function(x){ return x.id === id; });
+  var target = idx + dir;
+  if (target < 0 || target >= siblings.length) return;
+  var a = siblings[idx], b = siblings[target];
+  var ao = a.sort_order || 0, bo = b.sort_order || 0;
   if (ao === bo) { ao = idx; bo = target; }
   await sbClient.from('aisys_plans').update({ sort_order: bo }).eq('id', a.id);
   await sbClient.from('aisys_plans').update({ sort_order: ao }).eq('id', b.id);
-  loadPlans();
+  await loadPlans();
 }
 
 // ---- 機能行 ----
@@ -340,12 +659,18 @@ function addFeatureRow(val) {
   var list = document.getElementById('featuresList');
   var div = document.createElement('div');
   div.className = 'feature-row';
-  div.innerHTML = '<input type="text" placeholder="例：静的HP作成環境構築" value="' + esc(val||'') + '">' +
-    '<button class="remove-feat-btn" onclick="this.parentElement.remove()">✕</button>';
+  var input = document.createElement('input');
+  input.type = 'text';
+  input.placeholder = '例：静的HP作成環境構築';
+  input.value = val || '';
+  var btn = document.createElement('button');
+  btn.className = 'remove-feat-btn';
+  btn.textContent = '✕';
+  btn.onclick = function() { div.remove(); };
+  div.appendChild(input); div.appendChild(btn);
   list.appendChild(div);
-  div.querySelector('input').focus();
+  input.focus();
 }
-
 function getFeatures() {
   var rows = document.querySelectorAll('#featuresList .feature-row input');
   var arr = [];
@@ -353,49 +678,47 @@ function getFeatures() {
   return arr;
 }
 
-// ---- モーダル ----
-function openModal(id) {
-  document.getElementById('editId').value = id || '';
-  document.getElementById('modalTitle').textContent = id ? 'プランを編集' : 'プランを登録';
-  document.getElementById('featuresList').innerHTML = '';
-
-  if (id) {
-    var p = allPlans.find(function(x){ return x.id === id; });
-    if (p) {
-      document.getElementById('f_catch').value = p.catch_copy || '';
-      document.getElementById('f_catch_color').value = p.catch_color || 'green';
-      document.getElementById('f_title').value = p.title || '';
-      document.getElementById('f_description').value = p.description || '';
-      document.getElementById('f_service_hours').value = p.service_hours || '';
-      document.getElementById('f_initial_fee').value = p.initial_fee || '';
-      document.getElementById('f_monthly_fee').value = p.monthly_fee || '';
-      document.getElementById('f_monthly_note').value = p.monthly_note || '';
-      document.getElementById('f_ai_fee').value = p.ai_fee || '';
-      document.getElementById('f_ai_fee_note').value = p.ai_fee_note || '';
-      document.getElementById('f_ai_description').value = p.ai_description || '';
-      document.getElementById('f_sort_order').value = p.sort_order || 0;
-      document.getElementById('f_is_active').checked = p.is_active !== false;
-      var features = Array.isArray(p.features) ? p.features : [];
-      features.forEach(function(f) { if (f) addFeatureRow(f); });
-    }
-  } else {
-    document.getElementById('f_catch').value = '';
-    document.getElementById('f_catch_color').value = 'green';
-    document.getElementById('f_title').value = '';
-    document.getElementById('f_description').value = '';
-    document.getElementById('f_service_hours').value = '';
-    document.getElementById('f_initial_fee').value = '';
-    document.getElementById('f_monthly_fee').value = '';
-    document.getElementById('f_monthly_note').value = '';
-    document.getElementById('f_ai_fee').value = '';
-    document.getElementById('f_ai_fee_note').value = '';
-    document.getElementById('f_ai_description').value = '';
-    document.getElementById('f_sort_order').value = allPlans.length;
-    document.getElementById('f_is_active').checked = true;
-  }
-  document.getElementById('modalBg').style.display = 'flex';
+// ---- 商品カテゴリー選択肢（階層プルダウン） ----
+function buildCategorySelect(selectedId) {
+  var html = '<option value="">（未分類）</option>';
+  groups().forEach(function(g) {
+    var gs = (g.id === selectedId) ? ' selected' : '';
+    html += '<option value="' + g.id + '"' + gs + '>' + esc(g.name) + '</option>';
+    subsOf(g.id).forEach(function(s) {
+      var ss = (s.id === selectedId) ? ' selected' : '';
+      html += '<option value="' + s.id + '"' + ss + '>　＞ ' + esc(s.name) + '</option>';
+    });
+  });
+  return html;
 }
 
+// ---- 商品モーダル ----
+function openPlanModal(id) {
+  document.getElementById('editId').value = id || '';
+  document.getElementById('modalTitle').textContent = id ? '商品を編集' : '商品を登録';
+  document.getElementById('featuresList').innerHTML = '';
+  var p = id ? allPlans.find(function(x){ return x.id === id; }) : null;
+  document.getElementById('f_category').innerHTML = buildCategorySelect(p ? p.category_id : '');
+  document.getElementById('f_catch').value = p ? (p.catch_copy || '') : '';
+  document.getElementById('f_catch_color').value = p ? (p.catch_color || 'green') : 'green';
+  document.getElementById('f_title').value = p ? (p.title || '') : '';
+  document.getElementById('f_icon').value = p ? (p.icon || '') : '';
+  document.getElementById('f_description').value = p ? (p.description || '') : '';
+  document.getElementById('f_service_hours').value = p ? (p.service_hours || '') : '';
+  document.getElementById('f_price_text').value = p ? (p.price_text || '') : '';
+  document.getElementById('f_initial_fee').value = p ? (p.initial_fee || '') : '';
+  document.getElementById('f_monthly_fee').value = p ? (p.monthly_fee || '') : '';
+  document.getElementById('f_monthly_note').value = p ? (p.monthly_note || '') : '';
+  document.getElementById('f_ai_fee').value = p ? (p.ai_fee || '') : '';
+  document.getElementById('f_ai_fee_note').value = p ? (p.ai_fee_note || '') : '';
+  document.getElementById('f_ai_description').value = p ? (p.ai_description || '') : '';
+  document.getElementById('f_contract_months').value = p ? (p.contract_months || '') : '';
+  document.getElementById('f_auto_renewal').checked = p ? !!p.auto_renewal : false;
+  document.getElementById('f_sort_order').value = p ? (p.sort_order || 0) : allPlans.length;
+  document.getElementById('f_is_active').checked = p ? (p.is_active !== false) : true;
+  if (p && Array.isArray(p.features)) p.features.forEach(function(f){ if (f) addFeatureRow(f); });
+  document.getElementById('modalBg').style.display = 'flex';
+}
 function closeModal() { document.getElementById('modalBg').style.display = 'none'; }
 
 // ---- 保存 ----
@@ -403,17 +726,22 @@ async function savePlan() {
   var title = document.getElementById('f_title').value.trim();
   if (!title) { alert('タイトルを入力してください。'); return; }
   var payload = {
+    category_id:     document.getElementById('f_category').value || null,
     catch_copy:      document.getElementById('f_catch').value.trim() || null,
     catch_color:     document.getElementById('f_catch_color').value,
     title:           title,
+    icon:            document.getElementById('f_icon').value.trim() || null,
     description:     document.getElementById('f_description').value.trim() || null,
     service_hours:   document.getElementById('f_service_hours').value.trim() || null,
+    price_text:      document.getElementById('f_price_text').value.trim() || null,
     initial_fee:     parseInt(document.getElementById('f_initial_fee').value) || null,
     monthly_fee:     parseInt(document.getElementById('f_monthly_fee').value) || null,
     monthly_note:    document.getElementById('f_monthly_note').value.trim() || null,
     ai_fee:          parseInt(document.getElementById('f_ai_fee').value) || null,
     ai_fee_note:     document.getElementById('f_ai_fee_note').value.trim() || null,
     ai_description:  document.getElementById('f_ai_description').value.trim() || null,
+    contract_months: parseInt(document.getElementById('f_contract_months').value) || null,
+    auto_renewal:    document.getElementById('f_auto_renewal').checked,
     features:        getFeatures(),
     sort_order:      parseInt(document.getElementById('f_sort_order').value) || 0,
     is_active:       document.getElementById('f_is_active').checked
@@ -430,22 +758,21 @@ async function savePlan() {
   if (error) { alert('エラー: ' + error.message); return; }
   closeModal();
   await loadPlans();
-  alert(id ? 'プランを更新しました。' : 'プランを登録しました。');
+  alert(id ? '商品を更新しました。' : '商品を登録しました。');
 }
 
 // ---- 削除 ----
 async function deletePlan(id) {
   var p = allPlans.find(function(x){ return x.id === id; });
-  if (!confirm((p ? '「' + p.title + '」' : 'プラン') + ' を削除しますか？')) return;
+  if (!confirm((p ? '「' + p.title + '」' : '商品') + ' を削除しますか？')) return;
   var { error } = await sbClient.from('aisys_plans').delete().eq('id', id);
   if (error) { alert('エラー: ' + error.message); return; }
   await loadPlans();
 }
 
 // モーダル外クリックで閉じる
-document.getElementById('modalBg').addEventListener('click', function(e) {
-  if (e.target === this) closeModal();
-});
+document.getElementById('modalBg').addEventListener('click', function(e) { if (e.target === this) closeModal(); });
+document.getElementById('catModalBg').addEventListener('click', function(e) { if (e.target === this) closeCatModal(); });
 </script>
 </body>
 </html>

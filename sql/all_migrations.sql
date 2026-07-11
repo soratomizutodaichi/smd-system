@@ -162,3 +162,48 @@ $$ LANGUAGE plpgsql;
 CREATE TRIGGER aisys_plans_updated_at
   BEFORE UPDATE ON aisys_plans
   FOR EACH ROW EXECUTE FUNCTION update_updated_at();
+
+
+-- ============================================================
+-- 9. カテゴリーマスタ（階層：大グループ→中分類）2026-07-12
+--    plan-admin.html のカテゴリー管理タブ用
+-- ============================================================
+CREATE TABLE aisys_categories (
+  id          uuid    DEFAULT gen_random_uuid() PRIMARY KEY,
+  parent_id   uuid    REFERENCES aisys_categories(id) ON DELETE CASCADE,  -- 空=大グループ / 指定=中分類
+  name        text    NOT NULL,
+  icon        text    DEFAULT NULL,   -- 絵文字
+  sort_order  integer DEFAULT 0,
+  is_active   boolean DEFAULT true,
+  created_at  timestamptz DEFAULT now()
+);
+
+-- RLS有効化
+ALTER TABLE aisys_categories ENABLE ROW LEVEL SECURITY;
+
+-- 管理者（ログイン済み）: 全操作
+CREATE POLICY "categories_all_authenticated" ON aisys_categories
+  FOR ALL TO authenticated USING (true) WITH CHECK (true);
+GRANT ALL ON aisys_categories TO authenticated;
+
+-- 一般（未ログイン）: 公開カテゴリーのみ参照
+CREATE POLICY "categories_select_anon" ON aisys_categories
+  FOR SELECT TO anon USING (is_active = true);
+GRANT SELECT ON aisys_categories TO anon;
+
+
+-- ============================================================
+-- 10. aisys_plans に列追加（カテゴリー・契約・アイコン・価格自由文）2026-07-12
+-- ============================================================
+ALTER TABLE aisys_plans ADD COLUMN category_id     uuid REFERENCES aisys_categories(id) ON DELETE SET NULL;
+ALTER TABLE aisys_plans ADD COLUMN contract_months integer DEFAULT NULL;   -- 契約期間（ヶ月）
+ALTER TABLE aisys_plans ADD COLUMN auto_renewal    boolean DEFAULT false;  -- 自動更新
+ALTER TABLE aisys_plans ADD COLUMN icon            text    DEFAULT NULL;   -- 絵文字アイコン
+ALTER TABLE aisys_plans ADD COLUMN price_text      text    DEFAULT NULL;   -- 価格の自由文（オプション向け）
+
+
+-- ============================================================
+-- 11. aisys_products 廃止（products.html統合により不要）2026-07-12
+--    ※ plan-admin.html への一本化が完了し、products.html を削除した後に実行してください
+-- ============================================================
+DROP TABLE IF EXISTS aisys_products;
