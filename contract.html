@@ -66,13 +66,19 @@ header p { font-size: 13px; opacity: 0.8; margin-top: 4px; }
 const SUPABASE_URL = 'https://gcmtnzvcoovjqxanbmqc.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdjbXRuenZjb292anF4YW5ibXFjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc0NDczNTksImV4cCI6MjA5MzAyMzM1OX0.30xm_Vd7UdfkombPOfSjg-nYxmuwYlnHHEgqRzWE4fQ';
 var sbClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+// 画面に出す前に文字を無害化する（入力欄に仕込まれた命令を動かさない）
+function esc(s) {
+  return String(s == null ? '' : s).replace(/[&<>"']/g, function(c) {
+    return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+  });
+}
 var params = new URLSearchParams(window.location.search);
 var id = params.get('id');
 var rowData = null;
 
 async function loadData() {
   if (!id) { document.getElementById('content').innerHTML = '<div class="error">URLが正しくありません。</div>'; return; }
-  var { data, error } = await sbClient.from('aisys_form_submissions').select('*').eq('id', id).single();
+  var { data, error } = await sbClient.rpc('get_aisys_submission', { p_id: id });
   if (error || !data) { document.getElementById('content').innerHTML = '<div class="error">データが見つかりません。</div>'; return; }
   rowData = data;
   render(data);
@@ -104,19 +110,19 @@ function render(r) {
         '</div>' +
         '<div class="party-box">' +
           '<div class="party-label">乙（契約者）</div>' +
-          '<div class="party-name">' + (r.name||'') + ' 様</div>' +
-          '<div class="party-sub">' + (r.company||'') + '</div>' +
-          '<div class="party-sub">' + (r.email||'') + '</div>' +
+          '<div class="party-name">' + esc(r.name||'') + ' 様</div>' +
+          '<div class="party-sub">' + esc(r.company||'') + '</div>' +
+          '<div class="party-sub">' + esc(r.email||'') + '</div>' +
           paidBadge +
         '</div>' +
       '</div>' +
 
       '<div class="section">' +
         '<div class="section-title">契約内容</div>' +
-        '<div class="info-row"><div class="info-label">ご契約サービス</div><div class="info-value">' + (r.plan||'') + '</div></div>' +
-        '<div class="info-row"><div class="info-label">面談確定日</div><div class="info-value">' + (r.confirmed_date||'未定') + '</div></div>' +
-        '<div class="info-row"><div class="info-label">サービス実施予定日</div><div class="info-value" style="color:#1A5276;font-weight:700;">' + (r.service_date||'未定') + '</div></div>' +
-        '<div class="info-row"><div class="info-label">お申込み内容</div><div class="info-value">' + (r.message||'―') + '</div></div>' +
+        '<div class="info-row"><div class="info-label">ご契約サービス</div><div class="info-value">' + esc(r.plan||'') + '</div></div>' +
+        '<div class="info-row"><div class="info-label">面談確定日</div><div class="info-value">' + esc(r.confirmed_date||'未定') + '</div></div>' +
+        '<div class="info-row"><div class="info-label">サービス実施予定日</div><div class="info-value" style="color:#1A5276;font-weight:700;">' + esc(r.service_date||'未定') + '</div></div>' +
+        '<div class="info-row"><div class="info-label">お申込み内容</div><div class="info-value">' + esc(r.message||'―') + '</div></div>' +
       '</div>' +
 
       '<div class="payment-section">' +
@@ -146,7 +152,7 @@ function render(r) {
 
       '<div class="sign-area">' +
         '<div class="sign-box"><div class="sign-label">甲（サービス提供者）署名</div><div class="sign-line"></div><div class="sign-name">空と水と大地合同会社　山本 康博</div></div>' +
-        '<div class="sign-box"><div class="sign-label">乙（契約者）署名</div><div class="sign-line"></div><div class="sign-name">' + (r.name||'') + ' 様</div></div>' +
+        '<div class="sign-box"><div class="sign-label">乙（契約者）署名</div><div class="sign-line"></div><div class="sign-name">' + esc(r.name||'') + ' 様</div></div>' +
       '</div>' +
     '</div>' +
 
@@ -159,10 +165,10 @@ function render(r) {
 
 async function applicantPay() {
   if (!confirm('入金の確認を送信します。\n※ 返金はできません。よろしいですか？')) return;
-  var now = new Date().toISOString();
-  var { error } = await sbClient.from('aisys_form_submissions').update({ applicant_paid_at: now }).eq('id', id);
+  var { data: paidAt, error } = await sbClient.rpc('mark_aisys_applicant_paid', { p_id: id });
   if (error) { alert('エラー: ' + error.message); return; }
-  rowData.applicant_paid_at = now;
+  if (!paidAt) { alert('入金確認を送信できませんでした。お手数ですが当社までご連絡ください。'); return; }
+  rowData.applicant_paid_at = paidAt;
   render(rowData);
   alert('入金確認を送信しました。会社側の確認をお待ちください。');
 }

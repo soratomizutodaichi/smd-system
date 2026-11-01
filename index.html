@@ -571,8 +571,19 @@ async function handleSubmit(e){
     message: form.querySelector('textarea').value
   };
 
-  const { data: insertedRows, error } = await sbClient.from('aisys_form_submissions').insert([data]).select('id');
-  const insertedData = (insertedRows && insertedRows[0]) ? insertedRows[0] : null;
+  const { data: newId, error } = await sbClient.rpc('submit_aisys_form', {
+    p_type: data.type,
+    p_name: data.name,
+    p_furigana: data.furigana || null,
+    p_company: data.company || null,
+    p_phone: data.phone || null,
+    p_email: data.email,
+    p_preferred_date_1: data.preferred_date_1 || null,
+    p_preferred_date_2: data.preferred_date_2 || null,
+    p_plan: data.plan || null,
+    p_message: data.message || null
+  });
+  const insertedData = newId ? { id: newId } : null;
 
   if(error){
     alert('送信に失敗しました。時間をおいて再度お試しください。\n' + error.message);

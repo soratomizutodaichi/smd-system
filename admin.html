@@ -135,6 +135,12 @@ emailjs.init({publicKey: 'sydEkxfsmryplEbcO'});
 const SUPABASE_URL = 'https://gcmtnzvcoovjqxanbmqc.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdjbXRuenZjb292anF4YW5ibXFjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc0NDczNTksImV4cCI6MjA5MzAyMzM1OX0.30xm_Vd7UdfkombPOfSjg-nYxmuwYlnHHEgqRzWE4fQ';
 var sbClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+// 画面に出す前に文字を無害化する（入力欄に仕込まれた命令を動かさない）
+function esc(s) {
+  return String(s == null ? '' : s).replace(/[&<>"']/g, function(c) {
+    return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+  });
+}
 var allData = [];
 var showTrash = false;
 
@@ -221,7 +227,7 @@ function renderTable() {
     if (r.deleted_at) return false;
     if (filterType && r.type !== filterType) return false;
     if (filterCalled !== '' && String(r.called) !== filterCalled) return false;
-    if (filterName && !(r.name||'').toLowerCase().includes(filterName)) return false;
+    if (filterName && !esc(r.name||'').toLowerCase().includes(filterName)) return false;
     return true;
   });
 
@@ -242,18 +248,18 @@ function renderTable() {
     html += '<tr' + rowClass + '>';
     html += '<td style="font-size:12px;color:#000;white-space:nowrap;">' +
       dt + '<br>' + badge + '<br>' +
-      '<span style="font-size:11px;color:#888;">' + (r.furigana||'') + '</span><br>' +
-      '<strong style="font-size:14px;">' + (r.name||'') + '</strong><br>' +
-      '<span style="color:#555;font-size:14px;">' + (r.company||'―') + '</span>';
+      '<span style="font-size:11px;color:#888;">' + esc(r.furigana||'') + '</span><br>' +
+      '<strong style="font-size:14px;">' + esc(r.name||'') + '</strong><br>' +
+      '<span style="color:#555;font-size:14px;">' + esc(r.company||'―') + '</span>';
     if (!showTrash) html += '<br><a href="' + confirmUrl + '" target="_blank" style="font-size:11px;color:#2E86C1;">確認ページ</a>';
     html += '</td>';
     html += '<td style="font-size:12px;color:#000;">' +
-      (r.phone||'') + '<br>' +
-      (r.email||'') + '<br>' +
-      '<span style="color:#444;">第1：</span>' + (r.preferred_date_1||'―') + '<br>' +
-      '<span style="color:#444;">第2：</span>' + (r.preferred_date_2||'―') +
+      esc(r.phone||'') + '<br>' +
+      esc(r.email||'') + '<br>' +
+      '<span style="color:#444;">第1：</span>' + esc(r.preferred_date_1||'―') + '<br>' +
+      '<span style="color:#444;">第2：</span>' + esc(r.preferred_date_2||'―') +
       '</td>';
-    html += '<td style="font-size:12px;max-width:160px;color:#000;"><strong>' + (r.plan||'') + '</strong><br>' + (r.message||'') + '</td>';
+    html += '<td style="font-size:12px;max-width:160px;color:#000;"><strong>' + esc(r.plan||'') + '</strong><br>' + esc(r.message||'') + '</td>';
 
     if (showTrash) {
       var delDt = r.deleted_at ? new Date(r.deleted_at).toLocaleString('ja-JP') : '';
@@ -265,7 +271,7 @@ function renderTable() {
       html += '<td style="text-align:center;"><span class="' + calledClass + '">' + calledText + '</span><br><input type="checkbox" class="check-btn" ' + (r.called ? 'checked' : '') + ' onchange="updateCalled(\'' + r.id + '\', this.checked)"></td>';
       var cdParts = parseConfirmedDate(r.confirmed_date);
       html += '<td>';
-      html += '<input type="date" class="date-input" value="' + cdParts.date + '" id="cd_date_' + r.id + '">';
+      html += '<input type="date" class="date-input" value="' + esc(cdParts.date) + '" id="cd_date_' + r.id + '">';
       html += '<br><select class="time-select" id="cd_time_' + r.id + '">' + buildTimeOptions(cdParts.time) + '</select>';
       html += '<br><button class="save-btn" onclick="saveDate(\'' + r.id + '\')">保存とメール送信</button>';
       html += '</td>';
@@ -341,7 +347,7 @@ function renderContractStatus(r) {
     : '<br><button class="save-btn" onclick="saveServiceDate(\'' + r.id + '\')" style="margin-top:4px;">保存</button>';
   var serviceDateHtml =
     '<div style="font-size:11px;font-weight:700;color:#1A5276;margin-bottom:4px;">実施予定日</div>' +
-    '<input type="date" class="date-input" value="' + sdParts.date + '" id="sd_date_' + r.id + '" style="width:130px;">' +
+    '<input type="date" class="date-input" value="' + esc(sdParts.date) + '" id="sd_date_' + r.id + '" style="width:130px;">' +
     '<br><select class="time-select" id="sd_time_' + r.id + '">' + buildTimeOptions(sdParts.time) + '</select>' +
     saveBtn +
     '<hr style="margin:10px 0;border:none;border-top:1px solid #E9ECEF;">';

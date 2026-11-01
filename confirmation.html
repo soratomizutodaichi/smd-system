@@ -50,6 +50,12 @@ header p { font-size: 13px; opacity: 0.8; margin-top: 4px; }
 const SUPABASE_URL = 'https://gcmtnzvcoovjqxanbmqc.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdjbXRuenZjb292anF4YW5ibXFjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc0NDczNTksImV4cCI6MjA5MzAyMzM1OX0.30xm_Vd7UdfkombPOfSjg-nYxmuwYlnHHEgqRzWE4fQ';
 var sbClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+// 画面に出す前に文字を無害化する（入力欄に仕込まれた命令を動かさない）
+function esc(s) {
+  return String(s == null ? '' : s).replace(/[&<>"']/g, function(c) {
+    return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+  });
+}
 
 var params = new URLSearchParams(window.location.search);
 var id = params.get('id');
@@ -59,7 +65,7 @@ async function loadData() {
     document.getElementById('content').innerHTML = '<div class="error">URLが正しくありません。</div>';
     return;
   }
-  var { data, error } = await sbClient.from('aisys_form_submissions').select('*').eq('id', id).single();
+  var { data, error } = await sbClient.rpc('get_aisys_submission', { p_id: id });
   if (error || !data) {
     document.getElementById('content').innerHTML = '<div class="error">データが見つかりません。</div>';
     return;
@@ -72,16 +78,16 @@ async function loadData() {
     ? ''
     : '<div class="status-row"><span class="status-icon">⏳</span><span class="status-text" style="color:#E67E22;">対応準備中（通常1〜3営業日以内にご連絡します）</span></div>';
   var confirmedHtml = r.confirmed_date
-    ? '<div class="confirmed-date">📅 面談確定日程：' + r.confirmed_date + '</div>'
+    ? '<div class="confirmed-date">📅 面談確定日程：' + esc(r.confirmed_date) + '</div>'
     : '';
   var contractHtml = '';
   if (r.contract_sent_at) {
-    var contractUrl = r.contract_url || ('https://aisys.soratomizutodaichi.com/contract.html?id=' + r.id);
+    var contractUrl = 'https://aisys.soratomizutodaichi.com/contract.html?id=' + encodeURIComponent(r.id);
     if (r.company_confirmed_paid_at && r.applicant_paid_at) {
       var serviceDateHtml = r.service_date
         ? '<div style="margin-top:20px;background:#fff;border-radius:12px;padding:20px 24px;border:2px solid #1E8449;">' +
             '<div style="font-size:13px;font-weight:700;color:#1E8449;margin-bottom:8px;">🗓 サービス実施予定日時</div>' +
-            '<div style="font-size:22px;font-weight:900;color:#1A5276;">' + r.service_date + '</div>' +
+            '<div style="font-size:22px;font-weight:900;color:#1A5276;">' + esc(r.service_date) + '</div>' +
           '</div>'
         : '';
       contractHtml = '<div class="status-box" style="background:#D5F5E3;margin-top:16px;">' +
@@ -105,8 +111,8 @@ async function loadData() {
     if (r.confirmed_date) {
       dateHtml = '';
     } else {
-      dateHtml = '<div class="info-row"><div class="info-label">ご希望日時（第1希望）</div><div class="info-value">' + (r.preferred_date_1||'未入力') + '</div></div>' +
-                 '<div class="info-row"><div class="info-label">ご希望日時（第2希望）</div><div class="info-value">' + (r.preferred_date_2||'未入力') + '</div></div>';
+      dateHtml = '<div class="info-row"><div class="info-label">ご希望日時（第1希望）</div><div class="info-value">' + esc(r.preferred_date_1||'未入力') + '</div></div>' +
+                 '<div class="info-row"><div class="info-label">ご希望日時（第2希望）</div><div class="info-value">' + esc(r.preferred_date_2||'未入力') + '</div></div>';
     }
   }
   var meetingSectionTitle = r.confirmed_date ? '面談確定' : 'ご希望日時';
@@ -114,18 +120,18 @@ async function loadData() {
   document.getElementById('content').innerHTML =
     '<div class="card">' +
       '<div class="card-header">' +
-        '<span class="badge badge-' + r.type + '">' + badgeText + '</span>' +
-        '<h2>' + (r.name||'') + ' 様のお申込み内容</h2>' +
+        '<span class="badge badge-' + (isMeeting ? 'meeting' : 'inquiry') + '">' + badgeText + '</span>' +
+        '<h2>' + esc(r.name||'') + ' 様のお申込み内容</h2>' +
         '<p>受付日時：' + dt + '</p>' +
       '</div>' +
       '<div class="card-body">' +
         '<div class="section-title">お客様情報</div>' +
-        '<div class="info-row"><div class="info-label">お名前</div><div class="info-value">' + (r.name||'') + ' 様</div></div>' +
-        '<div class="info-row"><div class="info-label">店舗・会社名</div><div class="info-value">' + (r.company||'―') + '</div></div>' +
-        '<div class="info-row"><div class="info-label">電話番号</div><div class="info-value">' + (r.phone||'') + '</div></div>' +
-        '<div class="info-row"><div class="info-label">メールアドレス</div><div class="info-value">' + (r.email||'') + '</div></div>' +
-        (isMeeting ? '<div class="section-title" style="margin-top:24px;">' + meetingSectionTitle + '</div>' + dateHtml + '<div class="info-row"><div class="info-label">関心のあるサービス</div><div class="info-value">' + (r.plan||'') + '</div></div>' : '') +
-        '<div class="info-row" style="margin-top:8px;"><div class="info-label">内容・ご質問</div><div class="info-value">' + (r.message||'―') + '</div></div>' +
+        '<div class="info-row"><div class="info-label">お名前</div><div class="info-value">' + esc(r.name||'') + ' 様</div></div>' +
+        '<div class="info-row"><div class="info-label">店舗・会社名</div><div class="info-value">' + esc(r.company||'―') + '</div></div>' +
+        '<div class="info-row"><div class="info-label">電話番号</div><div class="info-value">' + esc(r.phone||'') + '</div></div>' +
+        '<div class="info-row"><div class="info-label">メールアドレス</div><div class="info-value">' + esc(r.email||'') + '</div></div>' +
+        (isMeeting ? '<div class="section-title" style="margin-top:24px;">' + meetingSectionTitle + '</div>' + dateHtml + '<div class="info-row"><div class="info-label">関心のあるサービス</div><div class="info-value">' + esc(r.plan||'') + '</div></div>' : '') +
+        '<div class="info-row" style="margin-top:8px;"><div class="info-label">内容・ご質問</div><div class="info-value">' + esc(r.message||'―') + '</div></div>' +
         '<div class="status-box">' +
           '<div class="status-title">📞 対応状況</div>' +
           calledHtml +
