@@ -1,0 +1,138 @@
+/* AISYS（アイシス）トップページ専用。他ページの style.css には影響させない */
+:root {
+  --ink: #1C2430;
+  --sub: #4A5260;
+  --line: #D6D3CB;
+  --bg: #F7F6F2;
+  --card: #FFFFFF;
+  --blue: #0F5E8C;
+  --blue-dark: #0A4566;
+  --orange: #D9822B;
+  --orange-bg: #FFF4E8;
+  --orange-ink: #9A4D0C;
+  --error: #B42318;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: 'Noto Sans JP', 'Hiragino Sans', 'Yu Gothic', 'Meiryo', sans-serif;
+  line-height: 1.7;
+}
+a { color: var(--blue); }
+a:hover { color: var(--blue-dark); }
+h1, h2, h3, p { margin: 0; }
+
+.wrap { max-width: 1120px; margin: 0 auto; padding: 0 24px; }
+.section { padding: 64px 0 24px; }
+.section > .wrap { display: flex; flex-direction: column; gap: 24px; }
+.section-title { font-size: 28px; font-weight: 700; }
+.lead { font-size: 16px; color: var(--sub); max-width: 760px; }
+.note { font-size: 13px; color: var(--sub); }
+
+/* ヘッダー */
+.site-header { border-bottom: 1px solid var(--line); background: var(--card); }
+.site-header .wrap {
+  padding-top: 14px; padding-bottom: 14px;
+  display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px 24px;
+}
+.brand { text-decoration: none; color: var(--ink); font-weight: 700; font-size: 17px; }
+.brand small { font-size: 12px; font-weight: 500; color: var(--sub); margin-left: 1em; }
+.site-nav { display: flex; flex-wrap: wrap; gap: 4px 20px; font-size: 14px; }
+.site-nav a { text-decoration: none; padding: 10px 0; }
+.site-nav .nav-cta { padding: 10px 16px; background: var(--blue); color: #FFFFFF; border-radius: 8px; }
+.site-nav .nav-cta:hover { background: var(--blue-dark); color: #FFFFFF; }
+
+/* ファーストビュー */
+.hero { background: var(--blue); color: #FFFFFF; }
+.hero .wrap { padding-top: 80px; padding-bottom: 72px; display: flex; flex-direction: column; gap: 20px; }
+.hero-kicker { font-size: 15px; font-weight: 500; letter-spacing: 0.08em; }
+.hero h1 { font-size: clamp(34px, 6vw, 56px); line-height: 1.25; font-weight: 900; }
+.hero-text { font-size: 18px; max-width: 640px; }
+.hero-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 8px; }
+.btn-white { text-decoration: none; background: #FFFFFF; color: var(--blue); font-weight: 700; padding: 14px 24px; border-radius: 10px; }
+.btn-outline { text-decoration: none; border: 1px solid #FFFFFF; color: #FFFFFF; font-weight: 500; padding: 14px 24px; border-radius: 10px; }
+.btn-outline:hover { color: #FFFFFF; background: rgba(255, 255, 255, 0.12); }
+
+/* カード */
+.grid { display: grid; gap: 16px; }
+.grid-240 { grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+.grid-220 { grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+.grid-300 { grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
+.card {
+  background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 22px;
+  display: flex; flex-direction: column; gap: 8px;
+}
+.card h3 { font-size: 18px; font-weight: 700; }
+.card p { font-size: 14px; color: var(--sub); }
+.card-plain { font-size: 15px; padding: 20px; }
+.card .step-no { font-size: 13px; font-weight: 700; color: var(--blue); }
+.card .case-tag { font-size: 13px; }
+.card .case-result { font-size: 15px; font-weight: 700; color: var(--blue); }
+
+/* 料金 */
+.price-card { padding: 24px; gap: 6px; }
+.price-card.featured { border: 2px solid var(--blue); }
+.price-card h3 { font-size: 17px; }
+.card .price { font-size: 30px; font-weight: 900; color: var(--ink); }
+
+/* よくある質問 */
+.faq-list { display: flex; flex-direction: column; gap: 16px; }
+.faq-list details { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 16px 20px; }
+.faq-list summary { cursor: pointer; font-size: 16px; font-weight: 700; padding: 6px 0; }
+.faq-list details p { margin-top: 8px; font-size: 15px; color: var(--sub); }
+
+/* 申込み */
+.contact-section { padding: 64px 0 80px; }
+.contact-box {
+  background: var(--orange-bg); border: 2px solid var(--orange); border-radius: 16px; padding: 32px 28px;
+  display: flex; flex-wrap: wrap; gap: 32px;
+}
+.contact-info { flex: 1 1 320px; display: flex; flex-direction: column; gap: 12px; font-size: 15px; }
+.contact-kicker { font-size: 14px; font-weight: 700; color: var(--orange-ink); }
+.contact-info h2 { font-size: 28px; font-weight: 900; }
+.contact-form { flex: 1 1 320px; display: flex; flex-direction: column; gap: 14px; }
+.contact-form[hidden] { display: none; }
+.field { display: flex; flex-direction: column; gap: 4px; }
+.field label { font-size: 14px; font-weight: 700; }
+.field .req { color: var(--error); font-size: 12px; margin-left: 6px; }
+.field .opt { color: var(--sub); font-size: 12px; font-weight: 500; margin-left: 6px; }
+.field input, .field textarea {
+  font: inherit; padding: 12px; border: 1px solid #A9ADB5; border-radius: 8px; background: #FFFFFF; color: var(--ink);
+}
+.field input:focus, .field textarea:focus { outline: 2px solid var(--blue); outline-offset: 1px; }
+.hp-field { position: absolute; left: -10000px; width: 1px; height: 1px; overflow: hidden; }
+.consent { font-size: 13px; color: var(--sub); }
+.btn-submit {
+  font: inherit; font-weight: 700; padding: 14px; border: none; border-radius: 10px;
+  background: var(--blue); color: #FFFFFF; cursor: pointer;
+}
+.btn-submit:hover { background: var(--blue-dark); }
+.btn-submit:disabled { opacity: 0.6; cursor: default; }
+.form-error { color: var(--error); font-size: 14px; font-weight: 700; }
+.form-done {
+  flex: 1 1 320px; background: var(--card); border-radius: 12px; padding: 28px;
+  display: flex; flex-direction: column; gap: 10px;
+}
+.form-done[hidden] { display: none; }
+.form-done h3 { font-size: 20px; }
+
+/* フッター */
+.site-footer { border-top: 1px solid var(--line); background: var(--card); }
+.site-footer .wrap {
+  padding-top: 28px; padding-bottom: 28px;
+  display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; font-size: 13px; color: var(--sub);
+}
+.site-footer strong { color: var(--ink); }
+
+@media (max-width: 600px) {
+  .wrap { padding: 0 16px; }
+  .hero .wrap { padding-top: 56px; padding-bottom: 48px; }
+  .hero-text { font-size: 16px; }
+  .section-title, .contact-info h2 { font-size: 23px; }
+  .contact-box { padding: 24px 18px; }
+  .brand small { display: block; margin-left: 0; }
+}

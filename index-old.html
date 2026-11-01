@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex">
+<title>AIホームページ作成支援 | 空と水と大地合同会社</title>
+<meta name="description" content="サブスク事業で全国2,000社を束ねた元IT経営者が伝授。AIエージェントを使って日本語で話しかけるだけ。月額3,600円〜で専属プログラマーを雇える。高知発・全国対応。">
+<link rel="stylesheet" href="style.css">
+<style>
+.profile-section{background:linear-gradient(160deg,#0d1b2a 0%,#1A5276 100%);color:#fff;padding:80px 0;}
+.career-timeline{max-width:680px;}
+.ct-item{display:flex;gap:20px;margin-bottom:20px;align-items:flex-start;}
+.ct-year{min-width:52px;font-size:13px;font-weight:700;color:#AED6F1;padding-top:2px;}
+.ct-body{font-size:14px;color:rgba(255,255,255,0.82);line-height:1.7;border-left:2px solid rgba(255,255,255,0.15);padding-left:16px;}
+.ct-body strong{color:#fff;}
+.credential-row{display:flex;gap:12px;flex-wrap:wrap;margin-top:28px;}
+.credential-pill{background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.25);border-radius:999px;padding:6px 16px;font-size:13px;color:rgba(255,255,255,0.85);}
+.intro-box{background:rgba(255,255,255,0.07);border-radius:16px;padding:28px 32px;margin-top:32px;max-width:680px;font-size:15px;line-height:1.9;color:rgba(255,255,255,0.85);}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="container header-inner">
+    <a class="logo" href="#" style="text-decoration:none;color:inherit;">
+      空と水と大地合同会社
+      <span>システムサービス部門 ／ AIホームページ作成支援</span>
+    </a>
+    <nav>
+      <a href="#about">代表紹介</a>
+      <a href="#ai-appeal">仕組み</a>
+      <a href="#plans">料金</a>
+      <a href="#how">流れ</a>
+      <a href="#faq">FAQ</a>
+      <a href="#order" class="btn btn-primary" style="padding:8px 20px;">無料面談を予約</a>
+    </nav>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero" id="top">
+  <div class="container" style="position:relative;z-index:2;">
+    <div style="display:flex;align-items:center;gap:48px;justify-content:center;">
+      <div style="flex:1;min-width:0;">
+        <div class="hero-badge">🌏 会社経営者視点の伴走支援 · AI専属プログラマー活用支援</div>
+        <h1>
+          <em>AIエージェントという</em><br>
+          <em>専属プログラマーを</em><br>
+          雇いませんか？
+        </h1>
+        <p>
+          日本語でどうしたいかを相談したり、指示したりして、<br>
+          　WebSiteを作り・直し・育てていく。　さらに<br>
+          　インターネット画面で会社の管理システムも実現できるようになりました！あなたが指示すればできるのです！<br>
+          月額 <strong style="color:#F9E79F;">1,600円〜</strong> で雇えるAI専属プログラマー。<br>
+          IT経営30年・全国2,000社を束ねた会社経営者が伴走します。
+        </p>
+        <div class="hero-btns">
+          <a href="#order" class="btn btn-primary btn-lg">無料面談を予約する（30分）→</a>
+          <a href="#about" class="btn btn-outline btn-lg" style="color:#fff;border-color:#fff;">代表の経歴を見る</a>
+        </div>
+      </div>
+      <!-- AI専属プログラマーのイメージ図 -->
+      <div style="flex-shrink:0;display:flex;align-items:center;justify-content:center;">
+        <svg viewBox="0 0 320 260" width="320" height="260" xmlns="http://www.w3.org/2000/svg" style="filter:drop-shadow(0 8px 32px rgba(0,0,0,0.35));">
+          <!-- モニター本体 -->
+          <rect x="20" y="20" width="280" height="190" rx="14" fill="#1A3A5C" stroke="#2E86C1" stroke-width="2.5"/>
+          <rect x="30" y="30" width="260" height="170" rx="8" fill="#0d1b2a"/>
+          <!-- 画面の光沢 -->
+          <rect x="30" y="30" width="260" height="50" rx="8" fill="url(#gloss)" opacity="0.12"/>
+          <!-- スタンド -->
+          <rect x="135" y="210" width="50" height="22" rx="4" fill="#1A5276"/>
+          <rect x="110" y="230" width="100" height="10" rx="5" fill="#2E86C1"/>
+          <!-- コードライン（背景） -->
+          <rect x="44" y="48" width="100" height="5" rx="2.5" fill="#1ABC9C" opacity="0.4"/>
+          <rect x="44" y="60" width="140" height="5" rx="2.5" fill="#AED6F1" opacity="0.3"/>
+          <rect x="44" y="72" width="80" height="5" rx="2.5" fill="#F9E79F" opacity="0.4"/>
+          <rect x="44" y="84" width="120" height="5" rx="2.5" fill="#AED6F1" opacity="0.3"/>
+          <rect x="44" y="96" width="60" height="5" rx="2.5" fill="#1ABC9C" opacity="0.4"/>
+          <!-- AIロボットキャラクター（画面内） -->
+          <!-- 体 -->
+          <rect x="152" y="105" width="56" height="52" rx="10" fill="#2E86C1"/>
+          <!-- 頭 -->
+          <rect x="158" y="70" width="44" height="40" rx="10" fill="#3498DB"/>
+          <!-- アンテナ -->
+          <line x1="180" y1="70" x2="180" y2="58" stroke="#1ABC9C" stroke-width="2.5" stroke-linecap="round"/>
+          <circle cx="180" cy="55" r="5" fill="#1ABC9C"/>
+          <!-- 目 (LED) -->
+          <rect x="167" y="80" width="8" height="6" rx="3" fill="#fff"/>
+          <rect x="184" y="80" width="8" height="6" rx="3" fill="#fff"/>
+          <rect x="170" y="82" width="4" height="3" rx="1.5" fill="#1ABC9C"/>
+          <rect x="187" y="82" width="4" height="3" rx="1.5" fill="#1ABC9C"/>
+          <!-- 笑顔ライン -->
+          <path d="M170 94 Q180 100 190 94" stroke="#fff" stroke-width="2" fill="none" stroke-linecap="round"/>
+          <!-- 腕（左：ユーザー側へ伸ばす） -->
+          <rect x="108" y="108" width="44" height="14" rx="7" fill="#2E86C1"/>
+          <circle cx="106" cy="115" r="9" fill="#3498DB"/>
+          <!-- 腕（右） -->
+          <rect x="208" y="108" width="32" height="14" rx="7" fill="#2E86C1"/>
+          <!-- 足 -->
+          <rect x="160" y="155" width="14" height="16" rx="5" fill="#1A5276"/>
+          <rect x="185" y="155" width="14" height="16" rx="5" fill="#1A5276"/>
+          <!-- ツールアイコン（手に持つ） -->
+          <circle cx="94" cy="115" r="13" fill="#1ABC9C" opacity="0.9"/>
+          <text x="94" y="120" text-anchor="middle" font-size="13" fill="#fff">⚙</text>
+          <!-- 吹き出し -->
+          <rect x="205" y="58" width="96" height="36" rx="8" fill="#fff" opacity="0.95"/>
+          <polygon points="205,76 195,80 205,84" fill="#fff" opacity="0.95"/>
+          <text x="213" y="74" font-size="9.5" fill="#1A5276" font-weight="bold">「背景を青に</text>
+          <text x="213" y="86" font-size="9.5" fill="#1A5276" font-weight="bold">してください」✅</text>
+          <!-- HP画面（右下コーナー） -->
+          <rect x="44" y="130" width="96" height="58" rx="6" fill="#1A5276" opacity="0.8"/>
+          <rect x="50" y="137" width="84" height="8" rx="3" fill="#2E86C1" opacity="0.9"/>
+          <rect x="50" y="150" width="55" height="5" rx="2.5" fill="#AED6F1" opacity="0.6"/>
+          <rect x="50" y="160" width="70" height="5" rx="2.5" fill="#AED6F1" opacity="0.4"/>
+          <rect x="50" y="170" width="40" height="5" rx="2.5" fill="#1ABC9C" opacity="0.6"/>
+          <!-- グラデーション定義 -->
+          <defs>
+            <linearGradient id="gloss" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#fff"/>
+              <stop offset="100%" stop-color="#fff" stop-opacity="0"/>
+            </linearGradient>
+          </defs>
+        </svg>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- APPEAL STRIP -->
+<div style="background:#F9E79F;padding:16px 0;text-align:center;border-bottom:1px solid #e8d870;">
+  <div class="container">
+    <div style="font-size:clamp(13px,2vw,17px);font-weight:700;color:#7D6608;line-height:1.7;">
+      「背景を青にして」「営業時間を追加して」「問い合わせフォームを作って」<br>
+      <span style="color:#1A5276;">— 日本語で話しかけるだけで、AI専属プログラマーが即座に対応します。</span>
+    </div>
+  </div>
+</div>
+
+<!-- WHY THIS DIVISION -->
+<section style="background:#F8F9FA;padding:60px 0;">
+  <div class="container" style="max-width:860px;">
+    <div style="text-align:center;margin-bottom:32px;">
+      <div class="section-label">Why this service</div>
+      <h2 class="section-title">八升豆×AIシステム——<br>2つの「本物」を届ける会社</h2>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
+      <div class="why-card" style="border-left:4px solid #7D6608;border-radius:0 12px 12px 0;">
+        <div class="why-icon">🌱</div>
+        <h3>メイン事業：八升豆焙煎粉</h3>
+        <p>空と水と大地合同会社のメインビジネスは、高知の豊かな自然から生まれた「八升豆焙煎粉」の育成から生産そして、販売です。自然の恵みを届ける農業ビジネスを核に据えています。だって、健康があっての仕事ですからね。</p>
+      </div>
+      <div class="why-card" style="border-left:4px solid #2E86C1;border-radius:0 12px 12px 0;">
+        <div class="why-icon">🤖</div>
+        <h3>新部門：AIシステムサービス</h3>
+        <p>30年のIT経営の経験を持つ山本が、AIという新技術を事業者の皆さまに届けるため新設した部門です。「農業も、ITも、本物を届ける」という理念で運営しています。</p>
+      </div>
+    </div>
+    
+  </div>
+</section>
+
+<!-- AI APPEAL -->
+<section style="background:#fff;padding:80px 0;" id="ai-appeal">
+  <div class="container">
+    <div class="section-header" style="text-align:center;">
+      <div class="section-label">Why it works</div>
+      <h2 class="section-title" style="text-align:center;">AIエージェントは、<br>月額1,600円〜で雇える<br>専属プログラマーです。</h2>
+      <p class="section-desc" style="margin:0 auto;text-align:center;">難しいのは最初の環境構築だけ。それは私たちがやります。<br>あとはあなたが日本語で「話しかける」だけです。</p>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px;margin-bottom:40px;">
+      <div style="background:#EBF5FB;border-radius:var(--radius);padding:28px 24px;">
+        <div style="font-size:36px;margin-bottom:12px;">💬</div>
+        <h3 style="font-size:16px;margin-bottom:10px;color:#1A5276;">日本語で指示するだけ</h3>
+        <p style="font-size:14px;color:var(--gray-600);line-height:1.75;">「問い合わせフォームを追加して」「営業時間を変えて」— そのまま話しかければ、AIが即座に反映します。コードの知識ゼロで大丈夫。</p>
+      </div>
+      <div style="background:#E8F8F5;border-radius:var(--radius);padding:28px 24px;">
+        <div style="font-size:36px;margin-bottom:12px;">🤖</div>
+        <h3 style="font-size:16px;margin-bottom:10px;color:#0F6E56;">AIが開発をすべてやる</h3>
+        <p style="font-size:14px;color:var(--gray-600);line-height:1.75;">デザイン・写真配置・テキスト編集——全部AIが実行。あなたは「どうしたいか」を言うだけ。まるで専属のWeb開発担当者がいるようです。</p>
+      </div>
+      <div style="background:#FEF9E7;border-radius:var(--radius);padding:28px 24px;">
+        <div style="font-size:36px;margin-bottom:12px;">♾️</div>
+        <h3 style="font-size:16px;margin-bottom:10px;color:#7D6608;">何度でも・いつでも修正</h3>
+        <p style="font-size:14px;color:var(--gray-600);line-height:1.75;">「やっぱりここを変えたい」が何度でも無料。HP業者への開発や修正費用が完全にゼロになります。</p>
+      </div>
+    </div>
+    <!-- 会話デモ -->
+    <div style="background:var(--gray-100);border-radius:var(--radius);padding:28px 32px;max-width:640px;margin:0 auto;">
+      <div style="font-size:13px;font-weight:600;color:var(--gray-600);margin-bottom:16px;text-align:center;">💡 こんな感じで話しかけるだけでOKです</div>
+      <div style="display:flex;flex-direction:column;gap:12px;">
+        <div style="display:flex;gap:10px;align-items:flex-start;">
+          <div style="background:#2E86C1;color:#fff;border-radius:999px;padding:4px 10px;font-size:12px;font-weight:700;white-space:nowrap;margin-top:2px;">あなた</div>
+          <div style="background:#fff;border-radius:0 12px 12px 12px;padding:10px 14px;font-size:14px;box-shadow:0 1px 4px rgba(0,0,0,0.08);">「トップページの背景を青にして、お店の名前を大きく表示して」</div>
+        </div>
+        <div style="display:flex;gap:10px;align-items:flex-start;flex-direction:row-reverse;">
+          <div style="background:#1ABC9C;color:#fff;border-radius:999px;padding:4px 10px;font-size:12px;font-weight:700;white-space:nowrap;margin-top:2px;">AI</div>
+          <div style="background:#E8F8F5;border-radius:12px 0 12px 12px;padding:10px 14px;font-size:14px;box-shadow:0 1px 4px rgba(0,0,0,0.08);">「承知しました。背景を青に変更し、店名を画面上部に大きく配置しました ✅」</div>
+        </div>
+        <div style="display:flex;gap:10px;align-items:flex-start;">
+          <div style="background:#2E86C1;color:#fff;border-radius:999px;padding:4px 10px;font-size:12px;font-weight:700;white-space:nowrap;margin-top:2px;">あなた</div>
+          <div style="background:#fff;border-radius:0 12px 12px 12px;padding:10px 14px;font-size:14px;box-shadow:0 1px 4px rgba(0,0,0,0.08);">「営業時間のページも追加して。月曜定休で」</div>
+        </div>
+        <div style="display:flex;gap:10px;align-items:flex-start;flex-direction:row-reverse;">
+          <div style="background:#1ABC9C;color:#fff;border-radius:999px;padding:4px 10px;font-size:12px;font-weight:700;white-space:nowrap;margin-top:2px;">AI</div>
+          <div style="background:#E8F8F5;border-radius:12px 0 12px 12px;padding:10px 14px;font-size:14px;box-shadow:0 1px 4px rgba(0,0,0,0.08);">「営業時間ページ（月曜定休）を追加しました。いつでも日本語で変更できます ✅」</div>
+        </div>
+      </div>
+      <div style="text-align:center;margin-top:14px;font-size:13px;color:var(--gray-600);">こんな会話をAIに指示していけば、HPが完成・更新されていきます。とても不思議でエキサイティング。あなたの頭の中の「やりたい」が実現できます。</div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="how" id="how">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-label">How it works</div>
+      <h2 class="section-title">ご契約までの5ステップ</h2>
+      <p class="section-desc">面談でニーズを確認し、契約のうえで作業します。はじめてでも安心です。</p>
+    </div>
+    <div class="steps">
+      <div class="step-card"><div class="step-num">1</div><div class="step-title">面談を予約</div><p class="step-desc">フォームまたはお電話でご予約ください。</p></div>
+      <div class="step-card"><div class="step-num">2</div><div class="step-title">30分面談（無料）</div><p class="step-desc">電話またはオンラインで約30分。ニーズを確認し最適なプランをご提案します。</p></div>
+      <div class="step-card"><div class="step-num">3</div><div class="step-title">契約書の締結</div><p class="step-desc">ご納得いただけたら契約書を取り交わします。</p></div>
+      <div class="step-card"><div class="step-num">4</div><div class="step-title">環境構築・操作指導</div><p class="step-desc">訪問またはリモートで3時間以内。AIツールの設定と使い方をお教えします。</p></div>
+      <div class="step-card"><div class="step-num">5</div><div class="step-title">HP完成・運用開始</div><p class="step-desc">その日から自分で更新・管理できます。</p></div>
+    </div>
+    <div style="text-align:center;margin-top:40px;">
+      <a href="#order" class="cta-btn" style="display:inline-block;background:linear-gradient(135deg,#2E86C1,#1ABC9C);color:#fff;font-size:18px;font-weight:700;padding:18px 48px;border-radius:50px;text-decoration:none;box-shadow:0 4px 20px rgba(46,134,193,0.4);letter-spacing:0.05em;">面談を予約する　→</a>
+    </div>
+  </div>
+</section>
+<!-- PLANS -->
+<section id="plans">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-label">Pricing Plans</div>
+      <h2 class="section-title">料金プラン</h2>
+      <p class="section-desc">すべてのプランに「自分でHPを作れるようになる」環境構築と操作指導が含まれます。</p>
+    </div>
+    <div class="plans-grid">
+      <div class="plan-card featured">
+        <div class="plan-badge green">🔥 一番人気</div>
+        <div class="plan-icon">📄</div>
+        <div class="plan-name">標準ホームページプラン</div>
+        <div class="plan-tagline">まず「HPを持つ」ことからスタートしたい方に。<br><small style="color:#2E86C1;font-weight:600;">サービス提供時間　3時間以内</small></div>
+        <div class="plan-price-block">
+          <div class="plan-init">初期費用 <strong>33,000</strong> 円</div>
+          <div class="plan-monthly">月額サポート <strong>3,300</strong> 円/月：1年契約</div>
+          <div style="font-size:12px;color:#e67e22;margin-top:4px;font-weight:600;">+ AIエージェント料 1,600円〜/月（別途）</div>
+          <div style="font-size:11px;color:#6C757D;margin-top:4px;line-height:1.6;">AIエージェントのご契約は直接その企業とのご契約となります。費用は、AIエージェントによって違います。</div>
+        </div>
+        <ul class="plan-features">
+          <li>静的HP作成環境構築</li>
+          <li>HP操作方法レクチャー</li>
+          <li>AIツール解説と更新（月次）</li>
+        </ul>
+      </div>
+      <div class="plan-card featured">
+        <div class="plan-badge">⚡ 高機能おすすめ</div>
+        <div class="plan-icon">⚙️</div>
+        <div class="plan-name">駆動型ホームページ（WebSite）プラン</div>
+        <div class="plan-tagline">今日のイベント・今日の特価商品・予約・問い合わせ・商品販売・googleカレンダー連携・Web契約書作成など動的な機能が必要なお店に。<br><small style="color:#2E86C1;font-weight:600;">サービス提供時間　4時間以内</small></div>
+        <div class="plan-price-block">
+          <div class="plan-init">初期費用 <strong>55,000</strong> 円</div>
+          <div class="plan-monthly">月額サポート <strong>5,500</strong> 円/月〜：1年契約</div>
+          <div style="font-size:12px;color:#e67e22;margin-top:4px;font-weight:600;">+ AIエージェント料 1,600円〜/月（別途）</div>
+          <div style="font-size:11px;color:#6C757D;margin-top:4px;line-height:1.6;">AIエージェントのご契約は直接その企業とのご契約となります。費用は、AIエージェントによって違います。</div>
+        </div>
+        <ul class="plan-features">
+          <li>動的HP作成環境構築</li>
+          <li>データーベース、メール転送など構築</li>
+          <li>HP操作方法レクチャー</li>
+          <li>AIツール解説と更新（月次）</li>
+        </ul>
+      </div>
+    </div>
+    <div style="background:#5B9EC9;border-radius:12px;padding:24px 28px;margin-top:20px;color:#fff;border:2px solid #85C1E9;">
+      <div style="font-size:16px;font-weight:700;margin-bottom:10px;">🤖 AIエージェント利用料について（別途必要）</div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-bottom:12px;">
+        <div style="background:rgba(255,255,255,0.12);border-radius:8px;padding:12px 16px;">
+          <div style="font-size:12px;opacity:0.75;margin-bottom:4px;">月額利用料</div>
+          <div style="font-size:24px;font-weight:700;">1,600円〜<span style="font-size:13px;font-weight:400;">/月</span></div>
+          <div style="font-size:12px;opacity:0.7;margin-top:2px;">使用量により変動</div>
+        </div>
+        <div style="background:rgba(255,255,255,0.12);border-radius:8px;padding:12px 16px;">
+          <div style="font-size:12px;opacity:0.75;margin-bottom:4px;">人間プログラマーとの比較</div>
+          <div style="font-size:14px;line-height:1.6;opacity:0.9;">人件費：月30〜60万円<br>AIエージェント：月1,600円〜<br><strong style="color:#F9E79F;">約200〜400倍のコスト差</strong></div>
+        </div>
+      </div>
+      <div style="font-size:13px;opacity:0.75;border-top:1px solid rgba(255,255,255,0.2);padding-top:10px;">
+        ※ AIエージェント費用はお客様が直接サービス提供会社へお支払いいただきます。費用の支払い期間は、1ケ月以上です。使いたい月だけ支払うことも可能です。当社月額サポート料とは別です。設定・契約手続きは当社がサポートします。
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- VISIT FEE -->
+<div class="visit-fee">
+  <div class="container">
+    <div style="text-align:center;margin-bottom:28px;font-size:18px;font-weight:700;color:#fff;">出張・リモート費用について</div>
+    <div class="visit-grid">
+      <div class="visit-item"><div class="num">無料</div><div class="label">片道30分以内の訪問</div></div>
+      <div class="visit-item"><div class="num">+3,000円</div><div class="label">30分超・30分ごとに加算</div></div>
+      <div class="visit-item"><div class="num">無料</div><div class="label">リモート対応の交通費</div></div>
+      <div class="visit-item"><div class="num">全国対応</div><div class="label">リモートなら場所を選ばず</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- OPTIONS -->
+<section class="options-section" id="options">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-label">Options</div>
+      <h2 class="section-title">オプションサービス</h2>
+    </div>
+    <div class="options-grid">
+      <div class="option-card water">
+        <div class="option-name">📱 SNS連携プラン</div>
+        <div class="option-price">初期 10,000円 / 月額 1,000円（1サービス）</div>
+        <div class="option-desc">
+          ・Googleカレンダー　・Googleスプレッドシート　・Googleマップ<br>
+          ・LINE　・Instagram　・X　・Facebook<br>
+          <span style="font-size:13px;color:#5DADE2;">WebSiteと連携（駆動型プランに対応）</span>
+        </div>
+      </div>
+      <div class="option-card"><div class="option-name">📊 SEO対策プラン</div><div class="option-price">1回 15,000円（月次レポート別途 3,000円〜）</div><div class="option-desc">検索順位を上げる方法をAIと一緒に学びます。</div></div>
+      <div class="option-card"><div class="option-name">🌐 ドメイン取得プラン</div><div class="option-price">初期 10,000円 / 月額 無料</div><div class="option-desc">独自ドメインの取得をお手伝いします。また、作成したホームページにそのドメインを設定する方法をお伝えします。</div></div>
+      <div class="option-card earth" style="grid-column:1/-1;">
+        <div class="option-name">🛠 受託開発プラン</div>
+        <div class="option-price">330,000円〜</div>
+        <div class="option-desc">開発はやはり「おまかせしたい」という方向け。<br>単なるホームページを作る、業務システムを作る、顧客と対話サイトをつくるなど、あなたのニーズに応じて対応します。費用については、別途見積もりいたします。</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHY US -->
+<section>
+  <div class="container">
+    <div class="section-header">
+      <div class="section-label">Why choose us</div>
+      <h2 class="section-title">空と水と大地システムサービス部が選ばれる理由</h2>
+    </div>
+    <div class="why-grid">
+      <div class="why-card"><div class="why-icon">🏆</div><h3>30年のIT経営実績</h3><p>代表の山本は1993年からIT経営を続け、売上2.5億円・全国2,000社の実績を持ちます。「教える側」が本物のIT経営者です。</p></div>
+      <div class="why-card"><div class="why-icon">💬</div><h3>日本語で話しかけるだけ</h3><p>一度覚えれば、更新も追加も自分でできます。AIエージェントがあなたの「デジタル担当者」になります。</p></div>
+      <div class="why-card"><div class="why-icon">🌿</div><h3>高知に根ざした地域密着サポート</h3><p>高知市を拠点に直接訪問でサポート。地域の事業者の事情をよく知る担当者が対応します。</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section style="background:#F8F9FA;" id="faq">
+  <div class="container">
+    <div class="section-header"><div class="section-label">FAQ</div><h2 class="section-title">よくあるご質問</h2></div>
+    <div class="faq-list">
+      <div class="faq-item"><div class="faq-q">パソコンが苦手でも大丈夫ですか？</div><div class="faq-a">大丈夫です。AIエージェントは「話しかける」だけで操作できます。初回2〜3時間のレクチャーで、多くの方がその場でHPを作り始めることができます。</div></div>
+      <div class="faq-item"><div class="faq-q">AIエージェント料1,600円〜とは何ですか？</div><div class="faq-a">AI専属プログラマーの「給料」にあたる費用だと思ってください。AIエージェントのAIサービスを使うための利用料で、使用量に応じて変動します。1,600円は最低目安です。当社の月額サポート料とは別途、お客様がサービス提供会社へ直接お支払いいただきます。設定手続きは当社がサポートします。</div></div>
+      <div class="faq-item"><div class="faq-q">申し込む前に面談があるのはなぜですか？</div><div class="faq-a">お客様のご要望と弊社のサービス内容が本当に合っているかを、双方で確認するためです。約30分の無料面談でニーズをヒアリングし、最適なプランをご提案します。「合わなかった」というミスマッチを防ぐための大切なステップです。</div></div>
+      <div class="faq-item"><div class="faq-q">面談後、必ず契約しなければなりませんか？</div><div class="faq-a">いいえ。面談はあくまでも無料のヒアリングです。「今は時期ではない」「別のプランを検討したい」という場合も、気軽にお申し出ください。</div></div>
+      <div class="faq-item"><div class="faq-q">遠隔地でも対応できますか？</div><div class="faq-a">リモート対応であれば全国どこでも対応可能です。訪問対応は高知県内を中心に承っております（交通費別途）。</div></div>
+
+    </div>
+  </div>
+</section>
+
+<!-- FLOW BANNER -->
+
+
+<!-- ABOUT / PROFILE -->
+<section class="profile-section" id="about">
+  <div class="container">
+    <div style="display:grid;grid-template-columns:1fr 2fr;gap:48px;align-items:start;max-width:960px;">
+      <div style="text-align:center;">
+        <div style="width:140px;height:140px;border-radius:50%;border:3px solid rgba(255,255,255,0.3);margin:0 auto 16px;overflow:hidden;"><img src="Pict/yamamoto.jpg" alt="山本康博" style="width:100%;height:100%;object-fit:cover;object-position:center top;"></div>
+        <div style="font-size:22px;font-weight:900;color:#fff;margin-bottom:4px;">山本 康博</div>
+        <div style="font-size:13px;color:#AED6F1;margin-bottom:16px;">代表 / システムサービス部門 統括</div>
+        <div class="credential-row" style="justify-content:center;">
+          <div class="credential-pill">IT経営 30年</div>
+          <div class="credential-pill">現職市議会議員</div>
+          <div class="credential-pill">農業×IT</div>
+          <div class="credential-pill">経営者視点の伴走支援</div>
+        </div>
+      </div>
+      <div>
+        <div class="section-label" style="color:#AED6F1;">Representative Profile</div>
+        <h2 style="font-size:26px;font-weight:700;color:#fff;margin-bottom:20px;line-height:1.4;">
+          「本物の会社経営者」が<br>経営者視点で伴走します。
+        </h2>
+        <div class="intro-box">
+          私は1993年からIT企業を経営し、<strong>サブスクリプションビジネスで売上2.5億円・営業利益7千万円</strong>のシステム会社を一から作り上げました。全国2,000社以上の顧客網と販売店ネットワークを構築し、業界トップの地位を築いてきました。<br><br>
+          単なるIT技術者ではなく、<strong>「どうすれば集客できるか」「どんな機能があればビジネスが変わるか」</strong>を知る会社経営者として、お客様のビジネスを本質から支援する伴走型サービスを提供します。<br><br>
+          2026年、AIエージェントという新技術に出会い、「これがあれば地方の小さなお店でも本格的なHPを自分で作れる」と確信し、このサービスを立ち上げました。
+        </div>
+        <div class="career-timeline" style="margin-top:28px;">
+          <div class="ct-item">
+            <div class="ct-year">1993</div>
+            <div class="ct-body"><strong>自動車整備業向けパッケージシステム会社を設立。</strong> IT業界でゼロから事業を立ち上げる。</div>
+          </div>
+          <div class="ct-item">
+            <div class="ct-year">2006</div>
+            <div class="ct-body"><strong>東京へ進出。</strong> 全国展開に向けた拠点を構築。</div>
+          </div>
+          <div class="ct-item">
+            <div class="ct-year">2022</div>
+            <div class="ct-body"><strong>売上2.5億円・営業利益7千万円を達成。</strong> サブスクビジネスで業界トップへ。全国2,000社以上の顧客・販売店ネットワークを構築。</div>
+          </div>
+          <div class="ct-item">
+            <div class="ct-year">2023</div>
+            <div class="ct-body"><strong>市議会議員選挙で当選。</strong> 地域社会への貢献活動を開始。</div>
+          </div>
+          <div class="ct-item">
+            <div class="ct-year">2024</div>
+            <div class="ct-body"><strong>会社を後輩に引き継ぎ。</strong> 農業ビジネスに参入し「空と水と大地合同会社」を同級生と創業。</div>
+          </div>
+          <div class="ct-item">
+            <div class="ct-year" style="color:#F9E79F;">2026</div>
+            <div class="ct-body" style="border-color:rgba(249,231,159,0.4);"><strong style="color:#F9E79F;">AIエージェントを取り入れた伴走型システム開発の新分野を構築・商品化。</strong> 本サービスの開始。</div>
+          </div>
+        </div>
+        <div class="credential-row" style="margin-top:20px;">
+
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ORDER -->
+<section class="contact-section" id="order">
+  <div class="container">
+    <div class="section-header" style="text-align:center;">
+      
+      <h2 class="section-title">まず30分の無料面談から</h2>
+      <p class="section-desc" style="margin:0 auto;">いきなりお申し込みは不要です。まず面談でお話を聞かせてください。<br>ニーズとプランが合っていることを確認してから、契約書を交わします。</p>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;margin-bottom:32px;max-width:720px;margin-left:auto;margin-right:auto;">
+      <div style="background:#EBF5FB;border-radius:12px;padding:14px;text-align:center;"><div style="font-size:22px;margin-bottom:4px;">📞</div><div style="font-size:13px;font-weight:700;color:#1A5276;">電話 / オンライン</div></div>
+      <div style="background:#EBF5FB;border-radius:12px;padding:14px;text-align:center;"><div style="font-size:22px;margin-bottom:4px;">⏱</div><div style="font-size:13px;font-weight:700;color:#1A5276;">約30分・完全無料</div></div>
+      <div style="background:#EBF5FB;border-radius:12px;padding:14px;text-align:center;"><div style="font-size:22px;margin-bottom:4px;">💬</div><div style="font-size:13px;font-weight:700;color:#1A5276;">押し売りなし</div></div>
+      <div style="background:#EBF5FB;border-radius:12px;padding:14px;text-align:center;"><div style="font-size:22px;margin-bottom:4px;">✍️</div><div style="font-size:13px;font-weight:700;color:#1A5276;">納得後に契約</div></div>
+    </div>
+    <div class="form-box">
+      <div class="order-tabs">
+        <button class="tab-btn active" id="btn-inquiry" onclick="document.querySelectorAll(&quot;.tab-btn&quot;).forEach(function(b){b.classList.remove(&quot;active&quot;)});document.querySelectorAll(&quot;.tab-panel&quot;).forEach(function(p){p.classList.remove(&quot;active&quot;)});document.getElementById(&quot;tab-inquiry&quot;).classList.add(&quot;active&quot;);this.classList.add(&quot;active&quot;)">面談を予約する</button>
+        <button class="tab-btn" id="btn-contact" onclick="document.querySelectorAll(&quot;.tab-btn&quot;).forEach(function(b){b.classList.remove(&quot;active&quot;)});document.querySelectorAll(&quot;.tab-panel&quot;).forEach(function(p){p.classList.remove(&quot;active&quot;)});document.getElementById(&quot;tab-contact&quot;).classList.add(&quot;active&quot;);this.classList.add(&quot;active&quot;)">お問い合わせ</button>
+      </div>
+      <div class="tab-panel active" id="tab-inquiry">
+        <div class="form-title">面談予約フォーム（無料・約30分）</div>
+        <p style="font-size:13px;color:#555;margin:8px 0 16px;line-height:1.7;">面談では、貴社の希望をお聞きします。面談のお申込み後に、メールが届きます。そのメールのURLから必要事項をご入力ください。<br>通常1〜3営業日以内に電話でご連絡します。ご希望の日程でできない場合、電話で日程を調整させていただきますことをご理解ください。</p>
+        <form onsubmit="handleSubmit(event)">
+          <div class="form-grid">
+            <div class="form-group"><label>お名前<span>*</span></label><input type="text" name="name" required placeholder="山田 太郎"></div>
+            <div class="form-group"><label>フリガナ<span>*</span></label><input type="text" name="furigana" required placeholder="ヤマダ タロウ"></div>
+            <div class="form-group"><label>店舗・会社名</label><input type="text" name="company" placeholder="○○店"></div>
+            <div class="form-group"><label>電話番号<span>*</span></label><input type="tel" required placeholder="088-000-0000"></div>
+            <div class="form-group"><label>メールアドレス<span>*</span></label><input type="email" required placeholder="example@mail.com"></div>
+            <div class="form-group full"><label>ご希望日時（第1希望）</label><div style="display:flex;gap:8px;"><input type="date" style="flex:1;padding:10px 14px;border:1.5px solid #E9ECEF;border-radius:8px;font-size:15px;font-family:inherit;" name="date1"><select name="time1" style="width:130px;padding:10px 14px;border:1.5px solid #E9ECEF;border-radius:8px;font-size:15px;font-family:inherit;"><option value="">時間を選択</option><option>10:00</option><option>10:30</option><option>11:00</option><option>11:30</option><option>12:00</option><option>12:30</option><option>13:00</option><option>13:30</option><option>14:00</option><option>14:30</option><option>15:00</option><option>15:30</option><option>16:00</option></select></div></div>
+            <div class="form-group full"><label>ご希望日時（第2希望）</label><div style="display:flex;gap:8px;"><input type="date" style="flex:1;padding:10px 14px;border:1.5px solid #E9ECEF;border-radius:8px;font-size:15px;font-family:inherit;" name="date2"><select name="time2" style="width:130px;padding:10px 14px;border:1.5px solid #E9ECEF;border-radius:8px;font-size:15px;font-family:inherit;"><option value="">時間を選択</option><option>10:00</option><option>10:30</option><option>11:00</option><option>11:30</option><option>12:00</option><option>12:30</option><option>13:00</option><option>13:30</option><option>14:00</option><option>14:30</option><option>15:00</option><option>15:30</option><option>16:00</option></select></div></div>
+            <div class="form-group full"><label>関心のあるサービス</label><select name="plan"><option>サービス全般</option><option>静的ホームページ</option><option>駆動型ホームページ</option><option>業務システム</option><option>開発依頼</option><option>その他</option></select></div>
+            <div class="form-group full"><label>お店・事業の概要・ご質問など</label><textarea placeholder="業種、現在のHP状況、やりたいことなどをご自由にご記入ください。"></textarea></div>
+          </div>
+          <div class="form-submit">
+            <button type="submit" class="btn btn-water btn-lg" data-original="面談を予約する（無料）→">面談を予約する（無料）→</button>
+
+          </div>
+        </form>
+      </div>
+      <div class="tab-panel" id="tab-contact">
+        <div class="form-title">お問い合わせ</div>
+        <form onsubmit="handleSubmit(event)">
+          <div class="form-grid">
+            <div class="form-group"><label>お名前<span>*</span></label><input type="text" name="name" required placeholder="山田 太郎"></div>
+            <div class="form-group"><label>フリガナ<span>*</span></label><input type="text" name="furigana" required placeholder="ヤマダ タロウ"></div>
+            <div class="form-group"><label>電話番号<span>*</span></label><input type="tel" required placeholder="088-000-0000"></div>
+            <div class="form-group"><label>メールアドレス<span>*</span></label><input type="email" required placeholder="example@mail.com"></div>
+            <div class="form-group full"><label>お問い合わせ内容<span>*</span></label><textarea required placeholder="ご質問・ご要望などをご記入ください。"></textarea></div>
+          </div>
+          <div class="form-submit"><button type="submit" class="btn btn-primary btn-lg" data-original="送信する →">送信する →</button><div class="form-note">通常2営業日以内にご連絡いたします。</div></div>
+        </form>
+      </div>
+    </div>
+    <div id="success-msg" style="display:none;text-align:center;padding:48px;background:#fff;border-radius:12px;max-width:720px;margin:0 auto;box-shadow:0 4px 20px rgba(0,0,0,0.08);">
+      <div style="font-size:48px;margin-bottom:16px;">✅</div>
+      <h3 style="font-size:20px;margin-bottom:12px;">送信完了しました</h3>
+      <p style="color:#6C757D;line-height:1.8;">ありがとうございます。通常1〜3営業日以内に電話でご連絡いたします。<br>ご希望の日程でできない場合も多々ありますことをご了承ください。<br>その場合は、電話をおかけした時に、日程を調整させていただきます。</p>
+      <button onclick="document.getElementById('success-msg').style.display='none';document.querySelector('.form-box').style.display='block';document.querySelectorAll('button[type=submit]').forEach(function(b){b.textContent=b.getAttribute('data-original')||b.textContent;b.disabled=false;});" style="margin-top:24px;padding:12px 32px;background:#2E86C1;color:#fff;border:none;border-radius:50px;font-size:15px;font-weight:700;cursor:pointer;">閉じる</button>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-inner">
+      <div>
+        <div class="footer-logo">空と水と大地合同会社</div>
+        <div class="footer-desc">
+          メイン事業：八升豆焙煎粉の販売<br>
+          システムサービス部門：AIホームページ作成支援<br>
+          高知を拠点に、全国のお店・事業者を応援します。<br>
+          代表：山本 康博<br>
+          <a href="https://www.cidm.or.jp/" target="_blank" style="color:inherit;">一般社団法人車両情報活用研究所　副代表</a><br>
+          <a href="https://nankoku-shokokai.or.jp/" target="_blank" style="color:inherit;">南国市商工会　会員</a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>サービス</h4>
+        <ul>
+          <li><a href="#plans">料金プラン</a></li>
+          <li><a href="#options">オプション</a></li>
+          <li><a href="#about">代表紹介</a></li>
+          <li><a href="#faq">よくある質問</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>お問い合わせ</h4>
+        <ul>
+          <li><a href="#order">無料面談予約</a></li>
+          <li>高知県南国市（拠点）</li>
+          <li>全国リモート対応</li>
+
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">&copy; 2026 空と水と大地合同会社. All rights reserved.</div>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<script>
+const SUPABASE_URL = 'https://gcmtnzvcoovjqxanbmqc.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdjbXRuenZjb292anF4YW5ibXFjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc0NDczNTksImV4cCI6MjA5MzAyMzM1OX0.30xm_Vd7UdfkombPOfSjg-nYxmuwYlnHHEgqRzWE4fQ';
+var sbClient;
+try { sbClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY); } catch(e) { console.error('Supabase init error', e); }
+emailjs.init({publicKey: 'sydEkxfsmryplEbcO'});
+
+
+
+async function handleSubmit(e){
+  e.preventDefault();
+  const form = e.target;
+  const btn = form.querySelector('button[type="submit"]');
+  const originalText = btn.textContent;
+  btn.textContent = '送信中...';
+  btn.disabled = true;
+
+  const isInquiry = form.closest('#tab-contact') !== null;
+
+  const data = isInquiry ? {
+    type: 'inquiry',
+    name: form.querySelector('input[name="name"]').value,
+    furigana: form.querySelector('input[name="furigana"]').value,
+    phone: form.querySelector('input[type="tel"]').value,
+    email: form.querySelector('input[type="email"]').value,
+    message: form.querySelector('textarea').value
+  } : {
+    type: 'meeting',
+    name: form.querySelector('input[name="name"]').value,
+    furigana: form.querySelector('input[name="furigana"]').value,
+    company: form.querySelector('input[name="company"]').value,
+    phone: form.querySelector('input[type="tel"]').value,
+    email: form.querySelector('input[type="email"]').value,
+    preferred_date_1: (form.querySelector('[name=date1]').value + ' ' + form.querySelector('[name=time1]').value).trim(),
+    preferred_date_2: (form.querySelector('[name=date2]').value + ' ' + form.querySelector('[name=time2]').value).trim(),
+    plan: (form.querySelector('select[name=plan]') || {value:''}).value,
+    message: form.querySelector('textarea').value
+  };
+
+  const { data: newId, error } = await sbClient.rpc('submit_aisys_form', {
+    p_type: data.type,
+    p_name: data.name,
+    p_furigana: data.furigana || null,
+    p_company: data.company || null,
+    p_phone: data.phone || null,
+    p_email: data.email,
+    p_preferred_date_1: data.preferred_date_1 || null,
+    p_preferred_date_2: data.preferred_date_2 || null,
+    p_plan: data.plan || null,
+    p_message: data.message || null
+  });
+  const insertedData = newId ? { id: newId } : null;
+
+  if(error){
+    alert('送信に失敗しました。時間をおいて再度お試しください。\n' + error.message);
+    btn.textContent = originalText;
+    btn.disabled = false;
+  } else {
+    // 確認ページURL生成
+    const confirmUrl = insertedData ? 'https://aisys.soratomizutodaichi.com/confirmation.html?id=' + insertedData.id : 'https://aisys.soratomizutodaichi.com';
+    // メール送信
+    const templateParams = {
+      to_name: data.name,
+      to_email: data.email,
+      phone: data.phone || '',
+      form_type: data.type === 'inquiry' ? 'お問い合わせ' : '面談のご予約',
+      preferred_date_1: data.preferred_date_1 || '',
+      preferred_date_2: data.preferred_date_2 || '',
+      plan: data.plan || '',
+      message: data.message || '',
+      confirmation_url: confirmUrl
+    };
+    try {
+      await emailjs.send('service_7m0hycl', 'template_3p7ngs9', templateParams);
+    } catch(mailErr) {
+      console.error('Email error:', mailErr);
+    }
+    document.querySelector('.form-box').style.display='none';
+    document.getElementById('success-msg').style.display='block';
+  }
+}
+
+document.querySelectorAll('a[href^="#"]').forEach(a=>{
+  a.addEventListener('click',function(e){
+    const t=document.querySelector(this.getAttribute('href'));
+    if(t){e.preventDefault();t.scrollIntoView({behavior:'smooth',block:'start'});}
+  });
+});
+</script>
+</body>
+</html>

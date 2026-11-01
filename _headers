@@ -1,0 +1,21 @@
+# Cloudflare Pages 用のセキュリティヘッダー（GitHub Pages では無視される）
+# CSP はページごとに異なるため、各HTMLの <meta http-equiv="Content-Security-Policy"> で指定する
+/*
+  ! Access-Control-Allow-Origin
+  X-Frame-Options: DENY
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=()
+  Strict-Transport-Security: max-age=31536000; includeSubDomains
+
+# 申込者ごとのページと管理画面は配信網に保存させない（Cloudflare は .html なしのURLでも配信するため * で両方に当てる）
+/confirmation*
+  Cache-Control: no-store
+/contract*
+  Cache-Control: no-store
+/admin*
+  Cache-Control: no-store
+/plan-admin*
+  Cache-Control: no-store
+/products*
+  Cache-Control: no-store
